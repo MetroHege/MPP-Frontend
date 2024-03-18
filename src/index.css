@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --MainFont: "Oxanium", sans-serif;
+  font-family: "Oxanium", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: var(--MainMedium);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --MainDark: #1E1F22;
+  --MainLight: #313338;
+  --MainMedium: #2B2D31;
+  --Blue: linear-gradient(to right, #6AA9FF, #3B7BD9);
+  --Red: linear-gradient(to right, #FF6E6E, #D93B3B);
+  --Yellow: linear-gradient(to right, #F7F77A, #E7E732);
+  --Green: linear-gradient(to right, #72D572, #4CAF50);
+
+  margin: auto;
+}
+
+/* Use a value from 200 to 800 */
+
+.oxanium {
+  font-family: "Oxanium", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 200;
+  font-style: normal;
+}
