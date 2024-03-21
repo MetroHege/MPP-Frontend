@@ -117,7 +117,12 @@ const RegisterForm = () => {
                             />
                         </div>
                         <div className="w-full justify-start">
-                            <p>Luomalla tilin hyväksyt DivariNet:n säännöt</p>
+                            <p>
+                                Luomalla tilin hyväksyt DivariNet:n{" "}
+                                <a href="link_to_application_rules" className="text-blue-500">
+                                    säännöt
+                                </a>
+                            </p>
                         </div>
                         <div className="w-full justify-start mt-2">
                             <button
