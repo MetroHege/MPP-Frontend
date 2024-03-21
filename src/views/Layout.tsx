@@ -1,13 +1,14 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, Outlet } from "react-router-dom";
+import logo from "../image/divarinet-white.png";
 
 const Layout = () => {
     return (
         <>
             <header className="w-full bg-main-dark">
-                <div className="flex justify-between p-4">
-                    <h1 className="text-2xl text-slate-50">DivariNet</h1>
+                <div className="flex justify-between p-2 items-center">
+                    <img src={logo} alt="DivariNet" className="h-10 w-auto" />
                     <nav>
                         <ul className="flex space-x-4">
                             <li>
