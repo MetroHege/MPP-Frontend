@@ -4,8 +4,6 @@ import { useUser } from "../hooks/UserHooks";
 
 const RegisterForm = () => {
     const { postUser } = useUser();
-    const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
-    const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
     const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
 
     const initValues = {
@@ -25,33 +23,7 @@ const RegisterForm = () => {
         setPasswordsMatch(inputs.password === inputs.confirmpassword);
     }, [inputs.password, inputs.confirmpassword]);
 
-    const doRegister = async () => {
-        try {
-            if (usernameAvailable && emailAvailable) {
-                await postUser(inputs);
-            }
-        } catch (error) {
-            console.log((error as Error).message);
-        }
-    };
-
-    const { handleSubmit, inputs } = useForm(doRegister, initValues);
-
-    const { getUsernameAvailable, getEmailAvailable } = useUser();
-
-    const handleUsernameBlur = async (event: React.SyntheticEvent<HTMLInputElement>) => {
-        console.log(event.currentTarget.value);
-        const result = await getUsernameAvailable(event.currentTarget.value);
-        setUsernameAvailable(result.available);
-    };
-
-    const handleEmailBlur = async () => {
-        // can also be used like this
-        const result = await getEmailAvailable(inputs.email);
-        setEmailAvailable(result.available);
-    };
-
-    console.log(usernameAvailable, emailAvailable);
+    const { handleSubmit } = useForm(initValues, {});
 
     return (
         <div className="flex w-full">
@@ -68,7 +40,6 @@ const RegisterForm = () => {
                                 name="username"
                                 type="text"
                                 id="username"
-                                onBlur={handleUsernameBlur}
                                 autoComplete="username"
                             />
                         </div>
@@ -125,7 +96,6 @@ const RegisterForm = () => {
                                 name="email"
                                 type="email"
                                 id="email"
-                                onBlur={handleEmailBlur}
                                 autoComplete="email"
                             />
                         </div>
@@ -167,7 +137,7 @@ const RegisterForm = () => {
                                 className=" w-1/2 p-2 bg-green-gradient font-bold"
                                 type="submit"
                             >
-                                Register
+                                Rekisteröidy
                             </button>
                         </div>
                     </form>

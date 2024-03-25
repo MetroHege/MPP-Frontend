@@ -27,18 +27,6 @@ const useUser = () => {
         await fetchData<GetUsersResponse>(import.meta.env.VITE_SERVER + "/users", options);
     };
 
-    const getUsernameAvailable = async (username: string) => {
-        return await fetchData<{ available: boolean }>(
-            import.meta.env.VITE_SERVER + "/users/username/" + username
-        );
-    };
-
-    const getEmailAvailable = async (email: string) => {
-        return await fetchData<{ available: boolean }>(
-            import.meta.env.VITE_SERVER + "/users/email/" + email
-        );
-    };
-
     const getUserById = async (user_id: number) => {
         return await fetchData<User>(import.meta.env.VITE_SERVER + "/users/" + user_id);
     };
@@ -61,8 +49,6 @@ const useUser = () => {
     return {
         getUserByToken,
         postUser,
-        getUsernameAvailable,
-        getEmailAvailable,
         getUserById,
         getAllUsers,
         deleteUser
