@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaFutbol } from "react-icons/fa";
+import UserForm from "../components/UserForm";
 
 const CustomSwitch = () => {
     const [isChecked, setIsChecked] = useState(false);
@@ -23,6 +24,8 @@ const CustomSwitch = () => {
 };
 
 const Profile = () => {
+    const [showForm, setShowForm] = useState(false);
+
     return (
         <div className="flex mt-10">
             <div className="w-1/2">
@@ -35,9 +38,14 @@ const Profile = () => {
                 <p className="text-xl mb-1">Salasana: **********</p>
                 <p className="text-xl mb-1">Kaupunki: Hanko</p>
                 <div className="flex flex-col">
-                    <button className="w-1/2 p-2 bg-yellow-gradient font-bold mb-2" type="submit">
+                    <button
+                        className="w-1/2 p-2 bg-yellow-gradient font-bold mb-2"
+                        type="submit"
+                        onClick={() => setShowForm(true)}
+                    >
                         Muokkaa tietoja
                     </button>
+                    {showForm && <UserForm />}
                     <button className="w-1/2 p-2 bg-red-gradient font-bold" type="submit">
                         Kirjaudu ulos
                     </button>
