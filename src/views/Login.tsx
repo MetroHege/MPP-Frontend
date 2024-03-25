@@ -1,6 +1,6 @@
 import LoginForm from "../components/LoginForm";
 import RegisterForm from "../components/RegisterForm";
-import { getRandomEncouragementMessage } from "../components/encouragementMessages";
+import { getRandomEncouragementMessage } from "../components/EncouragementMessages";
 
 const Login = () => {
     const message = getRandomEncouragementMessage();
