@@ -1,8 +1,7 @@
-import { GetUserResponse, GetUsersResponse, User, postLoginResponse } from "mpp-api-types";
+import { GetUserResponse, PostLoginResponse, PostUsersResponse, User } from "mpp-api-types";
 import { fetchData } from "../lib/functions";
 
 const useUser = () => {
-    // TODO: implement network functions for auth server user endpoints
     const getUserByToken = async (token: string) => {
         const options = {
             headers: {
@@ -24,7 +23,7 @@ const useUser = () => {
             body: JSON.stringify(user)
         };
 
-        await fetchData<GetUsersResponse>(import.meta.env.VITE_SERVER + "/users", options);
+        await fetchData<PostUsersResponse>(import.meta.env.VITE_SERVER + "/users", options);
     };
 
     const getUserById = async (user_id: number) => {
@@ -46,18 +45,65 @@ const useUser = () => {
         await fetchData(import.meta.env.VITE_SERVER + "/users/" + user_id, options);
     };
 
+    const putUser = async (user_id: number, user: Record<string, string>, token: string) => {
+        const options: RequestInit = {
+            method: "PUT",
+            headers: {
+                Authorization: "Bearer " + token
+            },
+            body: JSON.stringify(user)
+        };
+
+        await fetchData(import.meta.env.VITE_SERVER + "/users/" + user_id, options);
+    };
     return {
         getUserByToken,
         postUser,
         getUserById,
         getAllUsers,
-        deleteUser
+        deleteUser,
+        putUser
     };
+};
+
+const useMe = () => {
+    const getMe = async (token: string) => {
+        const options = {
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        };
+        return await fetchData<User>(import.meta.env.VITE_SERVER + "/users/me", options);
+    };
+
+    const putMe = async (user: Record<string, string>, token: string) => {
+        const options: RequestInit = {
+            method: "PUT",
+            headers: {
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(user)
+        };
+        return await fetchData(import.meta.env.VITE_SERVER + "/users/me", options);
+    };
+
+    const deleteMe = async (token: string) => {
+        const options: RequestInit = {
+            method: "DELETE",
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        };
+        return await fetchData(import.meta.env.VITE_SERVER + "/users/me", options);
+    };
+
+    return { getMe, putMe, deleteMe };
 };
 
 const useAuthentication = () => {
     const postLogin = async (creds: Credential) => {
-        return await fetchData<postLoginResponse>(import.meta.env.VITE_SERVER + "/auth/login", {
+        return await fetchData<PostLoginResponse>(import.meta.env.VITE_SERVER + "/auth/login", {
             method: "POST",
             body: JSON.stringify(creds),
             headers: {
@@ -69,4 +115,4 @@ const useAuthentication = () => {
     return { postLogin };
 };
 
-export { useUser, useAuthentication };
+export { useUser, useMe, useAuthentication };

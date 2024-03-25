@@ -41,12 +41,12 @@ declare module "mpp-api-types" {
     }
 
     // POST auth/login
-    export type postLoginRequest = {
+    export type PostLoginRequest = {
         username?: string;
         email?: string;
         password: string;
     };
-    export type postLoginResponse = {
+    export type PostLoginResponse = {
         token: string;
         user: WithId<User>;
     };
