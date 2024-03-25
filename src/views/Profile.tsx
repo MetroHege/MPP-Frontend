@@ -26,36 +26,44 @@ const CustomSwitch = () => {
 const Profile = () => {
     const [showForm, setShowForm] = useState(false);
 
+    // const { handleLogout } = useUserContext();
+
     return (
         <div className="flex mt-10">
             <div className="w-1/2">
-                <h1 className="text-4xl mb-2">Tietoni:</h1>
-                <p className="text-xl mb-1">Käyttäjänimi: JakeM</p>
-                <p className="text-xl mb-1">Etunimi: Jaakko</p>
-                <p className="text-xl mb-1">Sukunimi: Mäkinen</p>
-                <p className="text-xl mb-1">Puhelinnumero: 0401234567</p>
-                <p className="text-xl mb-1">Sähköposti: jaakko.makinen@gmail.com</p>
-                <p className="text-xl mb-1">Salasana: **********</p>
-                <p className="text-xl mb-1">Kaupunki: Hanko</p>
+                <h1 className="text-4xl mb-4">Tietoni:</h1>
+                <p className="text-2xl mb-2">Käyttäjänimi: JakeM</p>
+                <p className="text-2xl mb-2">Etunimi: Jaakko</p>
+                <p className="text-2xl mb-2">Sukunimi: Mäkinen</p>
+                <p className="text-2xl mb-2">Puhelinnumero: 0401234567</p>
+                <p className="text-2xl mb-2">Sähköposti: jaakko.makinen@gmail.com</p>
+                <p className="text-2xl mb-2">Salasana: **********</p>
+                <p className="text-2xl mb-4">Kaupunki: Hanko</p>
                 <div className="flex flex-col">
                     <button
-                        className="w-1/2 p-2 bg-yellow-gradient font-bold mb-2"
+                        className="w-1/2 p-2 bg-yellow-gradient font-bold mb-2 rounded hover:brightness-75"
                         type="submit"
                         onClick={() => setShowForm(true)}
                     >
                         Muokkaa tietoja
                     </button>
-                    {showForm && <UserForm />}
-                    <button className="w-1/2 p-2 bg-red-gradient font-bold" type="submit">
+                    <UserForm showForm={showForm} setShowForm={setShowForm} />
+                    <button
+                        className="w-1/2 p-2 bg-red-gradient font-bold rounded hover:brightness-75"
+                        type="submit"
+                        // onClick={handleLogout}
+                    >
                         Kirjaudu ulos
                     </button>
                 </div>
             </div>
             <div className="w-1/2">
-                <p className="text-4xl mb-2">Tili luotu: 13.1.2024 15:50</p>
-                <p className="text-4xl mb-2">Aktiivisia ilmoituksia: 10</p>
+                <p className="text-4xl mb-4">Tili luotu: 13.1.2024 15:50</p>
+                <p className="text-4xl mb-4">Aktiivisia ilmoituksia: 10</p>
+                <p className="text-4xl mb-4">Kyselyjä ilmoituksissa: 12</p>
+                <p className="text-4xl mb-4">Tykkäyksiä ilmoituksissa: 4</p>
                 <div className="flex items-center">
-                    <p className="mr-2 text-xl">Vaihda teemaa:</p>
+                    <p className="mr-2 text-2xl">Vaihda teemaa:</p>
                     <CustomSwitch />
                 </div>
             </div>
