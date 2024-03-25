@@ -1,20 +1,19 @@
 const LoginForm = () => {
-    // const handleInputChange = event => {
-    //     // Handle input change
-    // };
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        // Handle input change
+    };
 
-    // const handleSubmit = event => {
-    //     event.preventDefault();
-    //     // Handle form submission
-    // };
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        // Handle form submission
+    };
 
     return (
         <div className="flex w-full">
             <div className="flex flex-wrap w-full">
                 <div className="w-full">
                     <h3 className="mb-8 text-start text-3xl font-bold">Kirjaudu sisään</h3>
-                    {/* add onSubmit={} to form */}
-                    <form className="flex flex-col items-center mr-10">
+                    <form onSubmit={handleSubmit} className="flex flex-col items-center mr-10">
                         <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="username">
                                 Käyttäjänimi:
@@ -24,7 +23,7 @@ const LoginForm = () => {
                                 name="username"
                                 type="text"
                                 id="username"
-                                // onChange={handleInputChange}
+                                onChange={handleInputChange}
                                 autoComplete="username"
                             />
                         </div>
@@ -37,7 +36,7 @@ const LoginForm = () => {
                                 name="password"
                                 type="password"
                                 id="loginpassword"
-                                // onChange={handleInputChange}
+                                onChange={handleInputChange}
                                 autoComplete="current-password"
                             />
                         </div>

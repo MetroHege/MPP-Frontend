@@ -1,57 +1,37 @@
-import { MediaItem, UserWithNoPassword } from './DBTypes';
-
 type MessageResponse = {
-  message: string;
+    message: string;
 };
 
 type ErrorResponse = MessageResponse & {
-  stack?: string;
-};
-
-type MediaResponse = MessageResponse & {
-  media: MediaItem | MediaItem[];
-};
-
-// for auth server
-type LoginResponse = MessageResponse & {
-  token: string;
-  message: string;
-  user: UserWithNoPassword;
-};
-
-type UserResponse = MessageResponse & {
-  user: UserWithNoPassword;
+    stack?: string;
 };
 
 type UserDeleteResponse = MessageResponse & {
-  user: { user_id: number };
+    user: { user_id: number };
 };
 
 type AvailableResponse = Partial<MessageResponse> & {
-  available?: boolean;
+    available?: boolean;
 };
 
 type BooleanResponse = MessageResponse & {
-  success: boolean;
+    success: boolean;
 };
 
 // for upload server
 type UploadResponse = MessageResponse & {
-  data: {
-    filename: string;
-    media_type: string;
-    filesize: number;
-  };
+    data: {
+        filename: string;
+        media_type: string;
+        filesize: number;
+    };
 };
 
 export type {
-  MessageResponse,
-  ErrorResponse,
-  MediaResponse,
-  LoginResponse,
-  UploadResponse,
-  UserResponse,
-  UserDeleteResponse,
-  AvailableResponse,
-  BooleanResponse,
+    MessageResponse,
+    ErrorResponse,
+    UploadResponse,
+    UserDeleteResponse,
+    AvailableResponse,
+    BooleanResponse
 };

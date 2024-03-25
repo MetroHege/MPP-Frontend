@@ -1,20 +1,64 @@
-const RegisterForm = () => {
-    // const handleInputChange = event => {
-    //     // Handle input change
-    // };
+import { useEffect, useState } from "react";
+import { useForm } from "../hooks/FormHooks";
+import { useUser } from "../hooks/UserHooks";
 
-    // const handleSubmit = event => {
-    //     event.preventDefault();
-    //     // Handle form submission
-    // };
+const RegisterForm = () => {
+    const { postUser } = useUser();
+    const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
+    const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
+    const [passwordsMatch, setPasswordsMatch] = useState<boolean>(true);
+
+    const initValues = {
+        username: "",
+        password: "",
+        email: "",
+        confirmpassword: "",
+        firstname: "",
+        lastname: "",
+        city: "",
+        phonenumber: ""
+    };
+
+    const [inputs] = useState(initValues);
+
+    useEffect(() => {
+        setPasswordsMatch(inputs.password === inputs.confirmpassword);
+    }, [inputs.password, inputs.confirmpassword]);
+
+    const doRegister = async () => {
+        try {
+            if (usernameAvailable && emailAvailable) {
+                await postUser(inputs);
+            }
+        } catch (error) {
+            console.log((error as Error).message);
+        }
+    };
+
+    const { handleSubmit, inputs } = useForm(doRegister, initValues);
+
+    const { getUsernameAvailable, getEmailAvailable } = useUser();
+
+    const handleUsernameBlur = async (event: React.SyntheticEvent<HTMLInputElement>) => {
+        console.log(event.currentTarget.value);
+        const result = await getUsernameAvailable(event.currentTarget.value);
+        setUsernameAvailable(result.available);
+    };
+
+    const handleEmailBlur = async () => {
+        // can also be used like this
+        const result = await getEmailAvailable(inputs.email);
+        setEmailAvailable(result.available);
+    };
+
+    console.log(usernameAvailable, emailAvailable);
 
     return (
         <div className="flex w-full">
             <div className="flex flex-wrap w-full">
                 <div className="w-full">
                     <h3 className="mb-8 text-start text-3xl font-bold">Rekisteröidy</h3>
-                    {/* add onSubmit={} to form */}
-                    <form className="flex flex-col items-center mr-10">
+                    <form onSubmit={handleSubmit} className="flex flex-col items-center mr-10">
                         <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="username">
                                 Käyttäjänimi:
@@ -24,7 +68,7 @@ const RegisterForm = () => {
                                 name="username"
                                 type="text"
                                 id="username"
-                                // onChange={handleInputChange}
+                                onBlur={handleUsernameBlur}
                                 autoComplete="username"
                             />
                         </div>
@@ -37,7 +81,6 @@ const RegisterForm = () => {
                                 name="firstname"
                                 type="text"
                                 id="firstname"
-                                // onChange={handleInputChange}
                             />
                         </div>
                         <div className="flex w-full pb-2">
@@ -49,7 +92,6 @@ const RegisterForm = () => {
                                 name="lastname"
                                 type="text"
                                 id="lastname"
-                                // onChange={handleInputChange}
                             />
                         </div>
                         <div className="flex w-full pb-2">
@@ -61,7 +103,6 @@ const RegisterForm = () => {
                                 name="city"
                                 type="text"
                                 id="city"
-                                // onChange={handleInputChange}
                             />
                         </div>
                         <div className="flex w-full pb-2">
@@ -73,7 +114,6 @@ const RegisterForm = () => {
                                 name="phonenumber"
                                 type="tel"
                                 id="phonenumber"
-                                // onChange={handleInputChange}
                             />
                         </div>
                         <div className="flex w-full pb-2">
@@ -85,8 +125,7 @@ const RegisterForm = () => {
                                 name="email"
                                 type="email"
                                 id="email"
-                                // onChange={handleInputChange}
-                                // onBlur={handleEmailBlur}
+                                onBlur={handleEmailBlur}
                                 autoComplete="email"
                             />
                         </div>
@@ -99,7 +138,6 @@ const RegisterForm = () => {
                                 name="password"
                                 type="password"
                                 id="password"
-                                // onChange={handleInputChange}
                                 autoComplete="new-password"
                             />
                         </div>
@@ -112,10 +150,10 @@ const RegisterForm = () => {
                                 name="confirmpassword"
                                 type="password"
                                 id="confirmpassword"
-                                // onChange={handleInputChange}
                                 autoComplete="new-password"
                             />
                         </div>
+                        {!passwordsMatch && <p>Passwords do not match!</p>}
                         <div className="w-full justify-start">
                             <p>
                                 Luomalla tilin hyväksyt DivariNet:n{" "}

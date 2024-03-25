@@ -1,3 +1,6 @@
+import { GetUserResponse, GetUsersResponse, User, postLoginResponse } from "mpp-api-types";
+import { fetchData } from "../lib/functions";
+
 const useUser = () => {
     // TODO: implement network functions for auth server user endpoints
     const getUserByToken = async (token: string) => {
@@ -6,8 +9,8 @@ const useUser = () => {
                 Authorization: "Bearer " + token
             }
         };
-        return await fetchData<UserResponse>(
-            import.meta.env.VITE_AUTH_API + "/users/token/",
+        return await fetchData<GetUserResponse>(
+            import.meta.env.VITE_SERVER + "/users/token/",
             options
         );
     };
@@ -21,27 +24,27 @@ const useUser = () => {
             body: JSON.stringify(user)
         };
 
-        await fetchData<UserResponse>(import.meta.env.VITE_AUTH_API + "/users", options);
+        await fetchData<GetUsersResponse>(import.meta.env.VITE_SERVER + "/users", options);
     };
 
     const getUsernameAvailable = async (username: string) => {
         return await fetchData<{ available: boolean }>(
-            import.meta.env.VITE_AUTH_API + "/users/username/" + username
+            import.meta.env.VITE_SERVER + "/users/username/" + username
         );
     };
 
     const getEmailAvailable = async (email: string) => {
         return await fetchData<{ available: boolean }>(
-            import.meta.env.VITE_AUTH_API + "/users/email/" + email
+            import.meta.env.VITE_SERVER + "/users/email/" + email
         );
     };
 
     const getUserById = async (user_id: number) => {
-        return await fetchData<User>(import.meta.env.VITE_AUTH_API + "/users/" + user_id);
+        return await fetchData<User>(import.meta.env.VITE_SERVER + "/users/" + user_id);
     };
 
     const getAllUsers = async () => {
-        return await fetchData<UserWithNoPassword[]>(import.meta.env.VITE_AUTH_API + "/users");
+        return await fetchData<User[]>(import.meta.env.VITE_SERVER + "/users");
     };
 
     const deleteUser = async (user_id: number, token: string) => {
@@ -52,7 +55,7 @@ const useUser = () => {
             }
         };
 
-        await fetchData(import.meta.env.VITE_AUTH_API + "/users/" + user_id, options);
+        await fetchData(import.meta.env.VITE_SERVER + "/users/" + user_id, options);
     };
 
     return {
@@ -67,8 +70,8 @@ const useUser = () => {
 };
 
 const useAuthentication = () => {
-    const postLogin = async (creds: Credentials) => {
-        return await fetchData<LoginResponse>(import.meta.env.VITE_AUTH_API + "/auth/login", {
+    const postLogin = async (creds: Credential) => {
+        return await fetchData<postLoginResponse>(import.meta.env.VITE_SERVER + "/auth/login", {
             method: "POST",
             body: JSON.stringify(creds),
             headers: {
