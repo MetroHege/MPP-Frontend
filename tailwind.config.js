@@ -13,6 +13,12 @@ export default {
                 "red-gradient": "linear-gradient(to right, #FF6E6E, #D93B3B)",
                 "yellow-gradient": "linear-gradient(to right, #F7F77A, #E7E732)",
                 "green-gradient": "linear-gradient(to right, #72D572, #4CAF50)"
+            },
+            borderRadius: {
+                custom1: "32px",
+                custom2: "96px",
+                custom3: "128px",
+                custom4: "32px"
             }
         }
     },
