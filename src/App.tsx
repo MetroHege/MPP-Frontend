@@ -24,10 +24,10 @@ const App = () => {
                             <>
                                 <h1 className="font-bold text-4xl mb-4">404 - Not Found</h1>
                                 <p className="text-2xl">
-                                    Hupsis! Täällä ei ole mitään maalattavaa. Etsimme kissoja ja
-                                    koiria, mutta ne ovat kaikki karanneet kilpajuoksuun. Paina
-                                    kotinappia ja palaa takaisin kisakentälle. Ehkä seuraavalla
-                                    kierroksella löydämme voittajan!
+                                    Oi ei! Täällä ei ole verkkoon osunutta palloa. Katsomme ylös ja
+                                    alas, mutta ainoa mikä lentää on tuuliviiri. Kipinä ei
+                                    kuitenkaan katoa! Potkaise kotinappia ja palaa takaisin
+                                    kentälle. Ehkä seuraavalla syötöllä teemme maalin!
                                 </p>
                             </>
                         }
