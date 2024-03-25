@@ -1,4 +1,4 @@
-// Version 1.0.0
+// Version 1.0.1
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -13,6 +13,8 @@ declare module "mpp-api-types" {
         city: string;
         admin: boolean;
     }
+
+    export type UserWithId = UserWithId;
 
     export enum Quality {
         New = 5,
@@ -48,35 +50,35 @@ declare module "mpp-api-types" {
     };
     export type PostLoginResponse = {
         token: string;
-        user: WithId<User>;
+        user: UserWithId;
     };
 
     // GET users
-    export type GetUsersResponse = WithId<User>[];
+    export type GetUsersResponse = UserWithId[];
 
     // POST users
-    export type PostUsersRequest = WithPassword<User>;
-    export type PostUsersResponse = WithId<User>;
+    export type PostUsersRequest = WithPassword<Required<Omit<User, "admin">>>;
+    export type PostUsersResponse = UserWithId;
 
     // GET users/me
-    export type GetMeResponse = WithId<User>;
+    export type GetMeResponse = UserWithId;
 
     // PUT users/me
     export type PutMeRequest = Partial<WithPassword<User>>;
-    export type PutMeResponse = WithId<User>;
+    export type PutMeResponse = UserWithId;
 
     // DELETE users/me
-    export type DeleteMeResponse = WithId<User>;
+    export type DeleteMeResponse = { id: number };
 
     // GET users/:id
-    export type GetUserResponse = WithId<User>;
+    export type GetUserResponse = UserWithId;
 
     // PUT users/:id
     export type PutUserRequest = Partial<WithPassword<User>>;
-    export type PutUserResponse = WithId<User>;
+    export type PutUserResponse = UserWithId;
 
     // DELETE users/:id
-    export type DeleteUserResponse = WithId<User>;
+    export type DeleteUserResponse = { id: number };
 
     // GET listings
     export type GetListingsResponse = WithId<Listing>[];

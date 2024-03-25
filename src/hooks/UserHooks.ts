@@ -30,6 +30,18 @@ const useUser = () => {
         return await fetchData<User>(import.meta.env.VITE_SERVER + "/users/" + user_id);
     };
 
+    const getUsernameAvailable = async (username: string) => {
+        return await fetchData<{ available: boolean }>(
+            import.meta.env.VITE_AUTH_API + "/users/username/" + username
+        );
+    };
+
+    const getEmailAvailable = async (email: string) => {
+        return await fetchData<{ available: boolean }>(
+            import.meta.env.VITE_AUTH_API + "/users/email/" + email
+        );
+    };
+
     const getAllUsers = async () => {
         return await fetchData<User[]>(import.meta.env.VITE_SERVER + "/users");
     };
@@ -62,7 +74,9 @@ const useUser = () => {
         getUserById,
         getAllUsers,
         deleteUser,
-        putUser
+        putUser,
+        getUsernameAvailable,
+        getEmailAvailable
     };
 };
 
