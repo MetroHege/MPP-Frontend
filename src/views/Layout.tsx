@@ -2,17 +2,28 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo from "../image/divarinet-white.png";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { faFacebookF, faInstagram, faTwitter } from "@fortawesome/free-brands-svg-icons";
-import yourVideoSource from "../video/field.mp4";
-// import field1 from "../image/field1.jpg";
-// import field2 from "../image/field2.jpg";
-// import field3 from "../image/field3.jpg";
-// import { Carousel } from "react-responsive-carousel";
+import field1 from "../img/field-1.jpg";
+import field2 from "../img/field-2.jpg";
+import field3 from "../img/field-3.jpg";
+import { Carousel } from "react-responsive-carousel";
+import { useUser } from "../hooks/UserHooks";
 
 const Layout = () => {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
+    const { getAllUsers } = useUser();
+    const [userCount, setUserCount] = useState<number>(0); // Declare setUserCount function
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            const users = await getAllUsers();
+            setUserCount(users.length);
+        };
+
+        fetchUsers();
+    }, []);
 
     return (
         <>
@@ -67,7 +78,7 @@ const Layout = () => {
                         </div>
                         <div className="absolute top-10 right-10 p-4 z-10 w-1/2 text-right">
                             <p className="text-xl">
-                                Aktiivisia käyttäjiä: <strong>340</strong>
+                                Aktiivisia käyttäjiä: <strong>{userCount}</strong>
                             </p>
                             <p className="text-xl">
                                 Ilmoituksia jätetty: <strong>1200</strong>
@@ -76,7 +87,7 @@ const Layout = () => {
                                 Tuotekategorioita: <strong>15</strong>
                             </p>
                         </div>
-                        {/* <Carousel
+                        <Carousel
                             className="w-full object-cover object-center"
                             autoPlay
                             infiniteLoop
@@ -114,14 +125,14 @@ const Layout = () => {
                                 <div className="absolute inset-0 bg-gradient-to-t from-main-medium to-transparent"></div>
                                 <div className="h-5 absolute inset-0 bg-gradient-to-b from-main-dark to-transparent"></div>
                             </div>
-                        </Carousel> */}
-                        <div className="relative">
+                        </Carousel>
+                        {/* <div className="relative">
                             <video className="w-full h-130 object-cover" autoPlay loop muted>
                                 <source src={yourVideoSource} type="video/mp4" />
                             </video>
                             <div className="absolute inset-0 bg-gradient-to-t from-main-medium to-transparent"></div>
                             <div className="h-5 absolute inset-0 bg-gradient-to-b from-main-dark to-transparent"></div>
-                        </div>
+                        </div> */}
                     </div>
                 )}
             </div>

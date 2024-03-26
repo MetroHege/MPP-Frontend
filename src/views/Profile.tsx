@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFutbol } from "react-icons/fa";
 import UserForm from "../components/UserForm";
+import { useMe } from "../hooks/UserHooks";
+import { User } from "mpp-api-types";
+import { useUserContext } from "../contexts/ContextHooks";
 
 const CustomSwitch = () => {
     const [isChecked, setIsChecked] = useState(false);
@@ -25,21 +28,47 @@ const CustomSwitch = () => {
 
 const Profile = () => {
     const [showForm, setShowForm] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
+    const { getMe } = useMe();
 
-    // const { handleLogout } = useUserContext();
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = localStorage.getItem("token");
+            if (token) {
+                try {
+                    const fetchedUser = await getMe(token);
+                    setUser(fetchedUser);
+                } catch (error) {
+                    console.log((error as Error).message);
+                }
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    if (!user) {
+        return (
+            <div>
+                <h1 className="text-4xl mb-4">Käyttäjätietojesi lataamisessa ilmeni ongelma</h1>
+                <p className="text-xl mb-4">Odota hetki tai koita päivittää sivu...</p>
+            </div>
+        );
+    }
+    const { handleLogout } = useUserContext();
 
     return (
         <>
             <div className="flex mt-10 mb-10">
                 <div className="w-1/2">
                     <h1 className="text-4xl mb-4">Tietoni:</h1>
-                    <p className="text-2xl mb-2">Käyttäjänimi: JakeM</p>
-                    <p className="text-2xl mb-2">Etunimi: Jaakko</p>
-                    <p className="text-2xl mb-2">Sukunimi: Mäkinen</p>
-                    <p className="text-2xl mb-2">Puhelinnumero: 0401234567</p>
-                    <p className="text-2xl mb-2">Sähköposti: jaakko.makinen@gmail.com</p>
+                    <p className="text-2xl mb-2">Käyttäjänimi: {user.username}</p>
+                    <p className="text-2xl mb-2">Etunimi: {user.firstName}</p>
+                    <p className="text-2xl mb-2">Sukunimi: {user.lastName}</p>
+                    <p className="text-2xl mb-2">Puhelinnumero: {user.phone}</p>
+                    <p className="text-2xl mb-2">Sähköposti: {user.email}</p>
                     <p className="text-2xl mb-2">Salasana: **********</p>
-                    <p className="text-2xl mb-4">Kaupunki: Hanko</p>
+                    <p className="text-2xl mb-4">Kaupunki: {user.city}</p>
                     <div className="flex flex-col">
                         <button
                             className="w-1/2 p-2 bg-yellow-gradient font-bold mb-2 rounded hover:brightness-75"
@@ -52,7 +81,7 @@ const Profile = () => {
                         <button
                             className="w-1/2 p-2 bg-red-gradient font-bold rounded hover:brightness-75"
                             type="submit"
-                            // onClick={handleLogout}
+                            onClick={handleLogout}
                         >
                             Kirjaudu ulos
                         </button>
@@ -71,7 +100,7 @@ const Profile = () => {
             </div>
             <div className="border-b border-gray-200 my-4 mx-2"></div>
             <div>
-                <h1 className="text-4xl mb-4">Ilmoituksesi:</h1>
+                <h1 className="text-4xl mb-4">Ilmoitukseni:</h1>
                 <div className="flex flex-col">
                     <div className="mb-4 flex overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
                         <img
