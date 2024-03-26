@@ -1,4 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
+import Modal from "react-modal";
 import Home from "./views/Home";
 import Layout from "./views/Layout";
 import Profile from "./views/Profile";
@@ -8,8 +9,13 @@ import Login from "./views/Login";
 import Rules from "./views/Rules";
 import { UserProvider } from "./contexts/UserContext";
 import { UpdateProvider } from "./contexts/UpdateContext";
+import { useEffect } from "react";
 
 const App = () => {
+    useEffect(() => {
+        Modal.setAppElement("#root");
+    }, []);
+
     return (
         <Router basename={import.meta.env.BASE_URL}>
             <UserProvider>
