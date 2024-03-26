@@ -1,5 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import Modal from "react-modal";
+import { useMe } from "../hooks/UserHooks";
+import { useNavigate } from "react-router-dom";
 
 interface UserFormProps {
     showForm: boolean;
@@ -18,6 +20,9 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
     });
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const { deleteMe } = useMe();
+    const [isDeleted, setIsDeleted] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setUser({
@@ -196,8 +201,12 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                                 <div className="ml-auto mt-4 space-x-4">
                                     <button
                                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                                        onClick={() => {
-                                            // call your function to delete the account here
+                                        onClick={async () => {
+                                            const token = localStorage.getItem("token");
+                                            if (token) {
+                                                await deleteMe(token);
+                                                setIsDeleted(true);
+                                            }
                                             setModalIsOpen(false);
                                         }}
                                     >
@@ -208,6 +217,55 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                                         onClick={() => setModalIsOpen(false)}
                                     >
                                         Peruuta
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </Modal>
+                    <Modal
+                        isOpen={isDeleted}
+                        onRequestClose={() => setIsDeleted(false)}
+                        className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50"
+                        contentLabel="Account Deleted"
+                    >
+                        <div className="bg-main-medium rounded-lg w-1/3">
+                            <div className="flex flex-col items-start p-4">
+                                <div className="flex items-center w-full">
+                                    <div className="font-medium text-lg">
+                                        Käyttähätilisi on poistettu
+                                    </div>
+                                    <svg
+                                        onClick={() => setIsDeleted(false)}
+                                        className="ml-auto fill-current w-6 h-6 cursor-pointer"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 18 18"
+                                    >
+                                        <path d="M18 1.3L16.7 0 9 7.6 1.3 0 0 1.3 7.6 9 0 16.7 1.3 18 9 10.4 16.7 18 18 16.7 10.4 9 18 1.3z" />
+                                    </svg>
+                                </div>
+                                <hr className="w-full mt-2 mb-3 border-gray-300" />
+                                <p className="text-sm mb-2">
+                                    Käyttäjätilisi ja siihen liittyvät tiedot on poistettu
+                                    pysyvästi.
+                                </p>
+                                <div className="ml-auto mt-4 space-x-4">
+                                    <button
+                                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                        onClick={() => {
+                                            navigate("/");
+                                            setIsDeleted(false);
+                                        }}
+                                    >
+                                        Palaa kotisivulle
+                                    </button>
+                                    <button
+                                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                        onClick={() => {
+                                            navigate("/contact");
+                                            setIsDeleted(false);
+                                        }}
+                                    >
+                                        Anna palautetta
                                     </button>
                                 </div>
                             </div>
