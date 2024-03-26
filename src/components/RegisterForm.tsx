@@ -7,6 +7,10 @@ const RegisterForm = () => {
     const { postUser } = useUser();
     // const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
     // const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [phoneError, setPhoneError] = useState("");
+    const [emailError, setEmailError] = useState("");
 
     const initValues = {
         username: "",
@@ -19,6 +23,11 @@ const RegisterForm = () => {
     };
 
     const doRegister = async () => {
+        if (inputs.password !== confirmPassword) {
+            setErrorMessage("Salasanat eivät täsmää");
+            return;
+        }
+        setErrorMessage("");
         try {
             await postUser({
                 username: inputs.username,
@@ -29,16 +38,33 @@ const RegisterForm = () => {
                 phone: inputs.phone ?? "",
                 city: inputs.city
             });
-            alert("User registered, please login to use the application");
+            resetForm();
+            setConfirmPassword("");
         } catch (error) {
             console.log((error as Error).message);
         }
     };
 
-    const { handleSubmit, handleInputChange, inputs } = useForm<PostUsersRequest>(
+    const { handleSubmit, handleInputChange, inputs, resetForm } = useForm<PostUsersRequest>(
         doRegister,
         initValues
     );
+
+    const validatePhoneNumber = () => {
+        if (!/^\d*$/.test(inputs.phone ?? "")) {
+            setPhoneError("Vain numerot sallittu");
+        } else {
+            setPhoneError("");
+        }
+    };
+
+    const validateEmailFormat = () => {
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.email ?? "")) {
+            setEmailError("Kirjoita sähköpostimuodossa");
+        } else {
+            setEmailError("");
+        }
+    };
 
     // const { getUsernameAvailable, getEmailAvailable } = useUser();
 
@@ -120,8 +146,15 @@ const RegisterForm = () => {
                                 type="tel"
                                 id="phonenumber"
                                 onChange={handleInputChange}
+                                onBlur={validatePhoneNumber}
+                                pattern="\d*"
                             />
                         </div>
+                        {phoneError && (
+                            <div className="error-message">
+                                <p className="text-red-500">{phoneError}</p>
+                            </div>
+                        )}
                         <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="email">
                                 Sähköposti:
@@ -132,10 +165,15 @@ const RegisterForm = () => {
                                 type="email"
                                 id="email"
                                 onChange={handleInputChange}
-                                // onBlur={handleEmailBlur}
+                                onBlur={validateEmailFormat}
                                 autoComplete="email"
                             />
                         </div>
+                        {emailError && (
+                            <div className="error-message">
+                                <p className="text-red-500">{emailError}</p>
+                            </div>
+                        )}
                         <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="password">
                                 Salasana:
@@ -146,23 +184,26 @@ const RegisterForm = () => {
                                 type="password"
                                 id="password"
                                 onChange={handleInputChange}
+                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
                                 autoComplete="new-password"
                             />
                         </div>
-                        {/* <div className="flex w-full pb-2">
+                        <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="confirmpassword">
                                 Vahvista Salasana:
                             </label>
-                            <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
-                                name="confirmpassword"
-                                type="password"
-                                id="confirmpassword"
-                                onChange={handleInputChange}
-                                autoComplete="new-password"
-                            />
-                        </div> */}
-                        {/* {!passwordsMatch && <p>Passwords do not match!</p>} */}
+                            <div className="w-2/3 flex flex-col">
+                                <input
+                                    className="w-full h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                    name="confirmpassword"
+                                    type="password"
+                                    id="confirmpassword"
+                                    onChange={e => setConfirmPassword(e.target.value)}
+                                    autoComplete="new-password"
+                                />
+                                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                            </div>
+                        </div>
                         <div className="w-full justify-start">
                             <p>
                                 Luomalla tilin hyväksyt DivariNet:n{" "}

@@ -15,11 +15,43 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const location = useLocation();
 
     // login, logout and autologin functions are here instead of components
+    // const handleLogin = async (credentials: Credentials) => {
+    //     try {
+    //         const loginResult = await postLogin(credentials);
+    //         if (loginResult) {
+    //             localStorage.setItem("token", loginResult.token);
+    //             setUser(loginResult.user);
+    //             let origin = "";
+    //             if (loginResult.user.level_name === "Admin") {
+    //                 origin = "/admin";
+    //             } else {
+    //                 origin = "/";
+    //             }
+    //             navigate(origin);
+    //         }
+    //     } catch (e) {
+    //         alert((e as Error).message);
+    //     }
+    // };
+
     const handleLogin = async (credentials: Credentials) => {
         try {
+            const failedAttempts = Number(localStorage.getItem("failedAttempts") || "0");
+            const lastFailedAttempt = Number(localStorage.getItem("lastFailedAttempt") || "0");
+            const now = Date.now();
+
+            if (failedAttempts >= 3 && now - lastFailedAttempt < 5 * 60 * 1000) {
+                alert(
+                    "You have entered the wrong password too many times. Please wait 5 minutes before trying again."
+                );
+                return;
+            }
+
             const loginResult = await postLogin(credentials);
+
             if (loginResult) {
                 localStorage.setItem("token", loginResult.token);
+                localStorage.setItem("failedAttempts", "0");
                 setUser(loginResult.user);
                 let origin = "";
                 if (loginResult.user.level_name === "Admin") {
@@ -30,6 +62,9 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 navigate(origin);
             }
         } catch (e) {
+            const failedAttempts = Number(localStorage.getItem("failedAttempts") || "0");
+            localStorage.setItem("failedAttempts", String(failedAttempts + 1));
+            localStorage.setItem("lastFailedAttempt", String(Date.now()));
             alert((e as Error).message);
         }
     };
