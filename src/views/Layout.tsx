@@ -1,8 +1,4 @@
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-<<<<<<< Updated upstream
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Link, Outlet } from "react-router-dom";
-=======
 import { Link, Outlet, useLocation } from "react-router-dom";
 import logo from "../image/divarinet-white.png";
 // import { Carousel } from "react-responsive-carousel";
@@ -14,7 +10,6 @@ import { faTimes, faBars } from "@fortawesome/free-solid-svg-icons";
 // import field3 from "../img/field-3.jpg";
 import yourVideoSource from "../img/video-4K.mp4";
 import { useState } from "react";
->>>>>>> Stashed changes
 
 const Layout = () => {
     const location = useLocation();
@@ -23,12 +18,6 @@ const Layout = () => {
     return (
         <>
             <header className="w-full bg-main-dark">
-<<<<<<< Updated upstream
-                <div className="flex justify-between p-4">
-                    <h1 className="text-2xl text-slate-50">DivariNet</h1>
-                    <nav>
-                        <ul className="flex space-x-4">
-=======
                 <div className="flex justify-between p-2 items-center md:hidden">
                     <img src={logo} alt="DivariNet" className="h-10 w-auto" />
                     <button className="flex" onClick={() => setIsOpen(!isOpen)}>
@@ -42,7 +31,6 @@ const Layout = () => {
                     <div className="flex flex-col items-center md:flex-row md:justify-between md:items-center">
                         <img src={logo} alt="DivariNet" className="h-10 w-auto hidden md:block" />
                         <ul className="space-y-4 md:space-y-0 md:space-x-4 flex flex-col md:flex-row">
->>>>>>> Stashed changes
                             <li>
                                 <Link className="text-xl text-white hover:text-gray-300" to="/">
                                     Koti
