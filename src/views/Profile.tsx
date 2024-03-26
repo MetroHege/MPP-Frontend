@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFutbol } from "react-icons/fa";
 import UserForm from "../components/UserForm";
+import { useMe } from "../hooks/UserHooks";
+import { User } from "mpp-api-types";
 
 const CustomSwitch = () => {
     const [isChecked, setIsChecked] = useState(false);
@@ -25,6 +27,24 @@ const CustomSwitch = () => {
 
 const Profile = () => {
     const [showForm, setShowForm] = useState(false);
+    const [user, setUser] = useState<User | null>(null);
+    const { getMe } = useMe();
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const token = localStorage.getItem("token"); // Replace with your token retrieval logic
+            if (token) {
+                const fetchedUser = await getMe(token);
+                setUser(fetchedUser);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    if (!user) {
+        return <p>Loading...</p>;
+    }
 
     // const { handleLogout } = useUserContext();
 
@@ -33,13 +53,13 @@ const Profile = () => {
             <div className="flex mt-10 mb-10">
                 <div className="w-1/2">
                     <h1 className="text-4xl mb-4">Tietoni:</h1>
-                    <p className="text-2xl mb-2">Käyttäjänimi: JakeM</p>
-                    <p className="text-2xl mb-2">Etunimi: Jaakko</p>
-                    <p className="text-2xl mb-2">Sukunimi: Mäkinen</p>
-                    <p className="text-2xl mb-2">Puhelinnumero: 0401234567</p>
-                    <p className="text-2xl mb-2">Sähköposti: jaakko.makinen@gmail.com</p>
+                    <p className="text-2xl mb-2">Käyttäjänimi: {user.username}</p>
+                    <p className="text-2xl mb-2">Etunimi: {user.firstName}</p>
+                    <p className="text-2xl mb-2">Sukunimi: {user.lastName}</p>
+                    <p className="text-2xl mb-2">Puhelinnumero: {user.phone}</p>
+                    <p className="text-2xl mb-2">Sähköposti: {user.email}</p>
                     <p className="text-2xl mb-2">Salasana: **********</p>
-                    <p className="text-2xl mb-4">Kaupunki: Hanko</p>
+                    <p className="text-2xl mb-4">Kaupunki: {user.city}</p>
                     <div className="flex flex-col">
                         <button
                             className="w-1/2 p-2 bg-yellow-gradient font-bold mb-2 rounded hover:brightness-75"
