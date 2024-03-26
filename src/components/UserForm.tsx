@@ -30,194 +30,198 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
         <Modal
             isOpen={showForm}
             onRequestClose={() => setShowForm(false)}
-            shouldCloseOnOverlayClick={true}
-            style={{
-                content: {
-                    width: "50%",
-                    height: "fit-content",
-                    margin: "auto",
-                    padding: "20px",
-                    backgroundColor: "var(--MainMedium)",
-                    borderRadius: "10px",
-                    border: "1px solid #ccc",
-                    overflow: "auto",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "start"
-                },
-                overlay: {
-                    backgroundColor: "rgba(0, 0, 0, 0.5)"
-                }
-            }}
+            className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50"
+            contentLabel="Modal"
         >
-            <h1 className="text-4xl mb-4">Muokkaa tietojasi:</h1>
-            <form className="flex flex-col items-center mb-0 ml-4 mr-4">
-                <div className="flex w-2/3 pb-2">
-                    <label className="w-1/3 text-left text-xl font-bold" htmlFor="username">
-                        Username:
-                    </label>
-                    <input
-                        className="w-1/2 h-10 rounded border border-slate-500 p-2 text-slate-950"
-                        name="username"
-                        type="text"
-                        id="username"
-                        value={user.username}
-                        onChange={handleChange}
-                        autoComplete="username"
-                        placeholder={user.username}
-                    />
-                </div>
-                <div className="flex w-2/3 pb-2">
-                    <label className="w-1/3 text-left text-xl font-bold" htmlFor="firstName">
-                        Etunimi:
-                    </label>
-                    <input
-                        className="w-1/2 h-10 rounded border border-slate-500 p-2 text-slate-950"
-                        type="text"
-                        name="firstName"
-                        value={user.firstName}
-                        onChange={handleChange}
-                        placeholder={user.firstName}
-                    />
-                </div>
-                <div className="flex w-2/3 pb-2">
-                    <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
-                        Sukunimi:
-                    </label>
-                    <input
-                        className="w-1/2 h-10 rounded border border-slate-500 p-2 text-slate-950"
-                        type="text"
-                        name="lastName"
-                        value={user.lastName}
-                        onChange={handleChange}
-                        placeholder={user.lastName}
-                    />
-                </div>
-                <div className="flex w-2/3 pb-2">
-                    <label className="w-1/3 text-left text-xl font-bold" htmlFor="phone">
-                        Puhelinnumero:
-                    </label>
-                    <input
-                        className="w-1/2 h-10 rounded border border-slate-500 p-2 text-slate-950"
-                        type="text"
-                        name="phoneNumber"
-                        value={user.phoneNumber}
-                        onChange={handleChange}
-                        placeholder="0401234567"
-                    />
-                </div>
-                <div className="flex w-2/3 pb-2">
-                    <label className="w-1/3 text-left text-xl font-bold" htmlFor="email">
-                        Sähköposti:
-                    </label>
-                    <input
-                        className="w-1/2 h-10 rounded border border-slate-500 p-2 text-slate-950"
-                        type="email"
-                        name="email"
-                        value={user.email}
-                        onChange={handleChange}
-                        placeholder={user.email}
-                    />
-                </div>
-                <div className="flex w-2/3 pb-2">
-                    <label className="w-1/3 text-left text-xl font-bold" htmlFor="password">
-                        Salasana:
-                    </label>
-                    <input
-                        className="w-1/2 h-10 rounded border border-slate-500 p-2 text-slate-950"
-                        type="password"
-                        name="password"
-                        value={user.password}
-                        onChange={handleChange}
-                        placeholder={user.password}
-                    />
-                </div>
-                <div className="flex w-2/3 pb-2">
-                    <label className="w-1/3 text-left text-xl font-bold" htmlFor="city">
-                        Kaupunki:
-                    </label>
-                    <input
-                        className="w-1/2 h-10 rounded border border-slate-500 p-2 text-slate-950"
-                        type="text"
-                        name="city"
-                        value={user.city}
-                        onChange={handleChange}
-                        placeholder={user.city}
-                    />
-                </div>
-                <div className=" text-left">
-                    <p>
-                        Mikäli haluat poistaa tilisi kokonaisuudessaan, paina{" "}
-                        <button
-                            type="button"
-                            className="text-blue-500"
-                            onClick={event => {
-                                event.stopPropagation(); // Add this line
-                                setModalIsOpen(true);
-                            }}
+            <div className="bg-main-medium rounded-lg w-1/3">
+                <div className="flex flex-col items-start p-4">
+                    <div className="flex items-center w-full">
+                        <div className="font-medium text-lg">Muokkaa tietojasi:</div>
+                        <svg
+                            onClick={() => setShowForm(false)}
+                            className="ml-auto fill-current w-6 h-6 cursor-pointer"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 18 18"
                         >
-                            TÄSTÄ
-                        </button>
-                    </p>
-                </div>
-                <Modal
-                    isOpen={modalIsOpen}
-                    onRequestClose={() => setModalIsOpen(false)}
-                    style={{
-                        content: {
-                            width: "40%",
-                            height: "fit-content",
-                            margin: "auto",
-                            padding: "15px",
-                            backgroundColor: "var(--MainMedium)",
-                            borderRadius: "10px",
-                            border: "1px solid #ccc",
-                            overflow: "auto",
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "start"
-                        },
-                        overlay: {
-                            backgroundColor: "rgba(0, 0, 0, 0.5)"
-                        }
-                    }}
-                >
-                    <h2 className="text-xl mb-2">Vahvista käyttäjätilin poisto</h2>
-                    <p className="text-sm mb-2">
-                        Oletko varma, että haluat poistaa tilisi? Mikäli poistat tilisi, kaikki
-                        tietosi ja ilmoituksesi poistetaan pysyvästi.
-                    </p>
-                    <p className="text-sm mb-2">TÄMÄ TOIMINTO ON PERUUTTAMATON!</p>
-                    <div className="w-2/3 mx-auto mt-4">
-                        <div className="flex justify-between space-x-4">
-                            <button
-                                className="w-full p-2 bg-green-gradient font-bold rounded hover:brightness-75"
-                                onClick={() => {
-                                    // call your function to delete the account here
-                                    setModalIsOpen(false);
-                                }}
-                            >
-                                Hyväksy
-                            </button>
-                            <button
-                                className="w-full p-2 bg-red-gradient font-bold rounded hover:brightness-75"
-                                onClick={() => setModalIsOpen(false)}
-                            >
-                                Peruuta
-                            </button>
-                        </div>
+                            <path d="M18 1.3L16.7 0 9 7.6 1.3 0 0 1.3 7.6 9 0 16.7 1.3 18 9 10.4 16.7 18 18 16.7 10.4 9 18 1.3z" />
+                        </svg>
                     </div>
-                </Modal>
-                <div className="w-2/3 mx-auto mt-4">
-                    <div className="flex justify-between space-x-4">
+
+                    <hr className="w-full mt-2 mb-3 border-gray-300" />
+
+                    <form className="flex flex-col items-center mb-0 ml-4 mr-4">
+                        <div className="flex w-2/3 pb-2">
+                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="username">
+                                Käyttäjänimi:
+                            </label>
+                            <input
+                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
+                                type="text"
+                                name="username"
+                                value={user.username}
+                                onChange={handleChange}
+                                autoComplete="username"
+                                placeholder={user.username}
+                            />
+                        </div>
+                        <div className="flex w-2/3 pb-2">
+                            <label
+                                className="w-1/3 text-left text-xl font-bold"
+                                htmlFor="firstName"
+                            >
+                                Etunimi:
+                            </label>
+                            <input
+                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
+                                type="text"
+                                name="firstName"
+                                value={user.firstName}
+                                onChange={handleChange}
+                                placeholder={user.firstName}
+                            />
+                        </div>
+                        <div className="flex w-2/3 pb-2">
+                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
+                                Sukunimi:
+                            </label>
+                            <input
+                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
+                                type="text"
+                                name="lastName"
+                                value={user.lastName}
+                                onChange={handleChange}
+                                placeholder={user.lastName}
+                            />
+                        </div>
+                        <div className="flex w-2/3 pb-2">
+                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
+                                Puhelinnumero:
+                            </label>
+                            <input
+                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
+                                type="text"
+                                name="phoneNumber"
+                                value={user.phoneNumber}
+                                onChange={handleChange}
+                                placeholder="0401234567"
+                            />
+                        </div>
+                        <div className="flex w-2/3 pb-2">
+                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
+                                Sähköposti:
+                            </label>
+                            <input
+                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
+                                type="email"
+                                name="email"
+                                value={user.email}
+                                onChange={handleChange}
+                                placeholder={user.email}
+                            />
+                        </div>
+                        <div className="flex w-2/3 pb-2">
+                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
+                                Salasana:
+                            </label>
+                            <input
+                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
+                                type="password"
+                                name="password"
+                                value={user.password}
+                                onChange={handleChange}
+                                placeholder={user.password}
+                            />
+                        </div>
+                        <div className="flex w-2/3 pb-2">
+                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
+                                Kaupunki:
+                            </label>
+                            <input
+                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
+                                type="text"
+                                name="city"
+                                value={user.city}
+                                onChange={handleChange}
+                                placeholder={user.city}
+                            />
+                        </div>
+                        <div className=" text-left">
+                            <p>
+                                Mikäli haluat poistaa tilisi kokonaisuudessaan, paina{" "}
+                                <button
+                                    type="button"
+                                    className="text-blue-500"
+                                    onClick={event => {
+                                        event.stopPropagation(); // Add this line
+                                        setModalIsOpen(true);
+                                    }}
+                                >
+                                    TÄSTÄ
+                                </button>
+                            </p>
+                        </div>
+                    </form>
+                    <Modal
+                        isOpen={modalIsOpen}
+                        onRequestClose={() => setModalIsOpen(false)}
+                        className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50"
+                        contentLabel="Modal"
+                    >
+                        <div className="bg-main-medium rounded-lg w-1/3">
+                            <div className="flex flex-col items-start p-4">
+                                <div className="flex items-center w-full">
+                                    <div className=" font-medium text-lg">
+                                        Vahvista käyttäjätilin poisto
+                                    </div>
+                                    <svg
+                                        onClick={() => setModalIsOpen(false)}
+                                        className="ml-auto fill-current w-6 h-6 cursor-pointer"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 18 18"
+                                    >
+                                        <path d="M18 1.3L16.7 0 9 7.6 1.3 0 0 1.3 7.6 9 0 16.7 1.3 18 9 10.4 16.7 18 18 16.7 10.4 9 18 1.3z" />
+                                    </svg>
+                                </div>
+
+                                <hr className="w-full mt-2 mb-3 border-gray-300" />
+
+                                <p className=" text-sm mb-2">
+                                    Oletko varma, että haluat poistaa tilisi? Mikäli poistat tilisi,
+                                    kaikki tietosi ja ilmoituksesi poistetaan pysyvästi.
+                                </p>
+                                <p className="text-red-500 text-sm mb-2">
+                                    TÄMÄ TOIMINTO ON PERUUTTAMATON!
+                                </p>
+
+                                <div className="ml-auto mt-4 space-x-4">
+                                    <button
+                                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                        onClick={() => {
+                                            // call your function to delete the account here
+                                            setModalIsOpen(false);
+                                        }}
+                                    >
+                                        Hyväksy
+                                    </button>
+                                    <button
+                                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                        onClick={() => setModalIsOpen(false)}
+                                    >
+                                        Peruuta
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </Modal>
+                    <div className="ml-auto mt-4 space-x-4">
                         <button
-                            className="w-full p-2 bg-green-gradient font-bold rounded hover:brightness-75"
+                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                             type="submit"
                         >
                             Tallenna
                         </button>
                         <button
-                            className="w-full p-2 bg-red-gradient font-bold rounded hover:brightness-75"
+                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                             type="button"
                             onClick={() => setShowForm(false)}
                         >
@@ -225,7 +229,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                         </button>
                     </div>
                 </div>
-            </form>
+            </div>
         </Modal>
     );
 };
