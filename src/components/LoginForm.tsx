@@ -1,12 +1,17 @@
+import { useUserContext } from "../contexts/ContextHooks";
+import { useForm } from "../hooks/FormHooks";
+import { Credentials } from "../types/LocalTypes";
+
 const LoginForm = () => {
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        // Handle input change
+    const { handleLogin } = useUserContext();
+
+    const initValues: Credentials = { username: "", password: "" };
+
+    const doLogin = async () => {
+        handleLogin(inputs as Credentials);
     };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        // Handle form submission
-    };
+    const { handleSubmit, handleInputChange, inputs } = useForm(doLogin, initValues);
 
     return (
         <div className="flex w-full">
