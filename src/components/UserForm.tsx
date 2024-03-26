@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useMe } from "../hooks/UserHooks";
 import { useNavigate } from "react-router-dom";
@@ -13,22 +13,30 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
         username: "",
         firstName: "",
         lastName: "",
-        phoneNumber: "",
+        phone: "",
         email: "",
         password: "",
         city: ""
     });
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const { deleteMe } = useMe();
+    const { deleteMe, putMe } = useMe();
     const [isDeleted, setIsDeleted] = useState(false);
     const navigate = useNavigate();
+    const [originalUser, setOriginalUser] = useState(user);
+
+    useEffect(() => {
+        setOriginalUser(user);
+    }, []);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setUser({
-            ...user,
-            [event.target.name]: event.target.value
-        });
+        const { name, value } = event.target;
+        if (originalUser && value !== originalUser[name as keyof typeof originalUser]) {
+            setUser({
+                ...user,
+                [name]: value
+            });
+        }
     };
 
     return (
@@ -54,7 +62,19 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
 
                     <hr className="w-full mt-2 mb-3 border-gray-300" />
 
-                    <form className="flex flex-col items-center mb-0 ml-4 mr-4">
+                    <form
+                        className="flex flex-col items-center mb-0 ml-4 mr-4"
+                        onSubmit={async e => {
+                            e.preventDefault();
+                            const token = localStorage.getItem("token");
+                            if (token) {
+                                await putMe(user, token);
+                                setShowForm(false);
+                            } else {
+                                console.log("Token not found");
+                            }
+                        }}
+                    >
                         <div className="flex w-2/3 pb-2">
                             <label className="w-1/3 text-left text-xl font-bold" htmlFor="username">
                                 Käyttäjänimi:
@@ -105,10 +125,10 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                             <input
                                 className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
                                 type="text"
-                                name="phoneNumber"
-                                value={user.phoneNumber}
+                                name="phone"
+                                value={user.phone}
                                 onChange={handleChange}
-                                placeholder="0401234567"
+                                placeholder={user.phone}
                             />
                         </div>
                         <div className="flex w-2/3 pb-2">
@@ -164,6 +184,21 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                                     TÄSTÄ
                                 </button>
                             </p>
+                        </div>
+                        <div className="ml-auto mt-4 space-x-4">
+                            <button
+                                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                type="submit"
+                            >
+                                Tallenna
+                            </button>
+                            <button
+                                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                type="button"
+                                onClick={() => setShowForm(false)}
+                            >
+                                Peruuta
+                            </button>
                         </div>
                     </form>
                     <Modal
@@ -271,21 +306,6 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                             </div>
                         </div>
                     </Modal>
-                    <div className="ml-auto mt-4 space-x-4">
-                        <button
-                            className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                            type="submit"
-                        >
-                            Tallenna
-                        </button>
-                        <button
-                            className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-                            type="button"
-                            onClick={() => setShowForm(false)}
-                        >
-                            Peruuta
-                        </button>
-                    </div>
                 </div>
             </div>
         </Modal>
