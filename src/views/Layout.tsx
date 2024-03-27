@@ -50,7 +50,7 @@ const Layout = () => {
                                     className="text-xl text-white hover:text-gray-300"
                                     to="/upload"
                                 >
-                                    Ilmoitukset
+                                    Ilmoita
                                 </Link>
                             </li>
                             <li>

@@ -19,6 +19,7 @@ const CustomSwitch = () => {
         >
             <span
                 className={`toggle ${isChecked ? "translate-x-6" : "translate-x-0"} inline-block w-6 h-6 transform bg-white shadow-md rounded-full flex items-center justify-center`}
+                style={isChecked ? { animation: "spin 1s linear infinite" } : undefined}
             >
                 <FaFutbol color="black" size={20} />
             </span>
@@ -51,7 +52,10 @@ const Profile = () => {
         return (
             <div>
                 <h1 className="text-4xl mb-4">Käyttäjätietojesi lataamisessa ilmeni ongelma</h1>
-                <p className="text-xl mb-4">Odota hetki tai koita päivittää sivu...</p>
+                <p className="text-xl mb-4">
+                    Odota hetki tai koita päivittää sivu. Varmista myös, että olet kirjautunut
+                    palveluun...
+                </p>
             </div>
         );
     }

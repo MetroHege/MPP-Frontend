@@ -1,6 +1,8 @@
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Dropdown from "../components/Dropdown";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { FaArrowUp } from "react-icons/fa";
+import { FaBasketball } from "react-icons/fa6";
 
 const Home = () => {
     const options1 = ["Jalkapallo", "Koripallo", "Hiihto"];
@@ -11,8 +13,66 @@ const Home = () => {
         setSearchTerm(event.target.value);
     };
 
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const checkScroll = () => {
+            if (!isVisible && window.scrollY > window.innerHeight) {
+                setIsVisible(true);
+            } else if (isVisible && window.scrollY <= window.innerHeight) {
+                setIsVisible(false);
+            }
+        };
+
+        window.addEventListener("scroll", checkScroll);
+        return () => window.removeEventListener("scroll", checkScroll);
+    }, [isVisible]);
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    };
+
     return (
         <>
+            {isVisible && (
+                <button
+                    onClick={scrollToTop}
+                    style={{
+                        position: "fixed",
+                        bottom: "20px",
+                        right: "20px",
+                        borderRadius: "50%",
+                        width: "50px",
+                        height: "50px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        border: "none",
+                        cursor: "pointer",
+                        backgroundColor: "#000"
+                    }}
+                >
+                    <div
+                        style={{
+                            position: "absolute",
+                            borderRadius: "50%",
+                            width: "50px",
+                            height: "50px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
+                    >
+                        <FaBasketball
+                            style={{ fontSize: "50px", opacity: "0.7", color: "orange", zIndex: 1 }}
+                        />
+                    </div>
+                    <FaArrowUp style={{ fontSize: "40px", color: "#fff", zIndex: 2 }} />
+                </button>
+            )}
             <div>
                 <p className="text-2xl mb-4">Suodata ilmoituksia:</p>
             </div>
