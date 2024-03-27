@@ -1,4 +1,10 @@
-import { GetUserResponse, PostLoginResponse, PostUsersResponse, User } from "mpp-api-types";
+import {
+    GetUserResponse,
+    PostLoginResponse,
+    PostUsersResponse,
+    PutUserRequest,
+    User
+} from "mpp-api-types";
 import { fetchData } from "../lib/functions";
 
 const useUser = () => {
@@ -57,7 +63,7 @@ const useUser = () => {
         await fetchData(import.meta.env.VITE_SERVER + "/users/" + user_id, options);
     };
 
-    const putUser = async (user_id: number, user: Record<string, string>, token: string) => {
+    const putUser = async (user_id: number, user: PutUserRequest, token: string) => {
         const options: RequestInit = {
             method: "PUT",
             headers: {
@@ -90,7 +96,7 @@ const useMe = () => {
         return await fetchData<User>(import.meta.env.VITE_SERVER + "/users/me", options);
     };
 
-    const putMe = async (user: Record<string, string>, token: string) => {
+    const putMe = async (user: PutUserRequest, token: string) => {
         const options: RequestInit = {
             method: "PUT",
             headers: {

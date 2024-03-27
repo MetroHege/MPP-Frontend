@@ -2,6 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useMe } from "../hooks/UserHooks";
 import { useNavigate } from "react-router-dom";
+import { PutUserRequest } from "mpp-api-types";
 
 interface UserFormProps {
     showForm: boolean;
@@ -9,15 +10,7 @@ interface UserFormProps {
 }
 
 const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
-    const [user, setUser] = useState({
-        username: "",
-        firstName: "",
-        lastName: "",
-        phone: "",
-        email: "",
-        password: "",
-        city: ""
-    });
+    const [user, setUser] = useState<PutUserRequest>({});
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const { deleteMe, putMe } = useMe();
@@ -126,9 +119,9 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                                 className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
                                 type="text"
                                 name="phone"
-                                value={user.phone}
+                                value={user.phone || ""}
                                 onChange={handleChange}
-                                placeholder={user.phone}
+                                placeholder={user.phone || ""}
                             />
                         </div>
                         <div className="flex w-2/3 pb-2">
