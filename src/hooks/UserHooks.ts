@@ -1,6 +1,7 @@
 import {
     GetUserResponse,
     PostLoginResponse,
+    PostUsersRequest,
     PostUsersResponse,
     PutUserRequest,
     User
@@ -20,7 +21,7 @@ const useUser = () => {
         );
     };
 
-    const postUser = async (user: Record<string, string>) => {
+    const postUser = async (user: PostUsersRequest) => {
         const options: RequestInit = {
             method: "POST",
             headers: {

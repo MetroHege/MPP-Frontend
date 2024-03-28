@@ -23,12 +23,15 @@
         "react-modal": "^3.16.1",
         "react-responsive-carousel": "^3.2.23",
         "react-router-dom": "^6.22.3",
-        "react-switch": "^7.0.0"
+        "react-slick": "^0.30.2",
+        "react-switch": "^7.0.0",
+        "slick-carousel": "^1.8.1"
     },
     "devDependencies": {
         "@types/react": "^18.2.43",
         "@types/react-dom": "^18.2.17",
         "@types/react-modal": "^3.16.3",
+        "@types/react-slick": "^0.23.13",
         "@typescript-eslint/eslint-plugin": "^6.14.0",
         "@typescript-eslint/parser": "^6.14.0",
         "@vitejs/plugin-react-swc": "^3.5.0",
