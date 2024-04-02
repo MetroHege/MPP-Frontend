@@ -10,6 +10,7 @@ import Rules from "./views/Rules";
 import { UserProvider } from "./contexts/UserContext";
 import { UpdateProvider } from "./contexts/UpdateContext";
 import { useEffect } from "react";
+import Contact from "./views/Contact";
 
 const App = () => {
     useEffect(() => {
@@ -28,6 +29,7 @@ const App = () => {
                             <Route path="/single" element={<Single />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/rules" element={<Rules />} />
+                            <Route path="/contact" element={<Contact />} />
                             <Route
                                 path="*"
                                 element={
