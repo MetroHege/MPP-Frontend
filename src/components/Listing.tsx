@@ -12,7 +12,9 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                     <img className="w-64 h-64 object-cover" src={item.thumbnail?.url} />
                     <div className="flex flex-col p-3 w-3/5">
                         <p className="text-4xl mt-2">{item.title}</p>
-                        <p className="mt-2 text-l">{item.description}</p>
+                        <p className="mt-2 text-l">
+                            {item.description.split(" ").slice(0, 30).join(" ")}
+                        </p>
                         <p className="text-4xl mt-2">{parseInt(item.price)} €</p>
                     </div>
                     <div className="flex flex-col items-center justify-center p-3 w-1/5">
