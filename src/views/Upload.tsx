@@ -1,8 +1,11 @@
+import UploadForm from "../components/UploadForm";
+
 const Upload = () => {
     return (
-        <div>
-            <h1>Upload</h1>
-        </div>
+        <>
+            <h1 className="text-4xl mb-4 mt-4">Luo uusi ilmoitus</h1>
+            <UploadForm />
+        </>
     );
 };
 

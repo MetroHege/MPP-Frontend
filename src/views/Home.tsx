@@ -3,11 +3,15 @@ import Dropdown from "../components/Dropdown";
 import { useEffect, useState } from "react";
 import { FaArrowUp } from "react-icons/fa";
 import { FaBasketball } from "react-icons/fa6";
+import useListing from "../hooks/ListingHooks";
+import Listing from "../components/Listing";
+import { Listing as Listingtype, User } from "mpp-api-types";
 
 const Home = () => {
     const options1 = ["Jalkapallo", "Koripallo", "Hiihto"];
     const options2 = ["Espoo", "Helsinki", "Hanko"];
     const [searchTerm, setSearchTerm] = useState("");
+    const { listings } = useListing();
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -90,74 +94,14 @@ const Home = () => {
                 />
             </div>
             <div>
-                <div className="flex flex-col">
-                    <div className="mb-4 flex overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img
-                            className="w-1/5 h-full object-cover"
-                            src="https://picsum.photos/300"
-                            alt="placeholder"
+                {listings &&
+                    listings.map((listing: Listingtype) => (
+                        <Listing
+                            key={listing.id}
+                            item={{ ...listing, id: listing.id }}
+                            userItem={listing.user as unknown as User} // Fix: Cast userItem to unknown first, then to User type
                         />
-                        <div className="flex flex-col p-3 w-3/5">
-                            <p className="text-4xl mt-2">Ilmoitus 1</p>
-                            <p className="mt-2 text-l">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat.
-                            </p>
-                            <p className="text-4xl mt-2">160 €</p>
-                        </div>
-                        <div className="flex flex-col items-center justify-center p-3 w-1/5">
-                            <p className="text-lg">12.1.2024</p>
-                            <p className="text-lg">Hanko</p>
-                            <p className="text-lg">Myydään</p>
-                        </div>
-                    </div>
-                    <div className="mb-4 flex overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img
-                            className="w-1/5 h-full object-cover"
-                            src="https://picsum.photos/300/200"
-                            alt="placeholder"
-                        />
-                        <div className="flex flex-col p-3 w-3/5">
-                            <p className="text-4xl mt-2">Ilmoitus 2</p>
-                            <p className="mt-2 text-l">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat.
-                            </p>
-                            <p className="text-4xl mt-2">160 €</p>
-                        </div>
-                        <div className="flex flex-col items-center justify-center p-3 w-1/5">
-                            <p className="text-lg">12.1.2024</p>
-                            <p className="text-lg">Hanko</p>
-                            <p className="text-lg">Myydään</p>
-                        </div>
-                    </div>
-                    <div className="mb-4 flex overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                        <img
-                            className="w-1/5 h-full object-cover"
-                            src="https://picsum.photos/200/300"
-                            alt="placeholder"
-                        />
-                        <div className="flex flex-col p-3 w-3/5">
-                            <p className="text-4xl mt-2">Ilmoitus 3</p>
-                            <p className="mt-2 text-l">
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                                eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-                                ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                                aliquip ex ea commodo consequat.
-                            </p>
-                            <p className="text-4xl mt-2">160 €</p>
-                        </div>
-                        <div className="flex flex-col items-center justify-center p-3 w-1/5">
-                            <p className="text-lg">12.1.2024</p>
-                            <p className="text-lg">Hanko</p>
-                            <p className="text-lg">Myydään</p>
-                        </div>
-                    </div>
-                </div>
+                    ))}
             </div>
         </>
     );

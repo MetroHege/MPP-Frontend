@@ -20,7 +20,7 @@ const Rules = () => {
     return (
         <>
             <h1 className="text-4xl mt-4">DivariNet:n säännöt ja käyttöehdot</h1>
-            <p className="text-xl mt-2 mb-2">
+            <p className="text-xl mt-2 mb-4">
                 Tervetuloa DivariNet-palveluun! Olemme innoissamme siitä, että olet kiinnostunut
                 käyttämään palveluamme. Haluamme varmistaa, että ymmärrät täysin käyttöehtomme ja
                 tietosuojakäytäntömme, jotta voit nauttia palvelustamme turvallisesti ja mukavasti.
@@ -29,7 +29,7 @@ const Rules = () => {
                 1. Palvelun saatavuus & muutokset {openSections[0] ? "▲" : "▼"}
             </h2>
             {openSections[0] && (
-                <p className="text-xl mt-2 mb-2">
+                <p className="text-xl mt-2 mb-4 ml-7">
                     Pyrimme tarjoamaan palvelun 24/7, mutta pidätämme oikeuden tehdä tilapäisiä
                     huoltokatkoksia tai muutoksia, jotka voivat vaikuttaa palvelun saatavuuteen tai
                     toimivuuteen. Emme voi taata, että palvelu toimii jatkuvasti ilman keskeytyksiä
@@ -42,7 +42,7 @@ const Rules = () => {
                 2. Käyttäjän vastuut & velvollisuudet {openSections[1] ? "▲" : "▼"}
             </h2>
             {openSections[1] && (
-                <p className="text-xl mt-2 mb-2">
+                <p className="text-xl mt-2 mb-4 ml-7">
                     Käyttäjänä sinun odotetaan noudattavan käyttöehtojamme ja muita palvelussa
                     annettuja sääntöjä ja ohjeita. Sinun tulee myös varmistaa, että julkaistava
                     materiaali ja toimintasi palvelussa ovat lain ja hyvän tavan mukaisia. Tämä
@@ -55,7 +55,7 @@ const Rules = () => {
                 3. Käyttäjätiedot & tietoturva {openSections[2] ? "▲" : "▼"}
             </h2>
             {openSections[2] && (
-                <p className="text-xl mt-2 mb-2">
+                <p className="text-xl mt-2 mb-4 ml-7">
                     Rekisteröityessäsi palveluun annat meille tiettyjä henkilötietoja, jotka ovat
                     välttämättömiä palvelun tarjoamiseksi sinulle. Tietosuojakäytäntömme
                     määrittelee, miten käsittelemme näitä tietoja ja miten niitä säilytetään ja
@@ -67,7 +67,7 @@ const Rules = () => {
                 4. Ikäraja {openSections[3] ? "▲" : "▼"}
             </h2>
             {openSections[3] && (
-                <p className="text-xl mt-2 mb-2">
+                <p className="text-xl mt-2 mb-4 ml-7">
                     DivariNet:n käyttö edellyttää vähintään 13 vuoden ikää. Alle 13-vuotiaat voivat
                     käyttää palveluamme ainoastaan huoltajiensa valvonnassa ja näiden hyväksynnällä.
                 </p>
@@ -76,7 +76,7 @@ const Rules = () => {
                 5. Ilmoitukset & sisällön julkaiseminen {openSections[4] ? "▲" : "▼"}
             </h2>
             {openSections[4] && (
-                <p className="text-xl mt-2 mb-2">
+                <p className="text-xl mt-2 mb-4 ml-7">
                     Palvelussa on mahdollista julkaista erilaisia ilmoituksia ja sisältöä. Pidätämme
                     kuitenkin oikeuden tarkistaa ja tarvittaessa muokata tai poistaa tällaista
                     sisältöä, jos se rikkoo käyttöehtojamme tai on muutoin sopimatonta.
@@ -88,7 +88,7 @@ const Rules = () => {
                 6. Vastuunrajoitus {openSections[5] ? "▲" : "▼"}
             </h2>
             {openSections[5] && (
-                <p className="text-xl mt-2 mb-2">
+                <p className="text-xl mt-2 mb-4 ml-7">
                     Emme voi taata palvelumme virheettömyyttä tai täydellisyyttä, emmekä siksi ole
                     vastuussa mahdollisista vahingoista tai menetyksistä, jotka voivat aiheutua
                     palvelun käytöstä. Käyttäjänä ymmärrät ja hyväksyt tämän vastuunrajoituksen, ja
@@ -99,14 +99,14 @@ const Rules = () => {
                 7. Käyttöehtojen muutokset {openSections[6] ? "▲" : "▼"}
             </h2>
             {openSections[6] && (
-                <p className="text-xl mt-2 mb-2">
+                <p className="text-xl mt-2 mb-4 ml-7">
                     Pidätämme oikeuden muuttaa käyttöehtojamme tarpeen mukaan. Ilmoitamme
                     käyttäjillemme mahdollisista muutoksista ja pyrimme varmistamaan, että ne ovat
                     selkeästi ymmärrettävissä. Jatkamalla palvelumme käyttöä muutosten jälkeen
                     osoitat hyväksyväsi päivitetyt käyttöehdot.
                 </p>
             )}
-            <p className="text-xl mt-2 mb-2">
+            <p className="text-xl mt-2 mb-20">
                 Olemme sitoutuneet tarjoamaan käyttäjillemme turvallisen ja miellyttävän kokemuksen
                 DivariNet-palvelussa. Mikäli sinulla on kysyttävää tai huomautettavaa
                 käyttöehtoihimme tai tietosuojakäytäntöömme liittyen,{" "}

@@ -1,4 +1,4 @@
-// Version 1.0.1
+// Version 1.3.0
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -14,7 +14,9 @@ declare module "mpp-api-types" {
         admin: boolean;
     }
 
-    export type UserWithId = UserWithId;
+    export type UserWithId = WithId<User>;
+
+    export type PartialUser = Pick<UserWithId, "id" | "username" | "city" | "admin">;
 
     export enum Quality {
         New = 5,
@@ -27,19 +29,31 @@ declare module "mpp-api-types" {
     export interface Image {
         listing: number;
         url: string;
+        thumbnail: boolean;
+    }
+
+    interface Category {
+        title: string;
     }
 
     export interface Listing {
-        user: User | number;
+        user: PartialUser | number;
         type: "buy" | "sell";
-        category: string;
+        category: WithId<Category> | number;
         quality: Quality;
         price: number;
         time: Date;
         title: string;
         description: string;
-        thumbnail: string | null;
+        thumbnail: Image | null;
         images: Image[] | string;
+    }
+
+    export type ListingWithId = WithId<Listing>;
+
+    interface PostableListing extends Omit<Listing, "user" | "time" | "thumbnail"> {
+        category: number;
+        images: string[];
     }
 
     // POST auth/login
@@ -54,7 +68,7 @@ declare module "mpp-api-types" {
     };
 
     // GET users
-    export type GetUsersResponse = UserWithId[];
+    export type GetUsersResponse = PartialUser[];
 
     // POST users
     export type PostUsersRequest = WithPassword<Required<Omit<User, "admin">>>;
@@ -80,20 +94,30 @@ declare module "mpp-api-types" {
     // DELETE users/:id
     export type DeleteUserResponse = { id: number };
 
-    // GET listings
-    export type GetListingsResponse = WithId<Listing>[];
+    // GET listings & GET users/:id/listings
+    export type GetListingsResponse = ListingWithId[];
 
     // POST listings
-    export type PostListingsRequest = Listing;
-    export type PostListingsResponse = WithId<Listing>;
+    export type PostListingsRequest = PostableListing;
+    export type PostListingsResponse = ListingWithId;
 
     // GET listings/:id
-    export type GetListingResponse = WithId<Listing>;
+    export type GetListingResponse = ListingWithId;
 
     // PUT listings/:id
-    export type PutListingRequest = Partial<Listing>;
-    export type PutListingResponse = WithId<Listing>;
+    export type PutListingRequest = Partial<PostableListing>;
+    export type PutListingResponse = ListingWithId;
 
     // DELETE listings/:id
-    export type DeleteListingResponse = WithId<Listing>;
+    export type DeleteListingResponse = { id: number };
+
+    // GET categories
+    export type GetCategoriesResponse = WithId<Category>[];
+
+    // POST category
+    export type PostCategoryRequest = Category;
+    export type PostCategoryResponse = WithId<Category>;
+
+    // DELETE category
+    export type DeleteCategoryResponse = { id: number };
 }
