@@ -9,7 +9,7 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
         <>
             <Link to="/single" state={item}>
                 <div className="mb-4 flex overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                    <img className="w-1/5 h-full object-cover" src={item.thumbnail?.url} />
+                    <img className="w-64 h-64 object-cover" src={item.thumbnail?.url} />
                     <div className="flex flex-col p-3 w-3/5">
                         <p className="text-4xl mt-2">{item.title}</p>
                         <p className="mt-2 text-l">{item.description}</p>

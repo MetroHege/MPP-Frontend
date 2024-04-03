@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Dropdown from "../components/Dropdown";
 import useListing from "../hooks/ListingHooks";
 import { useCategories } from "../hooks/CategoryHooks";
@@ -13,13 +13,15 @@ export enum Quality {
     Poor = 1
 }
 
-const SortableItem = SortableElement(({ value }: { value: string }) => (
-    <img src={value} alt="Uploaded" className="rounded mb-2" />
-));
+const SortableItem = React.memo(
+    SortableElement(({ value }: { value: string }) => (
+        <img src={value} alt="Uploaded" className="rounded mb-2 w-50 h-50" />
+    ))
+);
 
 const SortableList = SortableContainer(({ items }) => {
     return (
-        <div>
+        <div className="grid grid-cols-2 gap-2">
             {items.map((value, index) => (
                 <SortableItem key={`item-${index}`} index={index} value={value} />
             ))}

@@ -95,13 +95,16 @@ const Home = () => {
             </div>
             <div>
                 {listings &&
-                    listings.map((listing: Listingtype) => (
-                        <Listing
-                            key={listing.id}
-                            item={{ ...listing, id: listing.id }}
-                            userItem={listing.user as unknown as User} // Fix: Cast userItem to unknown first, then to User type
-                        />
-                    ))}
+                    listings
+                        .slice()
+                        .reverse()
+                        .map((listing: Listingtype) => (
+                            <Listing
+                                key={listing.id}
+                                item={{ ...listing, id: listing.id }}
+                                userItem={listing.user as unknown as User} // Fix: Cast userItem to unknown first, then to User type
+                            />
+                        ))}
             </div>
         </>
     );

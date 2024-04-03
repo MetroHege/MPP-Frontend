@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaFutbol } from "react-icons/fa";
 import UserForm from "../components/UserForm";
 import { useMe } from "../hooks/UserHooks";
@@ -7,7 +7,6 @@ import { useUserContext } from "../contexts/ContextHooks";
 import { Listing as Listingtype } from "mpp-api-types";
 import useListing from "../hooks/ListingHooks";
 import Listing from "../components/Listing";
-import { UserContext } from "../contexts/UserContext";
 
 const CustomSwitch = () => {
     const [isChecked, setIsChecked] = useState(false);
@@ -114,6 +113,8 @@ const Profile = () => {
                     {listings &&
                         listings
                             .filter((listing: Listingtype) => listing.user.id === user?.id)
+                            .slice()
+                            .reverse()
                             .map((listing: Listingtype) => (
                                 <Listing
                                     key={listing.id}
