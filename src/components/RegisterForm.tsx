@@ -188,7 +188,7 @@ const RegisterForm = () => {
                                 autoComplete="new-password"
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex w-full pb-2 mb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="confirmpassword">
                                 Vahvista Salasana:
                             </label>
@@ -204,7 +204,7 @@ const RegisterForm = () => {
                                 {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                             </div>
                         </div>
-                        <div className="w-full justify-start">
+                        <div className="w-full justify-start mb-4">
                             <p>
                                 Luomalla tilin hyväksyt DivariNet:n{" "}
                                 <a href="/rules" className="text-blue-500">
@@ -214,7 +214,7 @@ const RegisterForm = () => {
                         </div>
                         <div className="w-full justify-start mt-2">
                             <button
-                                className=" w-1/2 p-2 bg-green-gradient font-bold"
+                                className=" w-1/2 p-2 bg-green-gradient font-bold mb-4"
                                 type="submit"
                             >
                                 Rekisteröidy

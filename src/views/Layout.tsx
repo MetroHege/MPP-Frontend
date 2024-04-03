@@ -1,4 +1,4 @@
-import { faUser } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faBars } from "@fortawesome/free-solid-svg-icons";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo from "../image/divarinet-white.png";
@@ -36,8 +36,14 @@ const Layout = () => {
             <header className="w-full bg-main-dark">
                 <div className="flex justify-between p-2 items-center">
                     <img src={logo} alt="DivariNet" className="h-10 w-auto" />
-                    <nav>
-                        <ul className="flex space-x-4">
+                    <button
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="xl:hidden flex items-center px-3 py-2 border rounded text-white border-white"
+                    >
+                        <FontAwesomeIcon icon={faBars} />
+                    </button>
+                    <nav className="xl:flex hidden">
+                        <ul className="flex space-x-4 mr-4">
                             <li>
                                 <Link className="text-xl text-white hover:text-gray-300" to="/">
                                     Koti
@@ -70,6 +76,41 @@ const Layout = () => {
                         </ul>
                     </nav>
                 </div>
+                {isOpen && (
+                    <div className="transition-transform duration-500 ease-in-out transform translate-x-0 xl:translate-x-full bg-main-dark">
+                        <ul className="flex flex-col space-y-4 p-2 items-end">
+                            <li>
+                                <Link className="text-xl text-white hover:text-gray-300" to="/">
+                                    Koti
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    className="text-xl text-white hover:text-gray-300"
+                                    to="/profile"
+                                >
+                                    Profiili
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    className="text-xl text-white hover:text-gray-300"
+                                    to="/upload"
+                                >
+                                    Ilmoita
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    className="text-xl text-white hover:text-gray-300"
+                                    to="/login"
+                                >
+                                    <FontAwesomeIcon icon={faUser} />
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
+                )}
             </header>
             <div>
                 {location.pathname === "/" && (
