@@ -20,7 +20,6 @@ const useListing = () => {
             const mediaListings = await fetchData<GetListingsResponse>(
                 import.meta.env.VITE_SERVER + "/listings"
             );
-            console.log(listings);
 
             setListings(mediaListings);
         } catch (error) {
@@ -53,26 +52,36 @@ const useListing = () => {
     };
 
     const postListing = (
-        file: PostListingsRequest,
-        inputs: Record<string, string>,
+        files: File[],
+        inputs: Record<string, number | string | string[]>,
         token: string
     ) => {
         const listing: PostListingsRequest = {
             type: inputs.type as "buy" | "sell",
+            images: inputs.images as string[],
             category: Number(inputs.category),
             quality: Number(inputs.quality),
             price: Number(inputs.price),
-            title: inputs.title,
-            description: inputs.description
+            title: inputs.title as string,
+            description: inputs.description as string
         };
 
+        const formData = new FormData();
+        files.forEach(file => {
+            formData.append("file", file);
+        });
+        formData.append("type", listing.type);
+        formData.append("category", listing.category.toString());
+        formData.append("quality", listing.quality.toString());
+        formData.append("price", listing.price.toString());
+        formData.append("title", listing.title);
+        formData.append("description", listing.description);
         const options = {
             method: "POST",
             headers: {
-                Authorization: "Bearer " + token,
-                "Content-Type": "application/json"
+                Authorization: "Bearer " + token
             },
-            body: JSON.stringify(listing)
+            body: formData
         };
         return fetchData<PostListingsResponse>(import.meta.env.VITE_SERVER + "/listings", options);
     };

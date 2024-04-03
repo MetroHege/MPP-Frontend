@@ -13,21 +13,21 @@ export enum Quality {
     Poor = 1
 }
 
+const SortableItem = SortableElement(({ value }: { value: string }) => (
+    <img src={value} alt="Uploaded" className="rounded mb-2" />
+));
+
+const SortableList = SortableContainer(({ items }) => {
+    return (
+        <div>
+            {items.map((value, index) => (
+                <SortableItem key={`item-${index}`} index={index} value={value} />
+            ))}
+        </div>
+    );
+});
+
 const UploadForm = () => {
-    const SortableItem = SortableElement(({ value }: { value: string }) => (
-        <img src={value} alt="Uploaded" className="rounded mb-2" />
-    ));
-
-    const SortableList = SortableContainer(({ items }) => {
-        return (
-            <div>
-                {items.map((value, index) => (
-                    <SortableItem key={`item-${index}`} index={index} value={value} />
-                ))}
-            </div>
-        );
-    });
-
     const { categories } = useCategories();
     const [category, setCategory] = useState(0);
     const [selectedImage, setSelectedImage] = useState("https://placehold.co/300x300");
@@ -37,7 +37,7 @@ const UploadForm = () => {
     const [quality, setQuality] = useState(0);
     const [price, setPrice] = useState(0);
     const { postListing } = useListing();
-    const [selectedImages, setSelectedImages] = useState<string[]>([]); // Provide an initial value for selectedImages
+    const [selectedImages, setSelectedImages] = useState<File[]>([]); // Provide an initial value for selectedImages
 
     const onSortEnd = ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) => {
         setSelectedImages(prevImages => {
@@ -47,15 +47,11 @@ const UploadForm = () => {
         });
     };
 
-    const handleImageChange = e => {
+    const handleImageChange = (e: any) => {
         if (e.target.files) {
-            const fileArray = Array.from(e.target.files).map(file => URL.createObjectURL(file));
+            const fileArray = Array.from(e.target.files);
 
-            setSelectedImages(prevImages => prevImages.concat(fileArray));
-
-            Array.from(e.target.files).map(
-                file => URL.revokeObjectURL(file) // Avoid memory leak
-            );
+            setSelectedImages(prevImages => prevImages.concat(fileArray as File[]));
         }
     };
 
@@ -63,15 +59,11 @@ const UploadForm = () => {
         e.preventDefault();
         const token = localStorage.getItem("token");
         await postListing(
-            selectedImage,
+            selectedImages,
             { type, category, quality, price, title, description },
-            token
+            token as string
         );
     };
-
-    console.log("quality", quality);
-    console.log("category", category);
-    console.log("type", type);
 
     return (
         <form onSubmit={handleSubmit}>
@@ -84,7 +76,11 @@ const UploadForm = () => {
                                 kansikuva)
                             </p>
                         )}
-                        <SortableList items={selectedImages} onSortEnd={onSortEnd} axis="xy" />
+                        <SortableList
+                            items={selectedImages.map(file => URL.createObjectURL(file))}
+                            onSortEnd={onSortEnd}
+                            axis="xy"
+                        />
                         <input type="file" name="image" onChange={handleImageChange} multiple />
                     </div>
                     <div className="mb-4">
