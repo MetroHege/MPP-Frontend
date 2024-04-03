@@ -21,6 +21,8 @@ export default {
                 custom4: "32px"
             },
             spacing: {
+                30: "7.5rem",
+                50: "12.5rem",
                 110: "27.5rem",
                 130: "32.5rem"
             }

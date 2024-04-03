@@ -1,26 +1,21 @@
 import { Category } from "mpp-api-types";
 import { useState, useEffect, useRef } from "react";
-import { useCategories } from "../hooks/CategoryHooks";
 
 const Dropdown = ({
+    options,
     buttonText,
-    className,
-    onOptionSelect // new prop
+    className
 }: {
+    options: Category[];
     buttonText: string;
     className?: string;
     value: number;
     onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-    onOptionSelect: (id: number) => void; // new prop
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
-    const { categories, getCategories } = useCategories(); // call useCategories
 
-    useEffect(() => {
-        getCategories(); // fetch categories when the component mounts
-    }, []);
-
+    console.log(options);
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -60,14 +55,14 @@ const Dropdown = ({
             </button>
 
             {isOpen && (
-                <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-auto max-h-50">
+                <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                     <div
                         className="py-1"
                         role="menu"
                         aria-orientation="vertical"
                         aria-labelledby="options-menu"
                     >
-                        {categories.map((option: Category, index: number) => (
+                        {options.map((option, index) => (
                             <a
                                 key={index}
                                 href="#"
@@ -76,7 +71,6 @@ const Dropdown = ({
                                 onClick={e => {
                                     e.preventDefault();
                                     setIsOpen(false);
-                                    onOptionSelect(option.id); // use the new prop here
                                 }}
                             >
                                 {option.title}

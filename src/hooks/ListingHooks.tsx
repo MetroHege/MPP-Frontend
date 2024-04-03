@@ -18,18 +18,24 @@ const useListing = () => {
     const getListing = async () => {
         try {
             const mediaListings = await fetchData<GetListingsResponse>(
-                import.meta.env.VITE_SERVER + "/media"
+                import.meta.env.VITE_SERVER + "/listings"
             );
             console.log(listings);
 
             setListings(mediaListings);
         } catch (error) {
-            console.error("getMedia failed", error);
+            console.error("getListing failed", error);
         }
     };
     useEffect(() => {
         getListing();
     }, [update]);
+
+    const getListingWithId = async (id: number) => {
+        return await fetchData<GetListingsResponse>(
+            import.meta.env.VITE_SERVER + "/listings/" + id
+        );
+    };
 
     const putListing = async (id: number, listing: Listing, token: string) => {
         const options = {
@@ -68,10 +74,10 @@ const useListing = () => {
             },
             body: JSON.stringify(listing)
         };
-        return fetchData<PostListingsResponse>(import.meta.env.VITE_SERVER + "/media", options);
+        return fetchData<PostListingsResponse>(import.meta.env.VITE_SERVER + "/listings", options);
     };
 
-    const deleteListing = async (media_id: number, token: string) => {
+    const deleteListing = async (id: number, token: string) => {
         const options = {
             method: "DELETE",
             headers: {
@@ -79,12 +85,12 @@ const useListing = () => {
             }
         };
         return await fetchData<DeleteListingResponse>(
-            import.meta.env.VITE_SERVER + "/media/" + media_id,
+            import.meta.env.VITE_SERVER + "/listings/" + id,
             options
         );
     };
 
-    return { postListing, deleteListing, putListing };
+    return { postListing, deleteListing, putListing, getListing, getListingWithId, listings };
 };
 
 export default useListing;

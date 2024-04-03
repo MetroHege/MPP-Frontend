@@ -3,11 +3,15 @@ import Dropdown from "../components/Dropdown";
 import { useEffect, useState } from "react";
 import { FaArrowUp } from "react-icons/fa";
 import { FaBasketball } from "react-icons/fa6";
+import useListing from "../hooks/ListingHooks";
+import Listing from "../components/Listing";
+import { Listing as Listingtype, User } from "mpp-api-types";
 
 const Home = () => {
     const options1 = ["Jalkapallo", "Koripallo", "Hiihto"];
     const options2 = ["Espoo", "Helsinki", "Hanko"];
     const [searchTerm, setSearchTerm] = useState("");
+    const { listings } = useListing();
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -88,6 +92,16 @@ const Home = () => {
                     placeholder="Etsi..."
                     className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none text-gray-900"
                 />
+            </div>
+            <div>
+                {listings &&
+                    listings.map((listing: Listingtype) => (
+                        <Listing
+                            key={listing.id}
+                            item={{ ...listing, id: listing.id }}
+                            userItem={listing.user as unknown as User} // Fix: Cast userItem to unknown first, then to User type
+                        />
+                    ))}
             </div>
             <div>
                 <div className="flex flex-col">

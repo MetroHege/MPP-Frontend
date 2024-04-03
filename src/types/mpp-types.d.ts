@@ -1,4 +1,4 @@
-// Version 1.2.3
+// Version 1.3.0
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
@@ -16,6 +16,8 @@ declare module "mpp-api-types" {
 
     export type UserWithId = WithId<User>;
 
+    export type PartialUser = Pick<UserWithId, "id" | "username" | "city" | "admin">;
+
     export enum Quality {
         New = 5,
         LikeNew = 4,
@@ -27,6 +29,7 @@ declare module "mpp-api-types" {
     export interface Image {
         listing: number;
         url: string;
+        thumbnail: boolean;
     }
 
     interface Category {
@@ -34,7 +37,7 @@ declare module "mpp-api-types" {
     }
 
     export interface Listing {
-        user: UserWithId | number;
+        user: PartialUser | number;
         type: "buy" | "sell";
         category: WithId<Category> | number;
         quality: Quality;
@@ -42,14 +45,15 @@ declare module "mpp-api-types" {
         time: Date;
         title: string;
         description: string;
-        thumbnail: string | null;
+        thumbnail: Image | null;
         images: Image[] | string;
     }
 
     export type ListingWithId = WithId<Listing>;
 
-    interface PostableListing extends Omit<Listing, "user" | "time" | "thumbnail" | "images"> {
+    interface PostableListing extends Omit<Listing, "user" | "time" | "thumbnail"> {
         category: number;
+        images: string[];
     }
 
     // POST auth/login
@@ -64,7 +68,7 @@ declare module "mpp-api-types" {
     };
 
     // GET users
-    export type GetUsersResponse = Pick<UserWithId, "id" | "city" | "admin">[];
+    export type GetUsersResponse = PartialUser[];
 
     // POST users
     export type PostUsersRequest = WithPassword<Required<Omit<User, "admin">>>;
@@ -90,7 +94,7 @@ declare module "mpp-api-types" {
     // DELETE users/:id
     export type DeleteUserResponse = { id: number };
 
-    // GET listings
+    // GET listings & GET users/:id/listings
     export type GetListingsResponse = ListingWithId[];
 
     // POST listings
