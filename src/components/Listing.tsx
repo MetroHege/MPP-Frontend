@@ -1,9 +1,14 @@
 import { PostListingsResponse, User } from "mpp-api-types";
 import { Link } from "react-router-dom";
+import useListing from "../hooks/ListingHooks";
+import React from "react";
+import { useUser } from "../hooks/UserHooks";
 
 const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
     const item = props.item;
     const userItem = props.userItem;
+
+    const { user } = useUser();
 
     return (
         <>
@@ -27,6 +32,16 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                         </p>
                         <p className="text-lg">{item.type === "buy" ? "Ostetaan" : "Myydään"}</p>
                     </div>
+                    {user?.id === item.user.id && (
+                        <div className="mt-2">
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                Modify
+                            </button>
+                            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">
+                                Delete
+                            </button>
+                        </div>
+                    )}
                 </div>
             </Link>
         </>

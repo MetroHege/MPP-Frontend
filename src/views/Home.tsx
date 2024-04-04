@@ -6,12 +6,14 @@ import { FaBasketball } from "react-icons/fa6";
 import useListing from "../hooks/ListingHooks";
 import Listing from "../components/Listing";
 import { Listing as Listingtype, User } from "mpp-api-types";
+import { useUser } from "../hooks/UserHooks";
 
 const Home = () => {
     const options1 = ["Jalkapallo", "Koripallo", "Hiihto"];
     const options2 = ["Espoo", "Helsinki", "Hanko"];
     const [searchTerm, setSearchTerm] = useState("");
     const { listings } = useListing();
+    const { user } = useUser();
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -96,6 +98,7 @@ const Home = () => {
             <div>
                 {listings &&
                     listings
+                        .filter((listing: Listingtype) => listing.user.id !== user?.id)
                         .slice()
                         .reverse()
                         .map((listing: Listingtype) => (

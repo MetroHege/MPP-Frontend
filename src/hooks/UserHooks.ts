@@ -7,18 +7,18 @@ import {
     User
 } from "mpp-api-types";
 import { fetchData } from "../lib/functions";
+import { useEffect, useState } from "react";
 
 const useUser = () => {
+    const [user, setUser] = useState<User | null>(null);
+
     const getUserByToken = async (token: string) => {
         const options = {
             headers: {
                 Authorization: "Bearer " + token
             }
         };
-        return await fetchData<GetUserResponse>(
-            import.meta.env.VITE_SERVER + "/users/token/",
-            options
-        );
+        return await fetchData<GetUserResponse>(import.meta.env.VITE_SERVER + "/users/me", options);
     };
 
     const postUser = async (user: PostUsersRequest) => {
@@ -33,19 +33,19 @@ const useUser = () => {
         await fetchData<PostUsersResponse>(import.meta.env.VITE_SERVER + "/users", options);
     };
 
-    const getUserById = async (user_id: number) => {
-        return await fetchData<User>(import.meta.env.VITE_SERVER + "/users/" + user_id);
+    const getUserById = async (id: number) => {
+        return await fetchData<User>(import.meta.env.VITE_SERVER + "/users/" + id);
     };
 
     const getUsernameAvailable = async (username: string) => {
         return await fetchData<{ available: boolean }>(
-            import.meta.env.VITE_AUTH_API + "/users/username/" + username
+            import.meta.env.VITE_SERVER + "/users/username/" + username
         );
     };
 
     const getEmailAvailable = async (email: string) => {
         return await fetchData<{ available: boolean }>(
-            import.meta.env.VITE_AUTH_API + "/users/email/" + email
+            import.meta.env.VITE_SERVER + "/users/email/" + email
         );
     };
 
@@ -75,6 +75,12 @@ const useUser = () => {
 
         await fetchData(import.meta.env.VITE_SERVER + "/users/" + user_id, options);
     };
+
+    useEffect(() => {
+        getUserByToken(localStorage.getItem("token") as string).then(user => setUser(user));
+        console.log(user);
+    }, []);
+
     return {
         getUserByToken,
         postUser,
@@ -83,7 +89,8 @@ const useUser = () => {
         deleteUser,
         putUser,
         getUsernameAvailable,
-        getEmailAvailable
+        getEmailAvailable,
+        user
     };
 };
 

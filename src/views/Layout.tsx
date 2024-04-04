@@ -10,6 +10,7 @@ import field3 from "../img/field-3.jpg";
 import { Carousel } from "react-responsive-carousel";
 import { useUser } from "../hooks/UserHooks";
 import { useCategories } from "../hooks/CategoryHooks"; // Import the getCategories function
+import useListing from "../hooks/ListingHooks";
 
 const Layout = () => {
     const location = useLocation();
@@ -17,6 +18,7 @@ const Layout = () => {
     const { getAllUsers } = useUser();
     const [userCount, setUserCount] = useState<number>(0); // Declare setUserCount function
     const { categories, getCategories } = useCategories();
+    const { listings } = useListing();
 
     useEffect(() => {
         getCategories();
@@ -128,7 +130,7 @@ const Layout = () => {
                                 Aktiivisia käyttäjiä: <strong>{userCount}</strong>
                             </p>
                             <p className="text-xl">
-                                Ilmoituksia jätetty: <strong>1200</strong>
+                                Ilmoituksia jätetty: <strong>{listings.length}</strong>
                             </p>
                             <p className="text-xl">
                                 Tuotekategorioita: <strong>{categories.length}</strong>

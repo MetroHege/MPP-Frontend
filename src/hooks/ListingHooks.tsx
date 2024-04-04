@@ -36,6 +36,12 @@ const useListing = () => {
         );
     };
 
+    const getListingsFromUser = async (id: number) => {
+        return await fetchData<GetListingsResponse>(
+            import.meta.env.VITE_SERVER + "/users/" + id + "/listings"
+        );
+    };
+
     const putListing = async (id: number, listing: Listing, token: string) => {
         const options = {
             method: "PUT",
@@ -99,7 +105,15 @@ const useListing = () => {
         );
     };
 
-    return { postListing, deleteListing, putListing, getListing, getListingWithId, listings };
+    return {
+        postListing,
+        deleteListing,
+        putListing,
+        getListing,
+        getListingWithId,
+        listings,
+        getListingsFromUser
+    };
 };
 
 export default useListing;
