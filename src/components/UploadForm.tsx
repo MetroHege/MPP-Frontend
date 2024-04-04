@@ -71,6 +71,7 @@ const UploadForm = () => {
         <form onSubmit={handleSubmit}>
             <div className="flex">
                 <div className="w-1/2 p-4">
+                    <h1 className="text-4xl mb-4">Kuvat:</h1>
                     <div className="mb-4">
                         {selectedImages.length > 0 && (
                             <p>
@@ -95,7 +96,9 @@ const UploadForm = () => {
                             className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
                         />
                     </div>
-                    <div>
+                </div>
+                <div className="w-1/2 p-4">
+                    <div className="mb-4">
                         <h2 className="text-2xl">Ilmoitusteksti:</h2>
                         <h3 className="mb-2 text-xs text-slate-500">
                             Kirjoita lyhyt kuvaus tuotteestasi (max 150 merkkiä)
@@ -104,11 +107,9 @@ const UploadForm = () => {
                             placeholder="Tuotekuvaus..."
                             value={description}
                             onChange={e => setDescription(e.target.value)}
-                            className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                            className="w-2/3 h-30 rounded border border-slate-500 p-2 text-slate-950"
                         ></textarea>
                     </div>
-                </div>
-                <div className="w-1/2 p-4">
                     <div className="mb-4">
                         <h2 className="text-2xl mb-2">Ilmoituksen tyyppi:</h2>
                         <label className=" mb-4 mr-2">
