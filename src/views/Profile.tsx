@@ -8,22 +8,22 @@ import { Listing as Listingtype } from "mpp-api-types";
 import useListing from "../hooks/ListingHooks";
 import Listing from "../components/Listing";
 import { FaBasketball } from "react-icons/fa6";
+import { useTheme } from "../contexts/ThemeContext";
 
-const CustomSwitch = () => {
-    const [isChecked, setIsChecked] = useState(false);
+interface CustomSwitchProps {
+    checked: boolean;
+    onChange: () => void;
+}
 
-    const toggleCheck = () => {
-        setIsChecked(!isChecked);
-    };
-
+const CustomSwitch: React.FC<CustomSwitchProps> = ({ checked, onChange }) => {
     return (
         <label
-            onClick={toggleCheck}
-            className="toggle-label block overflow-hidden h-6 w-12 rounded-full bg-gray-300 cursor-pointer"
+            onClick={onChange}
+            className={`toggle-label block overflow-hidden h-6 w-12 rounded-full ${checked ? "bg-gray-600" : "bg-gray-300"} cursor-pointer`}
         >
             <span
-                className={`toggle ${isChecked ? "translate-x-6" : "translate-x-0"} inline-block w-6 h-6 transform bg-white shadow-md rounded-full flex items-center justify-center`}
-                style={isChecked ? { animation: "spin 1s linear infinite" } : undefined}
+                className={`toggle ${checked ? "translate-x-6" : "translate-x-0"} inline-block w-6 h-6 transform bg-white shadow-md rounded-full flex items-center justify-center`}
+                style={checked ? { animation: "spin 1s linear infinite" } : undefined}
             >
                 <FaFutbol color="black" size={20} />
             </span>
@@ -37,6 +37,7 @@ const Profile = () => {
     const { getMe } = useMe();
     const [listingsCount, setListingsCount] = useState(0);
     const { listings, getListingsFromUser } = useListing();
+    const { theme, toggleTheme } = useTheme();
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -172,7 +173,21 @@ const Profile = () => {
                     <p className="text-4xl mb-4">Tykkäyksiä ilmoituksissa: 4</p>
                     <div className="flex items-center">
                         <p className="mr-2 text-2xl">Vaihda teemaa:</p>
-                        <CustomSwitch />
+                        <CustomSwitch
+                            onChange={toggleTheme}
+                            checked={theme === "dark"}
+                            offColor="#767577"
+                            onColor="#f4f3f4"
+                            handleDiameter={30}
+                            uncheckedIcon={false}
+                            checkedIcon={false}
+                            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+                            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+                            height={20}
+                            width={48}
+                            className="react-switch"
+                            id="material-switch"
+                        />
                     </div>
                 </div>
             </div>

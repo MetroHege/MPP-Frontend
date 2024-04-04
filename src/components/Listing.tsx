@@ -8,6 +8,7 @@ import Modal from "react-modal";
 import ComboBox from "./ComboBox";
 import { Category } from "mpp-api-types";
 import { useCategories } from "../hooks/CategoryHooks";
+import { useTheme } from "../contexts/ThemeContext";
 
 export enum Quality {
     New = 5,
@@ -23,6 +24,7 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
 
     const { user } = useUser();
     const { putListing, deleteListing } = useListing();
+    const { theme } = useTheme();
 
     const [formData, setFormData] = useState(item);
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -45,7 +47,10 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
     return (
         <>
             <Link to="/single" state={item}>
-                <div className="mb-4 flex overflow-hidden bg-main-light rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                <div
+                    className={`mb-4 bg-main-light flex overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                >
+                    {" "}
                     <img className="w-64 h-64 object-cover" src={item.thumbnail?.url} />
                     <div className="flex flex-col p-3 w-3/5">
                         <p className="text-4xl mt-2">{item.title}</p>

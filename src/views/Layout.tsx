@@ -11,6 +11,7 @@ import { Carousel } from "react-responsive-carousel";
 import { useUser } from "../hooks/UserHooks";
 import { useCategories } from "../hooks/CategoryHooks"; // Import the getCategories function
 import useListing from "../hooks/ListingHooks";
+import { useTheme } from "../contexts/ThemeContext";
 
 const Layout = () => {
     const location = useLocation();
@@ -19,6 +20,7 @@ const Layout = () => {
     const [userCount, setUserCount] = useState<number>(0); // Declare setUserCount function
     const { categories, getCategories } = useCategories();
     const { listings } = useListing();
+    const { theme } = useTheme();
 
     useEffect(() => {
         getCategories();
@@ -117,7 +119,10 @@ const Layout = () => {
             <div>
                 {location.pathname === "/" && (
                     <div className="relative">
-                        <div className="absolute top-10 left-10 p-4 z-10 w-1/2">
+                        <div
+                            className={`absolute top-10 left-10 p-4 z-10 w-1/2 ${theme === "light" ? "text-gray-900" : ""}`}
+                        >
+                            {" "}
                             <h2 className="font-bold text-4xl mb-4">Tervetuloa DivariNet:iin!</h2>
                             <p className="text-xl">
                                 DivariNet on suunniteltu kaikille, urheilusta kiinnostuneille,
@@ -125,7 +130,10 @@ const Layout = () => {
                                 urheiluvaatteita/-välineitä!
                             </p>
                         </div>
-                        <div className="absolute top-10 right-10 p-4 z-10 w-1/2 text-right">
+                        <div
+                            className={`absolute top-10 right-10 p-4 z-10 w-1/2 text-right ${theme === "light" ? "text-gray-800" : ""}`}
+                        >
+                            {" "}
                             <p className="text-xl">
                                 Aktiivisia käyttäjiä: <strong>{userCount}</strong>
                             </p>
@@ -153,7 +161,9 @@ const Layout = () => {
                                     src={field1}
                                     alt="Slide 1"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-main-medium to-transparent"></div>
+                                <div
+                                    className={`absolute inset-0 bg-gradient-to-t ${theme === "light" ? "from-slate-100 to-transparent" : "from-main-medium to-transparent"}`}
+                                ></div>{" "}
                                 <div className="h-5 absolute inset-0 bg-gradient-to-b from-main-dark to-transparent"></div>
                             </div>
                             <div>
@@ -162,7 +172,9 @@ const Layout = () => {
                                     src={field2}
                                     alt="Slide 2"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-main-medium to-transparent"></div>
+                                <div
+                                    className={`absolute inset-0 bg-gradient-to-t ${theme === "light" ? "from-slate-100 to-transparent" : "from-main-medium to-transparent"}`}
+                                ></div>{" "}
                                 <div className="h-5 absolute inset-0 bg-gradient-to-b from-main-dark to-transparent"></div>
                             </div>
                             <div>
@@ -171,7 +183,9 @@ const Layout = () => {
                                     src={field3}
                                     alt="Slide 3"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-main-medium to-transparent"></div>
+                                <div
+                                    className={`absolute inset-0 bg-gradient-to-t ${theme === "light" ? "from-slate-100 to-transparent" : "from-main-medium to-transparent"}`}
+                                ></div>{" "}
                                 <div className="h-5 absolute inset-0 bg-gradient-to-b from-main-dark to-transparent"></div>
                             </div>
                         </Carousel>
@@ -185,10 +199,17 @@ const Layout = () => {
                     </div>
                 )}
             </div>
-            <main className="w-4/5 mx-auto p-4">
-                <Outlet />
-            </main>
-            <footer className="bg-main-dark text-white py-10 px-6">
+            <body className={`${theme === "light" ? "bg-slate-100 text-gray-900" : ""}`}>
+                <main
+                    className={`w-4/5 mx-auto p-4 ${theme === "light" ? "bg-slate-100 text-gray-900" : ""}`}
+                >
+                    <Outlet />
+                </main>
+            </body>
+            <footer
+                className={`py-10 px-6 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+            >
+                {" "}
                 <div className="flex w-full">
                     <div className="w-1/3">
                         <img src={logo} alt="DivariNet" className="h-10 w-auto" />
