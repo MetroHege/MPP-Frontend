@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FaFutbol } from "react-icons/fa";
+import { FaArrowUp, FaFutbol } from "react-icons/fa";
 import UserForm from "../components/UserForm";
 import { useMe } from "../hooks/UserHooks";
 import { User } from "mpp-api-types";
@@ -7,6 +7,7 @@ import { useUserContext } from "../contexts/ContextHooks";
 import { Listing as Listingtype } from "mpp-api-types";
 import useListing from "../hooks/ListingHooks";
 import Listing from "../components/Listing";
+import { FaBasketball } from "react-icons/fa6";
 
 const CustomSwitch = () => {
     const [isChecked, setIsChecked] = useState(false);
@@ -34,7 +35,41 @@ const Profile = () => {
     const [showForm, setShowForm] = useState(false);
     const [user, setUser] = useState<User | null>(null);
     const { getMe } = useMe();
-    const { listings } = useListing();
+    const [listingsCount, setListingsCount] = useState(0);
+    const { listings, getListingsFromUser } = useListing();
+
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        // Replace with your actual user ID
+        getListingsFromUser(user?.id as number)
+            .then(response => {
+                setListingsCount(response.length);
+            })
+            .catch(error => {
+                console.error("Error fetching listings:", error);
+            });
+    }, []);
+
+    useEffect(() => {
+        const checkScroll = () => {
+            if (!isVisible && window.scrollY > window.innerHeight) {
+                setIsVisible(true);
+            } else if (isVisible && window.scrollY <= window.innerHeight) {
+                setIsVisible(false);
+            }
+        };
+
+        window.addEventListener("scroll", checkScroll);
+        return () => window.removeEventListener("scroll", checkScroll);
+    }, [isVisible]);
+
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    };
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -67,6 +102,42 @@ const Profile = () => {
 
     return (
         <>
+            {isVisible && (
+                <button
+                    onClick={scrollToTop}
+                    style={{
+                        position: "fixed",
+                        bottom: "20px",
+                        right: "20px",
+                        borderRadius: "50%",
+                        width: "50px",
+                        height: "50px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        border: "none",
+                        cursor: "pointer",
+                        backgroundColor: "#000"
+                    }}
+                >
+                    <div
+                        style={{
+                            position: "absolute",
+                            borderRadius: "50%",
+                            width: "50px",
+                            height: "50px",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
+                    >
+                        <FaBasketball
+                            style={{ fontSize: "50px", opacity: "0.7", color: "orange", zIndex: 1 }}
+                        />
+                    </div>
+                    <FaArrowUp style={{ fontSize: "40px", color: "#fff", zIndex: 2 }} />
+                </button>
+            )}
             <div className="flex mt-10 mb-10">
                 <div className="w-1/2">
                     <h1 className="text-4xl mb-4">Tietoni:</h1>
@@ -96,8 +167,7 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className="w-1/2">
-                    <p className="text-4xl mb-4">Tili luotu: 13.1.2024 15:50</p>
-                    <p className="text-4xl mb-4">Aktiivisia ilmoituksia: 10</p>
+                    <p className="text-4xl mb-4">Aktiivisia ilmoituksia: {listingsCount}</p>
                     <p className="text-4xl mb-4">Kyselyjä ilmoituksissa: 12</p>
                     <p className="text-4xl mb-4">Tykkäyksiä ilmoituksissa: 4</p>
                     <div className="flex items-center">

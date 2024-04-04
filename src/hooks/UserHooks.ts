@@ -78,7 +78,6 @@ const useUser = () => {
 
     useEffect(() => {
         getUserByToken(localStorage.getItem("token") as string).then(user => setUser(user));
-        console.log(user);
     }, []);
 
     return {

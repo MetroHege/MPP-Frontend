@@ -70,24 +70,30 @@ const Single = () => {
                     <h1 className="text-4xl mb-4">Kysymykset:</h1>
                 </div>
             </div>
-            <div className="w-1/2 p-3 flex ml-4">
-                <div className="w-1/2">
-                    <p className="text-2xl">Myyjä:</p>
-                    <p className="text-2xl">Ilmoitustyyppi:</p>
-                    <p className="text-2xl">Ilmoitus jätetty:</p>
-                    <p className="text-2xl">Kaupunki:</p>
-                    <p className="text-2xl">Kunto:</p>
-                    <p className="text-2xl">Kategoria:</p>
-                </div>
-                <div className="w-1/2">
-                    <p className="text-2xl">{userItem.username}</p>
-                    <p className="text-2xl">{item.type === "buy" ? "Ostetaan" : "Myydään"}</p>
-                    <p className="text-2xl">{new Date(item.time).toLocaleDateString("fi-FI")}</p>
-                    <p className="text-2xl">{userItem.city}</p>
-                    <p className="text-2xl">{item.quality}</p>
-                    <p className="text-2xl">
-                        {typeof item.category === "number" ? item.category : item.category.title}
-                    </p>
+            <div className="w-1/2 p-3 flex items-start ml-4">
+                <div className="rounded-lg shadow-lg p-4 bg-main-light flex display-flex w-3/4">
+                    <div className="w-1/2 ml-4">
+                        <p className="text-3xl">Myyjä:</p>
+                        <p className="text-3xl">Ilmoitustyyppi:</p>
+                        <p className="text-3xl">Ilmoitus jätetty:</p>
+                        <p className="text-3xl">Kaupunki:</p>
+                        <p className="text-3xl">Kunto:</p>
+                        <p className="text-3xl">Kategoria:</p>
+                    </div>
+                    <div className="w-1/2 ml-4">
+                        <p className="text-3xl">{userItem.username}</p>
+                        <p className="text-3xl">{item.type === "buy" ? "Ostetaan" : "Myydään"}</p>
+                        <p className="text-3xl">
+                            {new Date(item.time).toLocaleDateString("fi-FI")}
+                        </p>
+                        <p className="text-3xl">{userItem.city}</p>
+                        <p className="text-3xl">{item.quality}</p>
+                        <p className="text-3xl">
+                            {typeof item.category === "number"
+                                ? item.category
+                                : item.category.title}
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

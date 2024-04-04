@@ -56,7 +56,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                     <hr className="w-full mt-2 mb-3 border-gray-300" />
 
                     <form
-                        className="flex flex-col items-center mb-0 ml-4 mr-4"
+                        className="flex flex-col items-center mb-0 ml-4 mr-4 w-full"
                         onSubmit={async e => {
                             e.preventDefault();
                             const token = localStorage.getItem("token");
@@ -200,7 +200,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                         className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50"
                         contentLabel="Modal"
                     >
-                        <div className="bg-main-medium rounded-lg w-1/3">
+                        <div className="bg-main-medium rounded-lg w-1/4">
                             <div className="flex flex-col items-start p-4">
                                 <div className="flex items-center w-full">
                                     <div className=" font-medium text-lg">
@@ -256,7 +256,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                         className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50"
                         contentLabel="Account Deleted"
                     >
-                        <div className="bg-main-medium rounded-lg w-1/3">
+                        <div className="bg-main-medium rounded-lg w-1/4">
                             <div className="flex flex-col items-start p-4">
                                 <div className="flex items-center w-full">
                                     <div className="font-medium text-lg">
