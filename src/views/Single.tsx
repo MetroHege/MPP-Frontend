@@ -5,6 +5,7 @@ import { useUser } from "../hooks/UserHooks";
 import useListing from "../hooks/ListingHooks";
 import ListingForm from "../components/ListingForm";
 import { useState } from "react";
+import { useTheme } from "../contexts/ThemeContext";
 
 const Single = () => {
     const { state } = useLocation();
@@ -14,6 +15,7 @@ const Single = () => {
     const { user } = useUser();
     const [showForm, setShowForm] = useState(false);
     const { deleteListing } = useListing();
+    const { theme } = useTheme();
 
     return (
         <div className="flex">
@@ -71,7 +73,9 @@ const Single = () => {
                 </div>
             </div>
             <div className="w-1/2 p-3 flex items-start ml-4">
-                <div className="rounded-lg shadow-lg p-4 bg-main-light flex display-flex w-3/4">
+                <div
+                    className={`rounded-lg shadow-lg p-4 bg-main-light flex display-flex w-3/4 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                >
                     <div className="w-1/2 ml-4">
                         <p className="text-3xl">Myyjä:</p>
                         <p className="text-3xl">Ilmoitustyyppi:</p>

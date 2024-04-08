@@ -39,7 +39,9 @@ const Layout = () => {
         <>
             <header className="w-full bg-main-dark">
                 <div className="flex justify-between p-2 items-center">
-                    <img src={logo} alt="DivariNet" className="h-10 w-auto" />
+                    <Link to="/">
+                        <img src={logo} alt="DivariNet" className="h-10 w-auto" />
+                    </Link>
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="xl:hidden flex items-center px-3 py-2 border rounded text-white border-white"
@@ -207,7 +209,7 @@ const Layout = () => {
                 </main>
             </body>
             <footer
-                className={`py-10 px-6 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                className={`py-10 px-6 bg-main-dark ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
             >
                 {" "}
                 <div className="flex w-full">

@@ -75,7 +75,7 @@ const UploadForm = () => {
                     <div className="mb-4">
                         {selectedImages.length > 0 && (
                             <p>
-                                Voit vaihtaa kuvien järjestystä raahaamalla niitä (ylin on
+                                Voit vaihtaa kuvien järjestystä raahaamalla niitä (ensimmäinen on
                                 kansikuva)
                             </p>
                         )}

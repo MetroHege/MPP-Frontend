@@ -33,6 +33,21 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handleDelete = async () => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            try {
+                await deleteListing(item.id, token);
+                console.log(token);
+            } catch (error) {
+                console.error("Failed to delete listing:", error);
+                // Handle the error appropriately here, e.g., show an error message to the user
+            }
+        } else {
+            console.log("Token not found");
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const token = localStorage.getItem("token");
@@ -50,7 +65,6 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                 <div
                     className={`mb-4 bg-main-light flex overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                 >
-                    {" "}
                     <img className="w-64 h-64 object-cover" src={item.thumbnail?.url} />
                     <div className="flex flex-col p-3 w-3/5">
                         <p className="text-4xl mt-2">{item.title}</p>
@@ -81,8 +95,8 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                         Modify
                     </button>
                     <button
+                        onClick={handleDelete}
                         className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 ml-2"
-                        onClick={() => deleteListing(id, token)}
                     >
                         Delete
                     </button>
@@ -237,7 +251,6 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                                         </label>
                                     </div>
                                 </div>
-
                                 <div className="ml-auto mt-4 space-x-4">
                                     <button
                                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
@@ -246,14 +259,14 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                                             await putListing(id, formData, token);
                                         }}
                                     >
-                                        Save
+                                        Tallenna
                                     </button>
                                     <button
                                         className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                                         type="button"
                                         onClick={() => setModalIsOpen(false)}
                                     >
-                                        Cancel
+                                        Peruuta
                                     </button>
                                 </div>
                             </form>

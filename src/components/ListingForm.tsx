@@ -38,9 +38,7 @@ const ListingForm: React.FC<ListingFormProps> = ({ showForm, setShowForm }) => {
                             <path d="M18 1.3L16.7 0 9 7.6 1.3 0 0 1.3 7.6 9 0 16.7 1.3 18 9 10.4 16.7 18 18 16.7 10.4 9 18 1.3z" />
                         </svg>
                     </div>
-
                     <hr className="w-full mt-2 mb-3 border-gray-300" />
-
                     <form
                         onSubmit={async e => {
                             e.preventDefault();
