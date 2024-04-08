@@ -9,6 +9,7 @@ import ComboBox from "./ComboBox";
 import { Category } from "mpp-api-types";
 import { useCategories } from "../hooks/CategoryHooks";
 import { useTheme } from "../contexts/ThemeContext";
+import Dropdown from "./Dropdown";
 
 export enum Quality {
     New = 5,
@@ -25,6 +26,8 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
     const { user } = useUser();
     const { putListing, deleteListing } = useListing();
     const { theme } = useTheme();
+    const { categories } = useCategories();
+    const [category, setCategory] = useState(0);
 
     const [formData, setFormData] = useState(item);
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -52,7 +55,18 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
         e.preventDefault();
         const token = localStorage.getItem("token");
         if (token) {
-            await putListing(item.id, formData, token);
+            await putListing(
+                item.id,
+                {
+                    ...formData,
+                    category: formData.category.id,
+                    images: undefined,
+                    thumbnail: undefined,
+                    user: undefined,
+                    time: undefined
+                },
+                token
+            );
             setModalIsOpen(false);
         } else {
             console.log("Token not found");
@@ -92,13 +106,13 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                         onClick={() => setModalIsOpen(true)}
                         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
                     >
-                        Modify
+                        Muokkaa
                     </button>
                     <button
                         onClick={handleDelete}
                         className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700 ml-2"
                     >
-                        Delete
+                        Poista
                     </button>
                     <Modal
                         isOpen={modalIsOpen}
@@ -109,7 +123,7 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                         <div className="bg-main-medium rounded-lg w-1/3">
                             <form className="flex flex-col items-start p-4" onSubmit={handleSubmit}>
                                 <div className="flex items-center w-full">
-                                    <div className="font-medium text-lg">Edit Listing</div>
+                                    <div className="font-medium text-lg">Muokkaa ilmoitusta</div>
                                     <svg
                                         onClick={() => setModalIsOpen(false)}
                                         className="ml-auto fill-current w-6 h-6 cursor-pointer"
@@ -125,7 +139,7 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                                         className="w-1/3 text-left text-xl font-bold"
                                         htmlFor="title"
                                     >
-                                        Title:
+                                        Otsikko:
                                     </label>
                                     <input
                                         className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
@@ -141,11 +155,10 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                                         className="w-1/3 text-left text-xl font-bold"
                                         htmlFor="description"
                                     >
-                                        Description:
+                                        Kuvaus:
                                     </label>
-                                    <input
-                                        className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
-                                        type="textarea"
+                                    <textarea
+                                        className="w-1/2 h-50 rounded border border-gray-300 p-2 text-gray-600"
                                         name="description"
                                         value={formData.description}
                                         onChange={handleChange}
@@ -157,7 +170,7 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                                         className="w-1/3 text-left text-xl font-bold"
                                         htmlFor="price"
                                     >
-                                        Price:
+                                        Hinta:
                                     </label>
                                     <input
                                         className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
@@ -169,7 +182,7 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                                     />
                                 </div>
                                 <div className="flex w-2/3 pb-2">
-                                    <p className="w-1/3 text-left text-xl font-bold">Type:</p>
+                                    <p className="w-1/3 text-left text-xl font-bold">Tyyppi:</p>
                                     <div className="w-1/2 flex items-center flex-row">
                                         <input
                                             className="mr-2"
@@ -196,9 +209,9 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                                         className="w-1/3 text-left text-xl font-bold"
                                         htmlFor="quality"
                                     >
-                                        Quality:
+                                        Kunto:
                                     </label>
-                                    <div className="w-full flex items-center flex-row">
+                                    <div className="w-full flex flex-col">
                                         <label className="mb-4 mr-2">
                                             <input
                                                 type="radio"
@@ -251,13 +264,41 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                                         </label>
                                     </div>
                                 </div>
+                                <div className="flex w-2/3 pb-2">
+                                    <label
+                                        className="w-1/3 text-left text-xl font-bold"
+                                        htmlFor="category"
+                                    >
+                                        Kategoria:
+                                    </label>
+                                    <Dropdown
+                                        buttonText="Tuotekategoriat"
+                                        className="mb-4"
+                                        value={category}
+                                        onChange={e => setCategory(Number(e.target.value))}
+                                        onOptionSelect={(id: number) => setCategory(id)}
+                                    />
+                                    {category && category !== 0 && (
+                                        <div className="flex items-center space-x-2">
+                                            {categories.find(cat => cat.id === category) && (
+                                                <span>
+                                                    {categories.find(cat => cat.id === category)
+                                                        ?.title !== "0"
+                                                        ? categories.find(
+                                                              cat => cat.id === category
+                                                          )?.title
+                                                        : ""}
+                                                </span>
+                                            )}
+                                            <button onClick={() => setCategory(0)}>X</button>
+                                        </div>
+                                    )}
+                                </div>
                                 <div className="ml-auto mt-4 space-x-4">
                                     <button
                                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
                                         type="button"
-                                        onClick={async () => {
-                                            await putListing(id, formData, token);
-                                        }}
+                                        onClick={handleSubmit}
                                     >
                                         Tallenna
                                     </button>

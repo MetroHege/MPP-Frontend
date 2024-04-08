@@ -8,6 +8,7 @@ import {
     ListingWithId,
     PostListingsRequest,
     PostListingsResponse,
+    PutListingRequest,
     PutListingResponse
 } from "mpp-api-types";
 
@@ -42,7 +43,7 @@ const useListing = () => {
         );
     };
 
-    const putListing = async (id: number, listing: Listing, token: string) => {
+    const putListing = async (id: number, listing: PutListingRequest, token: string) => {
         const options = {
             method: "PUT",
             headers: {

@@ -107,7 +107,7 @@ const UploadForm = () => {
                             placeholder="Tuotekuvaus..."
                             value={description}
                             onChange={e => setDescription(e.target.value)}
-                            className="w-2/3 h-30 rounded border border-slate-500 p-2 text-slate-950"
+                            className="w-full h-30 rounded border border-slate-500 p-2 text-slate-950"
                         ></textarea>
                     </div>
                     <div className="mb-4">
