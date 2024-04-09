@@ -11,7 +11,8 @@ import { useUser } from "../hooks/UserHooks";
 const Home = () => {
     const options1 = ["Jalkapallo", "Koripallo", "Hiihto"];
     const options2 = ["Espoo", "Helsinki", "Hanko"];
-    const { listings, searchTerm, setSearchTerm } = useListing();
+    const [searchTerm, setSearchTerm] = useState("");
+    const { listings } = useListing();
     const { user } = useUser();
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -107,12 +108,6 @@ const Home = () => {
                                 userItem={listing.user as unknown as User} // Fix: Cast userItem to unknown first, then to User type
                             />
                         ))}
-                {listings && listings.length === 0 && searchTerm && (
-                    <p className="my-8 text-4xl">
-                        Valitettavasti haullasi ei löytynyt yhtään ilmoitusta, kokeile hakea jollain
-                        muulla hakusanalla...
-                    </p>
-                )}
             </div>
         </>
     );

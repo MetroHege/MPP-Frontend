@@ -14,6 +14,7 @@ import {
 
 const useListing = () => {
     const [listings, setListings] = useState<ListingWithId[]>([]);
+    const [searchTerm, setSearchTerm] = useState(""); // Add this line
     const { update } = useUpdateContext();
 
     const getListing = async () => {
@@ -22,14 +23,19 @@ const useListing = () => {
                 import.meta.env.VITE_SERVER + "/listings"
             );
 
-            setListings(mediaListings);
+            const filteredListings = mediaListings.filter(listing =>
+                listing.title.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            setListings(filteredListings);
         } catch (error) {
             console.error("getListing failed", error);
         }
     };
+
     useEffect(() => {
         getListing();
-    }, [update]);
+    }, [update, searchTerm]);
 
     const getListingWithId = async (id: number) => {
         return await fetchData<GetListingsResponse>(
@@ -113,7 +119,9 @@ const useListing = () => {
         getListing,
         getListingWithId,
         listings,
-        getListingsFromUser
+        getListingsFromUser,
+        setSearchTerm,
+        searchTerm
     };
 };
 

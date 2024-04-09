@@ -10,6 +10,8 @@ import { Category } from "mpp-api-types";
 import { useCategories } from "../hooks/CategoryHooks";
 import { useTheme } from "../contexts/ThemeContext";
 import Dropdown from "./Dropdown";
+import { useContext } from "react";
+import { UpdateContext } from "../contexts/UpdateContext";
 
 export enum Quality {
     New = 5,
@@ -28,7 +30,6 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
     const { theme } = useTheme();
     const { categories } = useCategories();
     const [category, setCategory] = useState(0);
-
     const [formData, setFormData] = useState(item);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -44,7 +45,6 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                 console.log(token);
             } catch (error) {
                 console.error("Failed to delete listing:", error);
-                // Handle the error appropriately here, e.g., show an error message to the user
             }
         } else {
             console.log("Token not found");

@@ -80,6 +80,11 @@ const useUser = () => {
         getUserByToken(localStorage.getItem("token") as string).then(user => setUser(user));
     }, []);
 
+    const getUserCities = async () => {
+        const users = await getAllUsers();
+        return users.map(user => user.city);
+    };
+
     return {
         getUserByToken,
         postUser,
@@ -89,7 +94,8 @@ const useUser = () => {
         putUser,
         getUsernameAvailable,
         getEmailAvailable,
-        user
+        user,
+        getUserCities
     };
 };
 
