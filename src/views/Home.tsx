@@ -5,17 +5,34 @@ import { FaArrowUp } from "react-icons/fa";
 import { FaBasketball } from "react-icons/fa6";
 import useListing from "../hooks/ListingHooks";
 import Listing from "../components/Listing";
+import FilterDropdown from "../components/FilterDropdown";
 import { Listing as Listingtype, User } from "mpp-api-types";
 import { useUser } from "../hooks/UserHooks";
 
 const Home = () => {
     const options1 = ["Jalkapallo", "Koripallo", "Hiihto"];
-    const options2 = ["Espoo", "Helsinki", "Hanko"];
     const { listings, searchTerm, setSearchTerm } = useListing();
     const { user } = useUser();
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
+    };
+
+    const [sortOrder, setSortOrder] = useState("newest");
+
+    const sortOptions = ["newest", "oldest", "low-high", "high-low"];
+    const sortOptionsMapping = {
+        newest: "Uusimmat",
+        oldest: "Vanhimmat",
+        "low-high": "Hinta nouseva",
+        "high-low": "Hinta laskeva"
+    };
+
+    const handleSortChange = (selectedSortOption: string) => {
+        const selectedSortOrder = Object.keys(sortOptionsMapping).find(
+            key => sortOptionsMapping[key] === selectedSortOption
+        );
+        setSortOrder(selectedSortOrder || "newest");
     };
 
     const [isVisible, setIsVisible] = useState(false);
@@ -84,7 +101,12 @@ const Home = () => {
             <div className="flex flex-row justify-between items-center mb-10">
                 <div>
                     <Dropdown options={options1} buttonText="Tuotekategoriat" className="mr-2" />
-                    <Dropdown options={options2} buttonText="Kaupunki" className="ml-2" />
+                    <FilterDropdown
+                        options={Object.values(sortOptionsMapping)}
+                        buttonText="Lajittele"
+                        selectedOption={sortOptionsMapping[sortOrder]}
+                        handleOptionChange={handleSortChange}
+                    />
                 </div>
                 <input
                     type="text"
@@ -98,8 +120,18 @@ const Home = () => {
                 {listings &&
                     listings
                         .filter((listing: Listingtype) => listing.user.id !== user?.id)
-                        .slice()
-                        .reverse()
+                        .sort((a, b) => {
+                            switch (sortOrder) {
+                                case "low-high":
+                                    return a.price - b.price;
+                                case "high-low":
+                                    return b.price - a.price;
+                                case "oldest":
+                                    return a.id - b.id;
+                                default:
+                                    return b.id - a.id; // Assuming 'id' increases with each new listing
+                            }
+                        })
                         .map((listing: Listingtype) => (
                             <Listing
                                 key={listing.id}
