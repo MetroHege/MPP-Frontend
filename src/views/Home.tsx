@@ -45,6 +45,12 @@ const Home = () => {
         "high-low": "Hinta laskeva"
     };
 
+    const categoryMapping: { [key: string]: string } = {};
+
+    categories.forEach(category => {
+        categoryMapping[category.id] = category.name;
+    });
+
     const handleSortChange = (selectedSortOption: string) => {
         const selectedSortOrder = Object.keys(sortOptionsMapping).find(
             key => sortOptionsMapping[key] === selectedSortOption
@@ -142,7 +148,11 @@ const Home = () => {
                     />
                     {(selectedCategory || sortOrder !== "newest") && (
                         <div className="flex items-center space-x-2 ml-4">
-                            <span>Poista suodattimet</span>
+                            <span>
+                                {selectedCategory && `Kategoria: ${selectedCategory}`}
+                                {selectedCategory && sortOrder !== "newest" && " | "}
+                                {sortOrder !== "newest" && `${sortOptionsMapping[sortOrder]}`}
+                            </span>
                             <button
                                 className="bg-transparent border-none cursor-pointer text-2xl text-red-500"
                                 onClick={clearFilters}
@@ -189,10 +199,13 @@ const Home = () => {
                             />
                         ))}
                 {listings && listings.length === 0 && (
-                    <p className="my-8 text-4xl">
-                        Valitettavasti haullasi ei löytynyt yhtään ilmoitusta, kokeile hakea jollain
-                        muulla hakusanalla...
-                    </p>
+                    <div>
+                        <p className="my-8 text-4xl">Hmm...🤔</p>
+                        <p className="my-8 text-4xl">
+                            Valitettavasti haullasi ei näyttänyt löytynyt yhtään ilmoitusta, kokeile
+                            hakea jollain muulla hakusanalla...
+                        </p>
+                    </div>
                 )}
             </div>
         </>
