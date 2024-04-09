@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dropdown from "../components/Dropdown";
 import useListing from "../hooks/ListingHooks";
 import { useCategories } from "../hooks/CategoryHooks";
@@ -30,7 +30,7 @@ const SortableList = SortableContainer(({ items }) => {
 });
 
 const UploadForm = () => {
-    const { categories } = useCategories();
+    const { categories, getCategories } = useCategories();
     const [category, setCategory] = useState(0);
     const [selectedImage, setSelectedImage] = useState("https://placehold.co/300x300");
     const [title, setTitle] = useState("");
@@ -66,6 +66,10 @@ const UploadForm = () => {
             token as string
         );
     };
+
+    useEffect(() => {
+        getCategories();
+    }, []);
 
     return (
         <form onSubmit={handleSubmit}>
@@ -193,18 +197,24 @@ const UploadForm = () => {
                             className="mb-4"
                             value={category}
                             onChange={e => setCategory(Number(e.target.value))}
-                            onOptionSelect={(id: number) => setCategory(id)}
+                            onOptionSelect={(id: number) => {
+                                console.log("Selected category ID:", id);
+                                setCategory(id);
+                            }}
                         />
-                        {category && category !== 0 && (
+                        {category !== 0 && (
                             <div className="flex items-center space-x-2">
-                                {categories.find(cat => cat.id === category) && (
+                                {categories.find(cat => cat.id === category)?.title && (
                                     <span>
-                                        {categories.find(cat => cat.id === category)?.title !== "0"
-                                            ? categories.find(cat => cat.id === category)?.title
-                                            : ""}
+                                        {categories.find(cat => cat.id === category)?.title}
                                     </span>
                                 )}
-                                <button onClick={() => setCategory(0)}>X</button>
+                                <button
+                                    className="bg-transparent border-none cursor-pointer text-2xl text-red-500"
+                                    onClick={() => setCategory(0)}
+                                >
+                                    X
+                                </button>
                             </div>
                         )}
                     </div>
