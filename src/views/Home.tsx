@@ -12,9 +12,9 @@ import { useCategories } from "../hooks/CategoryHooks";
 
 const Home = () => {
     const { categories } = useCategories();
-    const { listings, searchTerm, setSearchTerm } = useListing();
-    const { user } = useUser();
     const [selectedCategory, setSelectedCategory] = useState("");
+    const { listings, searchTerm, setSearchTerm } = useListing({ category: selectedCategory });
+    const { user } = useUser();
     const [sortOrder, setSortOrder] = useState(localStorage.getItem("sortOrder") || "newest");
 
     useEffect(() => {
@@ -132,7 +132,7 @@ const Home = () => {
                         options={categories}
                         buttonText="Tuotekategoriat"
                         className="mr-2"
-                        handleOptionChange={selectedOption => setSelectedCategory(selectedOption)}
+                        onOptionSelect={setSelectedCategory}
                     />{" "}
                     <FilterDropdown
                         options={Object.values(sortOptionsMapping)}
@@ -166,7 +166,8 @@ const Home = () => {
                         .filter(
                             (listing: Listingtype) =>
                                 listing.user.id !== user?.id &&
-                                (selectedCategory === "" || listing.category === selectedCategory)
+                                (selectedCategory === "" ||
+                                    listing.category.id === selectedCategory)
                         )
                         .sort((a, b) => {
                             switch (sortOrder) {
@@ -187,7 +188,7 @@ const Home = () => {
                                 userItem={listing.user as unknown as User}
                             />
                         ))}
-                {listings && listings.length === 0 && searchTerm && (
+                {listings && listings.length === 0 && (
                     <p className="my-8 text-4xl">
                         Valitettavasti haullasi ei löytynyt yhtään ilmoitusta, kokeile hakea jollain
                         muulla hakusanalla...

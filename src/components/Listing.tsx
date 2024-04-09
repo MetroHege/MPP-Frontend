@@ -53,13 +53,15 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        console.log("submit");
+
         const token = localStorage.getItem("token");
         if (token) {
             await putListing(
                 item.id,
                 {
                     ...formData,
-                    category: formData.category.id,
+                    category,
                     images: undefined,
                     thumbnail: undefined,
                     user: undefined,
@@ -275,30 +277,37 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                                         buttonText="Tuotekategoriat"
                                         className="mb-4"
                                         value={category}
-                                        onChange={e => setCategory(Number(e.target.value))}
-                                        onOptionSelect={(id: number) => setCategory(id)}
+                                        onChange={e => {
+                                            setCategory(Number(e.target.value));
+                                        }}
+                                        onOptionSelect={(id: number) => {
+                                            console.log("Selected category ID:", id);
+                                            setCategory(id);
+                                        }}
                                     />
-                                    {category && category !== 0 && (
+                                    {category !== 0 && (
                                         <div className="flex items-center space-x-2">
-                                            {categories.find(cat => cat.id === category) && (
+                                            {categories.find(cat => cat.id === category)?.title && (
                                                 <span>
-                                                    {categories.find(cat => cat.id === category)
-                                                        ?.title !== "0"
-                                                        ? categories.find(
-                                                              cat => cat.id === category
-                                                          )?.title
-                                                        : ""}
+                                                    {
+                                                        categories.find(cat => cat.id === category)
+                                                            ?.title
+                                                    }
                                                 </span>
                                             )}
-                                            <button onClick={() => setCategory(0)}>X</button>
+                                            <button
+                                                className="bg-transparent border-none cursor-pointer text-2xl text-red-500"
+                                                onClick={() => setCategory(0)}
+                                            >
+                                                X
+                                            </button>
                                         </div>
                                     )}
                                 </div>
                                 <div className="ml-auto mt-4 space-x-4">
                                     <button
                                         className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-                                        type="button"
-                                        onClick={handleSubmit}
+                                        type="submit"
                                     >
                                         Tallenna
                                     </button>

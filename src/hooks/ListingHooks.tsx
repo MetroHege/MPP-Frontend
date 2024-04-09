@@ -12,17 +12,16 @@ import {
     PutListingResponse
 } from "mpp-api-types";
 
-const useListing = () => {
+const useListing = (filters?: { category?: number }) => {
     const [listings, setListings] = useState<ListingWithId[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
-    const [selectedCategory, setSelectedCategory] = useState("");
     const { update } = useUpdateContext();
 
-    const getListing = async (category: string = "") => {
+    const getListing = async () => {
         try {
             const url = new URL(import.meta.env.VITE_SERVER + "/listings");
-            if (category) {
-                url.searchParams.append("category", category);
+            if (filters?.category) {
+                url.searchParams.append("category", filters.category.toString());
             }
 
             const mediaListings = await fetchData<GetListingsResponse>(url.toString());
@@ -38,8 +37,8 @@ const useListing = () => {
     };
 
     useEffect(() => {
-        getListing(selectedCategory);
-    }, [update, searchTerm, selectedCategory]);
+        getListing();
+    }, [update, searchTerm, filters?.category]);
 
     const getListingWithId = async (id: number) => {
         return await fetchData<GetListingsResponse>(

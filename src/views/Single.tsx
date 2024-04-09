@@ -92,7 +92,10 @@ const Single = () => {
                         <p className="text-3xl">Kategoria:</p>
                     </div>
                     <div className="w-1/2 ml-4">
-                        <p className="text-3xl">{userItem.username}</p>
+                        <p className="text-3xl">
+                            {userItem.username}
+                            {userItem.firstName}
+                        </p>
                         <p className="text-3xl">{item.type === "buy" ? "Ostetaan" : "Myydään"}</p>
                         <p className="text-3xl">
                             {new Date(item.time).toLocaleDateString("fi-FI")}

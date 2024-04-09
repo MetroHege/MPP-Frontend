@@ -40,8 +40,11 @@ const Dropdown = ({
     return (
         <div className={`relative inline-block text-left ${className}`} ref={dropdownRef}>
             <button
+                type="button"
                 className="bg-white border border-gray-300 rounded-md shadow-sm px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 inline-flex items-center"
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => {
+                    setIsOpen(!isOpen);
+                }}
             >
                 {buttonText}
                 <svg
