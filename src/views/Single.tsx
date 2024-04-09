@@ -79,7 +79,7 @@ const Single = () => {
                     <h1 className="text-4xl mb-4">Kysymykset:</h1>
                 </div>
             </div>
-            <div className="w-1/2 flex items-start mt-16 ml-8">
+            <div className="w-1/2 flex items-start mt-16 ml-4">
                 <div
                     className={`rounded-lg shadow-lg p-4 bg-main-light flex display-flex w-3/4 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                 >
