@@ -1,6 +1,6 @@
 import { PostListingsResponse, User } from "mpp-api-types";
 import { Carousel } from "react-responsive-carousel";
-import { NavigateFunction, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavigateFunction, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/UserHooks";
 import useListing from "../hooks/ListingHooks";
 import ListingForm from "../components/ListingForm";
@@ -126,30 +126,30 @@ const Single = () => {
                 <h1 className="text-2xl mb-4">Muita ilmoituksia samasta kategoriasta:</h1>
                 <div className="flex w-3/4 flex-col space-y-4">
                     {randomListings.map((listing, index) => (
-                        <div
-                            key={index}
-                            className="bg-main-light w-3/4 rounded p-2 flex items-center"
-                        >
-                            <img
-                                src={listing.images[0].url}
-                                alt={`Listing ${listing.id}`}
-                                className="w-36 h-36 object-cover"
-                            />
-                            <div className="ml-4 flex flex-row">
-                                <div className="w-1/2">
-                                    <h2 className=" text-xl my-2">{listing.title}</h2>
-                                    <p className=" text-xl my-2">{parseInt(listing.price)} €</p>
-                                </div>
-                                <div className="ml-4 w-1/2">
-                                    <p className=" text-xl my-2">
-                                        {new Date(listing.time).toLocaleDateString("fi-FI")}
-                                    </p>
-                                    <p className=" text-xl my-2">
-                                        {listing.type === "buy" ? "Ostetaan" : "Myydään"}
-                                    </p>
+                        <Link to="/single" state={listing} key={index}>
+                            {" "}
+                            <div className="bg-main-light w-3/4 rounded p-2 flex items-center">
+                                <img
+                                    src={listing.images[0].url}
+                                    alt={`Listing ${listing.id}`}
+                                    className="w-36 h-36 object-cover"
+                                />
+                                <div className="ml-4 flex flex-row">
+                                    <div className="w-1/2">
+                                        <h2 className="text-xl my-2">{listing.title}</h2>
+                                        <p className="text-xl my-2">{parseInt(listing.price)} €</p>
+                                    </div>
+                                    <div className="ml-4 w-1/2">
+                                        <p className="text-xl my-2">
+                                            {new Date(listing.time).toLocaleDateString("fi-FI")}
+                                        </p>
+                                        <p className="text-xl my-2">
+                                            {listing.type === "buy" ? "Ostetaan" : "Myydään"}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </div>
