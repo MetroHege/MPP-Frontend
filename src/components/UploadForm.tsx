@@ -4,6 +4,7 @@ import useListing from "../hooks/ListingHooks";
 import { useCategories } from "../hooks/CategoryHooks";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import { arrayMove } from "react-sortable-hoc";
+import { useNavigate } from "react-router-dom";
 
 export enum Quality {
     New = 5,
@@ -39,12 +40,13 @@ const UploadForm = () => {
     const [quality, setQuality] = useState(0);
     const [price, setPrice] = useState(0);
     const { postListing } = useListing();
-    const [selectedImages, setSelectedImages] = useState<File[]>([]); // Provide an initial value for selectedImages
+    const [selectedImages, setSelectedImages] = useState<File[]>([]);
+    const navigate = useNavigate();
 
     const onSortEnd = ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) => {
         setSelectedImages(prevImages => {
             const newImages = arrayMove(prevImages, oldIndex, newIndex);
-            console.log(newImages); // Log the new order of images
+            console.log(newImages);
             return newImages;
         });
     };
@@ -60,11 +62,14 @@ const UploadForm = () => {
     const handleSubmit = async e => {
         e.preventDefault();
         const token = localStorage.getItem("token");
-        await postListing(
+        const response = await postListing(
             selectedImages,
             { type, category, quality, price, title, description },
             token as string
         );
+        if (response) {
+            navigate("/profile");
+        }
     };
 
     useEffect(() => {

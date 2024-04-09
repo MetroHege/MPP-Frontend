@@ -9,6 +9,7 @@ import useListing from "../hooks/ListingHooks";
 import Listing from "../components/Listing";
 import { FaBasketball } from "react-icons/fa6";
 import { useTheme } from "../contexts/ThemeContext";
+import { useNavigate } from "react-router-dom";
 
 interface CustomSwitchProps {
     checked: boolean;
@@ -38,6 +39,7 @@ const Profile = () => {
     const [listingsCount, setListingsCount] = useState(0);
     const { listings, getListingsFromUser } = useListing();
     const { theme, toggleTheme } = useTheme();
+    const navigate = useNavigate();
 
     const [isVisible, setIsVisible] = useState(false);
 
@@ -194,20 +196,33 @@ const Profile = () => {
             <div className="border-b border-gray-200 my-4 mx-2"></div>
             <div>
                 <h1 className="text-4xl mb-4">Ilmoitukseni:</h1>
-                <div>
-                    {listings &&
-                        listings
-                            .filter((listing: Listingtype) => listing.user.id === user?.id)
-                            .slice()
-                            .reverse()
-                            .map((listing: Listingtype) => (
-                                <Listing
-                                    key={listing.id}
-                                    item={{ ...listing, id: listing.id }}
-                                    userItem={listing.user as unknown as User}
-                                />
-                            ))}
-                </div>
+                {listings &&
+                listings.filter((listing: Listingtype) => listing.user.id === user?.id).length >
+                    0 ? (
+                    listings
+                        .filter((listing: Listingtype) => listing.user.id === user?.id)
+                        .slice()
+                        .reverse()
+                        .map((listing: Listingtype) => (
+                            <Listing
+                                key={listing.id}
+                                item={{ ...listing, id: listing.id }}
+                                userItem={listing.user as unknown as User}
+                            />
+                        ))
+                ) : (
+                    <div>
+                        <p className="text-2xl mb-4 mt-10">
+                            Voi ei, näyttää siltä ettei sinulla ole vielä ilmoituksia
+                        </p>
+                        <button
+                            className=" w-1/4 p-2 bg-green-gradient font-bold rounded mb-10"
+                            onClick={() => navigate("/upload")}
+                        >
+                            Jätä ilmoitus
+                        </button>
+                    </div>
+                )}
             </div>
         </>
     );
