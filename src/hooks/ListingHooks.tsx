@@ -52,6 +52,19 @@ const useListing = (filters?: { category?: number }) => {
         );
     };
 
+    const fetchListingsByCategory = async (category: number) => {
+        try {
+            const url = new URL(import.meta.env.VITE_SERVER + "/listings");
+            url.searchParams.append("category", category.toString());
+
+            const mediaListings = await fetchData<GetListingsResponse>(url.toString());
+
+            return mediaListings;
+        } catch (error) {
+            console.error("fetchListingsByCategory failed", error);
+        }
+    };
+
     const putListing = async (id: number, listing: PutListingRequest, token: string) => {
         const options = {
             method: "PUT",
@@ -124,7 +137,8 @@ const useListing = (filters?: { category?: number }) => {
         listings,
         getListingsFromUser,
         setSearchTerm,
-        searchTerm
+        searchTerm,
+        fetchListingsByCategory
     };
 };
 

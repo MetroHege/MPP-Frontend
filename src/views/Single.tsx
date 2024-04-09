@@ -4,7 +4,7 @@ import { NavigateFunction, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/UserHooks";
 import useListing from "../hooks/ListingHooks";
 import ListingForm from "../components/ListingForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 
 const Single = () => {
@@ -14,8 +14,25 @@ const Single = () => {
     const userItem: User = state.user;
     const { user } = useUser();
     const [showForm, setShowForm] = useState(false);
-    const { deleteListing } = useListing();
     const { theme } = useTheme();
+    const { fetchListingsByCategory } = useListing();
+    const [randomListings, setRandomListings] = useState([]);
+
+    useEffect(() => {
+        const fetchAndSetRandomListings = async () => {
+            let categoryListings = await fetchListingsByCategory(item.category.id); // use the category from the current listing
+            if (categoryListings && categoryListings.length > 0) {
+                // Filter out the current listing and the user's listings
+                categoryListings = categoryListings.filter(
+                    listing => listing.id !== item.id && listing.user.id !== user?.id
+                );
+                const shuffled = [...categoryListings].sort(() => 0.5 - Math.random());
+                setRandomListings(shuffled.slice(0, 3));
+            }
+        };
+
+        fetchAndSetRandomListings();
+    }, [item.category.id, item.id, user?.id]);
 
     return (
         <div className="flex">
@@ -79,9 +96,9 @@ const Single = () => {
                     <h1 className="text-4xl mb-4">Kysymykset:</h1>
                 </div>
             </div>
-            <div className="w-1/2 flex items-start mt-16 ml-4">
+            <div className="w-1/2 flex flex-col items-start mt-16 ml-4">
                 <div
-                    className={`rounded-lg shadow-lg p-4 bg-main-light flex display-flex w-3/4 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                    className={`rounded-lg shadow-lg mb-4 p-4 bg-main-light flex display-flex w-3/4 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                 >
                     <div className="w-1/2 ml-4">
                         <p className="text-3xl">Myyjä:</p>
@@ -92,10 +109,7 @@ const Single = () => {
                         <p className="text-3xl">Kategoria:</p>
                     </div>
                     <div className="w-1/2 ml-4">
-                        <p className="text-3xl">
-                            {userItem.username}
-                            {userItem.firstName}
-                        </p>
+                        <p className="text-3xl">{userItem.username}</p>
                         <p className="text-3xl">{item.type === "buy" ? "Ostetaan" : "Myydään"}</p>
                         <p className="text-3xl">
                             {new Date(item.time).toLocaleDateString("fi-FI")}
@@ -108,6 +122,35 @@ const Single = () => {
                                 : item.category.title}
                         </p>
                     </div>
+                </div>
+                <h1 className="text-2xl mb-4">Muita ilmoituksia samasta kategoriasta:</h1>
+                <div className="flex w-3/4 flex-col space-y-4">
+                    {randomListings.map((listing, index) => (
+                        <div
+                            key={index}
+                            className="bg-main-light w-3/4 rounded p-2 flex items-center"
+                        >
+                            <img
+                                src={listing.images[0].url}
+                                alt={`Listing ${listing.id}`}
+                                className="w-36 h-36 object-cover"
+                            />
+                            <div className="ml-4 flex flex-row">
+                                <div className="w-1/2">
+                                    <h2 className=" text-xl my-2">{listing.title}</h2>
+                                    <p className=" text-xl my-2">{parseInt(listing.price)} €</p>
+                                </div>
+                                <div className="ml-4 w-1/2">
+                                    <p className=" text-xl my-2">
+                                        {new Date(listing.time).toLocaleDateString("fi-FI")}
+                                    </p>
+                                    <p className=" text-xl my-2">
+                                        {listing.type === "buy" ? "Ostetaan" : "Myydään"}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
         </div>
