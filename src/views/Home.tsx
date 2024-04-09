@@ -8,20 +8,37 @@ import Listing from "../components/Listing";
 import FilterDropdown from "../components/FilterDropdown";
 import { Listing as Listingtype, User } from "mpp-api-types";
 import { useUser } from "../hooks/UserHooks";
+import { useCategories } from "../hooks/CategoryHooks";
 
 const Home = () => {
-    const options1 = ["Jalkapallo", "Koripallo", "Hiihto"];
+    const { categories } = useCategories();
     const { listings, searchTerm, setSearchTerm } = useListing();
     const { user } = useUser();
+    const [selectedCategory, setSelectedCategory] = useState("");
+    const [sortOrder, setSortOrder] = useState(localStorage.getItem("sortOrder") || "newest");
+
+    useEffect(() => {
+        const savedCategory = localStorage.getItem("selectedCategory");
+        const savedSortOrder = localStorage.getItem("sortOrder");
+
+        if (savedCategory) {
+            setSelectedCategory(savedCategory);
+        }
+
+        if (savedSortOrder) {
+            setSortOrder(savedSortOrder);
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("selectedCategory", selectedCategory);
+    }, [selectedCategory]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
-    const [sortOrder, setSortOrder] = useState("newest");
-
-    const sortOptions = ["newest", "oldest", "low-high", "high-low"];
-    const sortOptionsMapping = {
+    const sortOptionsMapping: { [key: string]: string } = {
         newest: "Uusimmat",
         oldest: "Vanhimmat",
         "low-high": "Hinta nouseva",
@@ -33,6 +50,17 @@ const Home = () => {
             key => sortOptionsMapping[key] === selectedSortOption
         );
         setSortOrder(selectedSortOrder || "newest");
+        localStorage.setItem("sortOrder", selectedSortOrder || "newest");
+    };
+
+    useEffect(() => {
+        localStorage.setItem("selectedCategory", selectedCategory);
+        localStorage.setItem("sortOrder", sortOrder);
+    }, [selectedCategory, sortOrder]);
+
+    const clearFilters = () => {
+        setSelectedCategory("");
+        setSortOrder("newest");
     };
 
     const [isVisible, setIsVisible] = useState(false);
@@ -99,14 +127,30 @@ const Home = () => {
                 <p className="text-2xl mb-4">Suodata ilmoituksia:</p>
             </div>
             <div className="flex flex-row justify-between items-center mb-10">
-                <div>
-                    <Dropdown options={options1} buttonText="Tuotekategoriat" className="mr-2" />
+                <div className="flex items-center">
+                    <Dropdown
+                        options={categories}
+                        buttonText="Tuotekategoriat"
+                        className="mr-2"
+                        handleOptionChange={selectedOption => setSelectedCategory(selectedOption)}
+                    />{" "}
                     <FilterDropdown
                         options={Object.values(sortOptionsMapping)}
                         buttonText="Lajittele"
                         selectedOption={sortOptionsMapping[sortOrder]}
                         handleOptionChange={handleSortChange}
                     />
+                    {(selectedCategory || sortOrder !== "newest") && (
+                        <div className="flex items-center space-x-2 ml-4">
+                            <span>Poista suodattimet</span>
+                            <button
+                                className="bg-transparent border-none cursor-pointer text-2xl text-red-500"
+                                onClick={clearFilters}
+                            >
+                                X
+                            </button>
+                        </div>
+                    )}
                 </div>
                 <input
                     type="text"
@@ -119,7 +163,11 @@ const Home = () => {
             <div>
                 {listings &&
                     listings
-                        .filter((listing: Listingtype) => listing.user.id !== user?.id)
+                        .filter(
+                            (listing: Listingtype) =>
+                                listing.user.id !== user?.id &&
+                                (selectedCategory === "" || listing.category === selectedCategory)
+                        )
                         .sort((a, b) => {
                             switch (sortOrder) {
                                 case "low-high":
@@ -129,14 +177,14 @@ const Home = () => {
                                 case "oldest":
                                     return a.id - b.id;
                                 default:
-                                    return b.id - a.id; // Assuming 'id' increases with each new listing
+                                    return b.id - a.id;
                             }
                         })
                         .map((listing: Listingtype) => (
                             <Listing
                                 key={listing.id}
                                 item={{ ...listing, id: listing.id }}
-                                userItem={listing.user as unknown as User} // Fix: Cast userItem to unknown first, then to User type
+                                userItem={listing.user as unknown as User}
                             />
                         ))}
                 {listings && listings.length === 0 && searchTerm && (

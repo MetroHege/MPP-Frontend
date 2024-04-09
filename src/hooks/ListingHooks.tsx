@@ -14,14 +14,18 @@ import {
 
 const useListing = () => {
     const [listings, setListings] = useState<ListingWithId[]>([]);
-    const [searchTerm, setSearchTerm] = useState(""); // Add this line
+    const [searchTerm, setSearchTerm] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("");
     const { update } = useUpdateContext();
 
-    const getListing = async () => {
+    const getListing = async (category: string = "") => {
         try {
-            const mediaListings = await fetchData<GetListingsResponse>(
-                import.meta.env.VITE_SERVER + "/listings"
-            );
+            const url = new URL(import.meta.env.VITE_SERVER + "/listings");
+            if (category) {
+                url.searchParams.append("category", category);
+            }
+
+            const mediaListings = await fetchData<GetListingsResponse>(url.toString());
 
             const filteredListings = mediaListings.filter(listing =>
                 listing.title.toLowerCase().includes(searchTerm.toLowerCase())
@@ -34,8 +38,8 @@ const useListing = () => {
     };
 
     useEffect(() => {
-        getListing();
-    }, [update, searchTerm]);
+        getListing(selectedCategory);
+    }, [update, searchTerm, selectedCategory]);
 
     const getListingWithId = async (id: number) => {
         return await fetchData<GetListingsResponse>(
