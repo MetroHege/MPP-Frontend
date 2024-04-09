@@ -24,7 +24,7 @@ const LoginForm = () => {
                                 Käyttäjänimi:
                             </label>
                             <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
                                 name="username"
                                 type="text"
                                 id="username"
@@ -37,7 +37,7 @@ const LoginForm = () => {
                                 Salasana:
                             </label>
                             <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
                                 name="password"
                                 type="password"
                                 id="loginpassword"
@@ -47,7 +47,7 @@ const LoginForm = () => {
                         </div>
                         <div className="w-full justify-start mt-2">
                             <button
-                                className=" w-1/2 p-2 bg-green-gradient font-bold"
+                                className=" w-1/3 p-2 bg-green-gradient font-bold"
                                 type="submit"
                             >
                                 Kirjaudu

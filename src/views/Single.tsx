@@ -21,7 +21,7 @@ const Single = () => {
         <div className="flex">
             <div className="w-1/2">
                 <button
-                    className="px-4 mt-4 mb-4 py-2 bg-red-gradient text-white rounded hover:bg-blue-600"
+                    className="px-4 mt-4 mb-3 py-2 bg-red-gradient text-white rounded hover:bg-blue-600"
                     type="button"
                     onClick={() => navigate(-1)}
                 >
@@ -79,14 +79,14 @@ const Single = () => {
                     <h1 className="text-4xl mb-4">Kysymykset:</h1>
                 </div>
             </div>
-            <div className="w-1/2 flex items-start mt-4 ml-4">
+            <div className="w-1/2 flex items-start mt-16 ml-8">
                 <div
                     className={`rounded-lg shadow-lg p-4 bg-main-light flex display-flex w-3/4 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                 >
                     <div className="w-1/2 ml-4">
                         <p className="text-3xl">Myyjä:</p>
                         <p className="text-3xl">Ilmoitustyyppi:</p>
-                        <p className="text-3xl">Ilmoitus jätetty:</p>
+                        <p className="text-3xl">Ilmoitettu:</p>
                         <p className="text-3xl">Kaupunki:</p>
                         <p className="text-3xl">Kunto:</p>
                         <p className="text-3xl">Kategoria:</p>

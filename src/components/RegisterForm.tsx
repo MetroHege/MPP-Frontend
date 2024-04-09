@@ -91,7 +91,7 @@ const RegisterForm = () => {
                                 Käyttäjänimi:
                             </label>
                             <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
                                 name="username"
                                 type="text"
                                 id="username"
@@ -105,7 +105,7 @@ const RegisterForm = () => {
                                 Etunimi:
                             </label>
                             <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
                                 name="firstName"
                                 type="text"
                                 id="firstname"
@@ -117,7 +117,7 @@ const RegisterForm = () => {
                                 Sukunimi:
                             </label>
                             <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
                                 name="lastName"
                                 type="text"
                                 id="lastname"
@@ -129,7 +129,7 @@ const RegisterForm = () => {
                                 Kaupunki:
                             </label>
                             <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
                                 name="city"
                                 type="text"
                                 id="city"
@@ -141,7 +141,7 @@ const RegisterForm = () => {
                                 Puhelinnumero:
                             </label>
                             <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
                                 name="phone"
                                 type="tel"
                                 id="phonenumber"
@@ -160,7 +160,7 @@ const RegisterForm = () => {
                                 Sähköposti:
                             </label>
                             <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
                                 name="email"
                                 type="email"
                                 id="email"
@@ -179,7 +179,7 @@ const RegisterForm = () => {
                                 Salasana:
                             </label>
                             <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
                                 name="password"
                                 type="password"
                                 id="password"
@@ -192,7 +192,7 @@ const RegisterForm = () => {
                             <label className="w-1/3 text-left font-bold" htmlFor="confirmpassword">
                                 Vahvista Salasana:
                             </label>
-                            <div className="w-2/3 flex flex-col">
+                            <div className="w-2/4 flex flex-col">
                                 <input
                                     className="w-full h-10 rounded border border-slate-500 p-2 text-slate-950"
                                     name="confirmpassword"
@@ -214,7 +214,7 @@ const RegisterForm = () => {
                         </div>
                         <div className="w-full justify-start mt-2">
                             <button
-                                className=" w-1/2 p-2 bg-green-gradient font-bold mb-4"
+                                className=" w-1/3 p-2 bg-green-gradient font-bold mb-4"
                                 type="submit"
                             >
                                 Rekisteröidy
