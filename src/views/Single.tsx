@@ -128,7 +128,7 @@ const Single = () => {
                     {randomListings.map((listing, index) => (
                         <Link to="/single" state={listing} key={index}>
                             {" "}
-                            <div className="bg-main-light w-3/4 rounded p-2 flex items-center">
+                            <div className="bg-main-light w-full rounded p-2 flex items-center">
                                 <img
                                     src={listing.images[0].url}
                                     alt={`Listing ${listing.id}`}
