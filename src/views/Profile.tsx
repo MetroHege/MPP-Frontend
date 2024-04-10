@@ -170,7 +170,11 @@ const Profile = () => {
                         >
                             Muokkaa tietoja
                         </button>
-                        <UserForm showForm={showForm} setShowForm={setShowForm} />
+                        <UserForm
+                            showForm={showForm}
+                            setShowForm={setShowForm}
+                            setParentUser={setUser}
+                        />
                         <button
                             className="w-1/2 p-2 bg-red-gradient font-bold rounded hover:brightness-75"
                             type="submit"

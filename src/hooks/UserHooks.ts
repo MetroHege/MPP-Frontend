@@ -5,6 +5,7 @@ import {
     PostLoginResponse,
     PostUsersRequest,
     PostUsersResponse,
+    PutMeResponse,
     PutUserRequest,
     User,
     UserWithId
@@ -121,7 +122,7 @@ const useMe = () => {
             },
             body: JSON.stringify(user)
         };
-        return await fetchData(import.meta.env.VITE_SERVER + "/users/me", options);
+        return await fetchData<PutMeResponse>(import.meta.env.VITE_SERVER + "/users/me", options);
     };
 
     const deleteMe = async (token: string) => {

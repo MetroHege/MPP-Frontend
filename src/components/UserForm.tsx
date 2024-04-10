@@ -2,14 +2,15 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useMe } from "../hooks/UserHooks";
 import { useNavigate } from "react-router-dom";
-import { PutUserRequest } from "mpp-api-types";
+import { PutUserRequest, UserWithId } from "mpp-api-types";
 
 interface UserFormProps {
     showForm: boolean;
     setShowForm: Dispatch<SetStateAction<boolean>>;
+    setParentUser: Dispatch<SetStateAction<UserWithId | null>>;
 }
 
-const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
+const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUser }) => {
     const [user, setUser] = useState<PutUserRequest>({});
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -61,7 +62,8 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm }) => {
                             e.preventDefault();
                             const token = localStorage.getItem("token");
                             if (token) {
-                                await putMe(user, token);
+                                const me = await putMe(user, token);
+                                setParentUser(me);
                                 setShowForm(false);
                             } else {
                                 console.log("Token not found");
