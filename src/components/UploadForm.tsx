@@ -6,7 +6,7 @@ import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import { arrayMove } from "react-sortable-hoc";
 import { useNavigate } from "react-router-dom";
 
-export enum Quality {
+enum Quality {
     New = 5,
     LikeNew = 4,
     Good = 3,
@@ -15,12 +15,12 @@ export enum Quality {
 }
 
 const SortableItem = React.memo(
-    SortableElement(({ value }: { value: string }) => (
+    SortableElement<{ index: number; value: string }>(({ value }: { value: string }) => (
         <img src={value} alt="Uploaded" className="rounded mb-2 w-50 h-50" />
     ))
 );
 
-const SortableList = SortableContainer(({ items }) => {
+const SortableList = SortableContainer<{ items: string[] }>(({ items }: { items: string[] }) => {
     return (
         <div className="grid grid-cols-2 gap-2">
             {items.map((value, index) => (
@@ -33,7 +33,6 @@ const SortableList = SortableContainer(({ items }) => {
 const UploadForm = () => {
     const { categories, getCategories } = useCategories();
     const [category, setCategory] = useState(0);
-    const [selectedImage, setSelectedImage] = useState("https://placehold.co/300x300");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [type, setType] = useState<"buy" | "sell">("buy");
@@ -59,7 +58,7 @@ const UploadForm = () => {
         }
     };
 
-    const handleSubmit = async e => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const token = localStorage.getItem("token");
         const response = await postListing(

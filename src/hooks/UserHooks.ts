@@ -1,16 +1,19 @@
 import {
+    GetMeResponse,
     GetUserResponse,
+    PostLoginRequest,
     PostLoginResponse,
     PostUsersRequest,
     PostUsersResponse,
     PutUserRequest,
-    User
+    User,
+    UserWithId
 } from "mpp-api-types";
 import { fetchData } from "../lib/functions";
 import { useEffect, useState } from "react";
 
 const useUser = () => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserWithId | null>(null);
 
     const getUserByToken = async (token: string) => {
         const options = {
@@ -34,7 +37,7 @@ const useUser = () => {
     };
 
     const getUserById = async (id: number) => {
-        return await fetchData<User>(import.meta.env.VITE_SERVER + "/users/" + id);
+        return await fetchData<GetUserResponse>(import.meta.env.VITE_SERVER + "/users/" + id);
     };
 
     const getUsernameAvailable = async (username: string) => {
@@ -106,7 +109,7 @@ const useMe = () => {
                 Authorization: "Bearer " + token
             }
         };
-        return await fetchData<User>(import.meta.env.VITE_SERVER + "/users/me", options);
+        return await fetchData<GetMeResponse>(import.meta.env.VITE_SERVER + "/users/me", options);
     };
 
     const putMe = async (user: PutUserRequest, token: string) => {
@@ -135,7 +138,7 @@ const useMe = () => {
 };
 
 const useAuthentication = () => {
-    const postLogin = async (creds: Credential) => {
+    const postLogin = async (creds: PostLoginRequest) => {
         return await fetchData<PostLoginResponse>(import.meta.env.VITE_SERVER + "/auth/login", {
             method: "POST",
             body: JSON.stringify(creds),

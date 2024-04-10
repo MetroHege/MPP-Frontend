@@ -6,14 +6,14 @@ import { FaBasketball } from "react-icons/fa6";
 import useListing from "../hooks/ListingHooks";
 import Listing from "../components/Listing";
 import FilterDropdown from "../components/FilterDropdown";
-import { Listing as Listingtype, User } from "mpp-api-types";
+import { ListingWithId, Listing as Listingtype, User } from "mpp-api-types";
 import { useUser } from "../hooks/UserHooks";
 import { useCategories } from "../hooks/CategoryHooks";
 
 const Home = () => {
     const { categories } = useCategories();
-    const [selectedCategory, setSelectedCategory] = useState("");
-    const { listings, searchTerm, setSearchTerm } = useListing({ category: selectedCategory });
+    const [selectedCategory, setSelectedCategory] = useState<number | "">("");
+    const { listings, searchTerm, setSearchTerm } = useListing({ category: +selectedCategory });
     const { user } = useUser();
     const [sortOrder, setSortOrder] = useState(localStorage.getItem("sortOrder") || "newest");
 
@@ -22,7 +22,7 @@ const Home = () => {
         const savedSortOrder = localStorage.getItem("sortOrder");
 
         if (savedCategory) {
-            setSelectedCategory(savedCategory);
+            setSelectedCategory(+savedCategory);
         }
 
         if (savedSortOrder) {
@@ -31,7 +31,7 @@ const Home = () => {
     }, []);
 
     useEffect(() => {
-        localStorage.setItem("selectedCategory", selectedCategory);
+        localStorage.setItem("selectedCategory", selectedCategory.toString());
     }, [selectedCategory]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +48,7 @@ const Home = () => {
     const categoryMapping: { [key: string]: string } = {};
 
     categories.forEach(category => {
-        categoryMapping[category.id] = category.name;
+        categoryMapping[category.id] = category.title;
     });
 
     const handleSortChange = (selectedSortOption: string) => {
@@ -60,7 +60,7 @@ const Home = () => {
     };
 
     useEffect(() => {
-        localStorage.setItem("selectedCategory", selectedCategory);
+        localStorage.setItem("selectedCategory", selectedCategory.toString());
         localStorage.setItem("sortOrder", sortOrder);
     }, [selectedCategory, sortOrder]);
 
@@ -135,9 +135,10 @@ const Home = () => {
             <div className="flex flex-row justify-between items-center mb-10">
                 <div className="flex items-center">
                     <Dropdown
-                        options={categories}
                         buttonText="Tuotekategoriat"
                         className="mr-2"
+                        value={+selectedCategory}
+                        onChange={() => {}}
                         onOptionSelect={setSelectedCategory}
                     />{" "}
                     <FilterDropdown
@@ -173,11 +174,13 @@ const Home = () => {
             <div>
                 {listings &&
                     listings
-                        .filter(
-                            (listing: Listingtype) =>
-                                listing.user.id !== user?.id &&
-                                (selectedCategory === "" ||
-                                    listing.category.id === +selectedCategory)
+                        .filter((listing: Listingtype) =>
+                            typeof listing.user === "number"
+                                ? listing.user
+                                : listing.user.id !== user?.id &&
+                                  (selectedCategory === "" || typeof listing.category === "number"
+                                      ? listing.category
+                                      : listing.category.id === +selectedCategory)
                         )
                         .sort((a, b) => {
                             switch (sortOrder) {
@@ -191,7 +194,7 @@ const Home = () => {
                                     return b.id - a.id;
                             }
                         })
-                        .map((listing: Listingtype) => (
+                        .map((listing: ListingWithId) => (
                             <Listing
                                 key={listing.id}
                                 item={{ ...listing, id: listing.id }}

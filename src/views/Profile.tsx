@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FaArrowUp, FaFutbol } from "react-icons/fa";
 import UserForm from "../components/UserForm";
 import { useMe } from "../hooks/UserHooks";
-import { User } from "mpp-api-types";
+import { ListingWithId, User, UserWithId } from "mpp-api-types";
 import { useUserContext } from "../contexts/ContextHooks";
 import { Listing as Listingtype } from "mpp-api-types";
 import useListing from "../hooks/ListingHooks";
@@ -14,6 +14,17 @@ import { useNavigate } from "react-router-dom";
 interface CustomSwitchProps {
     checked: boolean;
     onChange: () => void;
+    offColor?: string;
+    onColor?: string;
+    handleDiameter?: number;
+    uncheckedIcon?: boolean;
+    checkedIcon?: boolean;
+    boxShadow?: string;
+    activeBoxShadow?: string;
+    height?: number;
+    width?: number;
+    className?: string;
+    id?: string;
 }
 
 const CustomSwitch: React.FC<CustomSwitchProps> = ({ checked, onChange }) => {
@@ -34,7 +45,7 @@ const CustomSwitch: React.FC<CustomSwitchProps> = ({ checked, onChange }) => {
 
 const Profile = () => {
     const [showForm, setShowForm] = useState(false);
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<UserWithId | null>(null);
     const { getMe } = useMe();
     const [listingsCount, setListingsCount] = useState(0);
     const { listings, getListingsFromUser } = useListing();
@@ -197,13 +208,18 @@ const Profile = () => {
             <div>
                 <h1 className="text-4xl mb-4">Ilmoitukseni:</h1>
                 {listings &&
-                listings.filter((listing: Listingtype) => listing.user.id === user?.id).length >
-                    0 ? (
+                listings.filter((listing: Listingtype) =>
+                    typeof listing.user === "number" ? listing.user : listing.user.id === user?.id
+                ).length > 0 ? (
                     listings
-                        .filter((listing: Listingtype) => listing.user.id === user?.id)
+                        .filter((listing: Listingtype) =>
+                            typeof listing.user === "number"
+                                ? listing.user
+                                : listing.user.id === user?.id
+                        )
                         .slice()
                         .reverse()
-                        .map((listing: Listingtype) => (
+                        .map((listing: ListingWithId) => (
                             <Listing
                                 key={listing.id}
                                 item={{ ...listing, id: listing.id }}

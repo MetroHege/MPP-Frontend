@@ -13,22 +13,19 @@ const useComment = () => {
             body: JSON.stringify({ comment_text, media_id })
         };
 
-        return await fetchData<MessageResponse>(
-            import.meta.env.VITE_MEDIA_API + "/comments",
-            options
-        );
+        return await fetchData(import.meta.env.VITE_MEDIA_API + "/comments", options);
     };
 
     const { getUserById } = useUser();
 
     const getCommentsByMediaId = async (media_id: number) => {
         // TODO: Send a GET request to /comments/:media_id to get the comments.
-        const comments = await fetchData<Comment[]>(
+        const comments = await fetchData<any>(
             import.meta.env.VITE_MEDIA_API + "/comments/bymedia/" + media_id
         );
-        const commentsWithUsername = await Promise.all<Comment & { username: string }>(
-            comments.map(async comment => {
-                const user = await getUserById(comment.user_id);
+        const commentsWithUsername = await Promise.all(
+            comments.map(async (comment: any) => {
+                const user = await getUserById(comment.user.id);
                 return { ...comment, username: user.username };
             })
         );

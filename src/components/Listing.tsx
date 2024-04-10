@@ -5,15 +5,11 @@ import useListing from "../hooks/ListingHooks";
 import React from "react";
 import { useUser } from "../hooks/UserHooks";
 import Modal from "react-modal";
-import ComboBox from "./ComboBox";
-import { Category } from "mpp-api-types";
 import { useCategories } from "../hooks/CategoryHooks";
 import { useTheme } from "../contexts/ThemeContext";
 import Dropdown from "./Dropdown";
-import { useContext } from "react";
-import { UpdateContext } from "../contexts/UpdateContext";
 
-export enum Quality {
+enum Quality {
     New = 5,
     LikeNew = 4,
     Good = 3,
@@ -33,7 +29,7 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
     const [formData, setFormData] = useState(item);
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -53,22 +49,25 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("submit");
-
         const token = localStorage.getItem("token");
         if (token) {
+            const listing = {
+                ...formData,
+                category: (category !== 0 && category) || undefined,
+                images: undefined,
+                thumbnail: undefined,
+                user: undefined,
+                time: undefined
+            };
+
             await putListing(
                 item.id,
                 {
-                    ...formData,
-                    category,
-                    images: undefined,
-                    thumbnail: undefined,
-                    user: undefined,
-                    time: undefined
+                    ...listing
                 },
                 token
             );
+
             setModalIsOpen(false);
         } else {
             console.log("Token not found");
@@ -87,7 +86,9 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                         <p className="mt-2 text-l">
                             {item.description.split(" ").slice(0, 30).join(" ")}
                         </p>
-                        <p className="text-4xl mt-2">{parseInt(item.price)} €</p>
+                        <p className="text-4xl mt-2">
+                            {typeof item.price === "number" ? item.price : +item.price} €
+                        </p>
                     </div>
                     <div className="flex flex-col items-center justify-center p-3 w-1/5">
                         <p className="text-lg">{new Date(item.time).toLocaleDateString("fi-FI")}</p>{" "}
@@ -102,7 +103,7 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                     </div>
                 </div>
             </Link>
-            {user?.id === item.user.id && (
+            {user?.id === (typeof item.user === "number" ? item.user : item.user.id) && (
                 <div className="mt-2">
                     <button
                         onClick={() => setModalIsOpen(true)}

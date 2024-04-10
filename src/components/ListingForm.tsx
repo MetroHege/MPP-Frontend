@@ -10,9 +10,8 @@ interface ListingFormProps {
 }
 
 const ListingForm: React.FC<ListingFormProps> = ({ showForm, setShowForm }) => {
-    const [listing, setListing] = useState<PutListingRequest>({});
     const { putListing } = useListing();
-    const [formData, setFormData] = useState<PutListingRequest>({ id });
+    const [formData, setFormData] = useState<PutListingRequest & { id: number }>({ id: 0 });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });

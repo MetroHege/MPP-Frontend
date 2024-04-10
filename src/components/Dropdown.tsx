@@ -1,4 +1,4 @@
-import { Category } from "mpp-api-types";
+import { CategoryWithId } from "mpp-api-types";
 import { useState, useEffect, useRef } from "react";
 import { useCategories } from "../hooks/CategoryHooks";
 
@@ -70,7 +70,7 @@ const Dropdown = ({
                         aria-orientation="vertical"
                         aria-labelledby="options-menu"
                     >
-                        {categories.map((option: Category, index: number) => (
+                        {categories.map((option: CategoryWithId, index: number) => (
                             <a
                                 key={index}
                                 href="#"

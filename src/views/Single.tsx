@@ -1,9 +1,8 @@
-import { PostListingsResponse, User } from "mpp-api-types";
+import { ListingWithId, PostListingsResponse, User } from "mpp-api-types";
 import { Carousel } from "react-responsive-carousel";
 import { Link, NavigateFunction, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/UserHooks";
 import useListing from "../hooks/ListingHooks";
-import ListingForm from "../components/ListingForm";
 import { useEffect, useState } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 
@@ -13,18 +12,22 @@ const Single = () => {
     const item: PostListingsResponse = state;
     const userItem: User = state.user;
     const { user } = useUser();
-    const [showForm, setShowForm] = useState(false);
     const { theme } = useTheme();
     const { fetchListingsByCategory } = useListing();
-    const [randomListings, setRandomListings] = useState([]);
+    const [randomListings, setRandomListings] = useState<ListingWithId[]>([]);
 
     useEffect(() => {
         const fetchAndSetRandomListings = async () => {
-            let categoryListings = await fetchListingsByCategory(item.category.id); // use the category from the current listing
+            let categoryListings = await fetchListingsByCategory(
+                typeof item.category === "number" ? item.category : item.category.id
+            ); // use the category from the current listing
             if (categoryListings && categoryListings.length > 0) {
                 // Filter out the current listing and the user's listings
-                categoryListings = categoryListings.filter(
-                    listing => listing.id !== item.id && listing.user.id !== user?.id
+                categoryListings = categoryListings.filter(listing =>
+                    listing.id !== item.id && typeof listing.user === "number"
+                        ? listing.user
+                        : (typeof listing.user === "number" ? listing.user : listing.user.id) !==
+                          user?.id
                 );
                 const shuffled = [...categoryListings].sort(() => 0.5 - Math.random());
                 setRandomListings(shuffled.slice(0, 3));
@@ -32,7 +35,7 @@ const Single = () => {
         };
 
         fetchAndSetRandomListings();
-    }, [item.category.id, item.id, user?.id]);
+    }, [typeof item.category === "number" ? item.category : item.category.id, item.id, user?.id]);
 
     return (
         <div className="flex">
@@ -44,22 +47,24 @@ const Single = () => {
                 >
                     &#8592; Takaisin
                 </button>
-                <Carousel showThumbs={false}>
-                    {item.images.map((image, index) => (
-                        <div key={index}>
-                            <img
-                                className="w-64 h-130 object-cover rounded"
-                                src={image.url}
-                                alt={`Listing ${item.id}`}
-                            />
-                        </div>
-                    ))}
-                </Carousel>
+                {typeof item.images !== "string" ? (
+                    <Carousel showThumbs={false}>
+                        {item.images.map((image, index) => (
+                            <div key={index}>
+                                <img
+                                    className="w-64 h-130 object-cover rounded"
+                                    src={image.url}
+                                    alt={`Listing ${item.id}`}
+                                />
+                            </div>
+                        ))}
+                    </Carousel>
+                ) : (
+                    <></>
+                )}
                 <div className="p-3 flex mb-4">
                     <p className="text-4xl mt-2 w-1/2 font-bold">{item.title}</p>
-                    <p className="text-4xl mt-2 w-1/2 text-right font-bold">
-                        {parseInt(item.price)} €
-                    </p>{" "}
+                    <p className="text-4xl mt-2 w-1/2 text-right font-bold">{+item.price} €</p>{" "}
                 </div>
                 <div className="flex justify-between items-center">
                     <h2 className=" text-2xl">Lisätiedot</h2>
@@ -130,14 +135,18 @@ const Single = () => {
                             {" "}
                             <div className="bg-main-light w-full rounded p-2 flex items-center">
                                 <img
-                                    src={listing.images[0].url}
+                                    src={
+                                        listing.images instanceof Array
+                                            ? listing.images[0].url
+                                            : listing.images.split(",")[0]
+                                    }
                                     alt={`Listing ${listing.id}`}
                                     className="w-36 h-36 object-cover"
                                 />
                                 <div className="ml-4 flex flex-row">
                                     <div className="w-1/2">
                                         <h2 className="text-xl my-2">{listing.title}</h2>
-                                        <p className="text-xl my-2">{parseInt(listing.price)} €</p>
+                                        <p className="text-xl my-2">{+listing.price} €</p>
                                     </div>
                                     <div className="ml-4 w-1/2">
                                         <p className="text-xl my-2">

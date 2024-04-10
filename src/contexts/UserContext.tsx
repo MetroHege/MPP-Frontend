@@ -3,12 +3,12 @@ import React, { createContext, useState } from "react";
 import { useAuthentication, useUser } from "../hooks/UserHooks";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContextType, Credentials } from "../types/LocalTypes";
-import { PostUsersRequest } from "mpp-api-types";
+import { PostUsersResponse } from "mpp-api-types";
 
 const UserContext = createContext<AuthContextType | null>(null);
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    const [user, setUser] = useState<PostUsersRequest | null>(null);
+    const [user, setUser] = useState<PostUsersResponse | null>(null);
     const { postLogin } = useAuthentication();
     const { getUserByToken } = useUser();
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 localStorage.setItem("token", loginResult.token);
                 setUser(loginResult.user);
                 let origin = "";
-                if (loginResult.user.level_name === "Admin") {
+                if (loginResult.user.admin) {
                     origin = "/admin";
                 } else {
                     origin = "/";
@@ -84,10 +84,9 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
             const token = localStorage.getItem("token");
             if (token) {
                 const userResponse = await getUserByToken(token);
-                setUser(userResponse.user);
-                console.log("level", userResponse.user.level_name);
+                setUser(userResponse);
                 let origin = "";
-                if (userResponse.user.level_name === "Admin") {
+                if (userResponse.admin) {
                     origin = "/admin";
                 } else {
                     origin = location.state.from.pathname || "/";

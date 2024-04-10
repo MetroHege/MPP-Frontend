@@ -1,9 +1,9 @@
-import { PostListingsRequest, User } from "mpp-api-types";
+import { PostLoginRequest, UserWithId } from "mpp-api-types";
 
-export type Credentials = Pick<User, keyof User>;
+export type Credentials = PostLoginRequest;
 
 export type AuthContextType = {
-    user: PostListingsRequest | null;
+    user: UserWithId | null;
     handleLogin: (credentials: Credentials) => void;
     handleLogout: () => void;
     handleAutoLogin: () => void;

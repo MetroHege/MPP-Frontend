@@ -12,7 +12,7 @@ const useLike = () => {
             body: JSON.stringify({ media_id })
         };
 
-        return await fetchData<MessageResponse>(import.meta.env.VITE_MEDIA_API + "/likes", options);
+        return await fetchData<any>(import.meta.env.VITE_MEDIA_API + "/likes", options);
     };
 
     const deleteLike = async (like_id: number, token: string) => {
@@ -23,10 +23,7 @@ const useLike = () => {
                 Authorization: "Bearer " + token
             }
         };
-        return await fetchData<MessageResponse>(
-            import.meta.env.VITE_MEDIA_API + "/likes/" + like_id,
-            options
-        );
+        return await fetchData<any>(import.meta.env.VITE_MEDIA_API + "/likes/" + like_id, options);
     };
 
     const getCountByMediaId = async (media_id: number) => {
@@ -44,7 +41,7 @@ const useLike = () => {
                 Authorization: "Bearer " + token
             }
         };
-        return await fetchData<Like>(
+        return await fetchData<any>(
             import.meta.env.VITE_MEDIA_API + "/likes/bymedia/user/" + media_id,
             options
         );

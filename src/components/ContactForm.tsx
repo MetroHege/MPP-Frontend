@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { useNavigate } from "react-router-dom";
 
 export default function ContactForm() {
     const [name, setName] = useState("");
@@ -8,7 +7,7 @@ export default function ContactForm() {
     const [message, setMessage] = useState("");
     const [isSubmitted, setIsSubmitted] = useState(false);
 
-    const [error, setError] = useState("");
+    const [_error, setError] = useState("");
 
     function onSubmit(e: React.FormEvent) {
         e.preventDefault();

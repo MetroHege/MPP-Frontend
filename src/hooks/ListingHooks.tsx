@@ -4,7 +4,6 @@ import { fetchData } from "../lib/functions";
 import {
     DeleteListingResponse,
     GetListingsResponse,
-    Listing,
     ListingWithId,
     PostListingsRequest,
     PostListingsResponse,
