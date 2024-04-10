@@ -150,7 +150,8 @@ const Home = () => {
                     {(selectedCategory || sortOrder !== "newest") && (
                         <div className="flex items-center space-x-2 ml-4">
                             <span>
-                                {selectedCategory && `Kategoria: ${selectedCategory}`}
+                                {selectedCategory &&
+                                    `Kategoria: ${categories.find(category => category.id === +selectedCategory)?.title}`}
                                 {selectedCategory && sortOrder !== "newest" && " | "}
                                 {sortOrder !== "newest" && `${sortOptionsMapping[sortOrder]}`}
                             </span>

@@ -5,6 +5,7 @@ import { useUser } from "../hooks/UserHooks";
 import useListing from "../hooks/ListingHooks";
 import { useEffect, useState } from "react";
 import { useTheme } from "../contexts/ThemeContext";
+import qualityToText from "../functions/qualityToText";
 
 const Single = () => {
     const { state } = useLocation();
@@ -120,7 +121,7 @@ const Single = () => {
                             {new Date(item.time).toLocaleDateString("fi-FI")}
                         </p>
                         <p className="text-3xl">{userItem.city}</p>
-                        <p className="text-3xl">{item.quality}</p>
+                        <p className="text-3xl">{qualityToText(item.quality)}</p>
                         <p className="text-3xl">
                             {typeof item.category === "number"
                                 ? item.category
