@@ -35,12 +35,34 @@ const UploadForm = () => {
     const [category, setCategory] = useState(0);
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [type, setType] = useState<"buy" | "sell">("buy");
+    const [type, setType] = useState<"buy" | "sell" | "">("");
     const [quality, setQuality] = useState(0);
     const [price, setPrice] = useState(0);
     const { postListing } = useListing();
     const [selectedImages, setSelectedImages] = useState<File[]>([]);
     const navigate = useNavigate();
+
+    const [validationErrors, setValidationErrors] = useState({
+        image: "",
+        category: "",
+        title: "",
+        description: "",
+        quality: "",
+        type: ""
+    });
+
+    const validateForm = () => {
+        const errors = {
+            image: selectedImages.length === 0 ? "Lataa vähintään yksi kuva" : "",
+            title: title === "" ? "Anna ilmoitukselle otsikko" : "",
+            description: description === "" ? "Anna ilmoitukselle kuvaus" : "",
+            type: type !== "buy" && type !== "sell" ? "Valitse ilmoituksen tyyppi" : "",
+            quality: quality === 0 ? "Valitse tuotteen kunto" : "",
+            category: category === 0 ? "Valitse tuotteen kategoria" : ""
+        };
+        setValidationErrors(errors);
+        return !Object.values(errors).some(error => error !== "");
+    };
 
     const onSortEnd = ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) => {
         setSelectedImages(prevImages => {
@@ -60,6 +82,10 @@ const UploadForm = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
         const token = localStorage.getItem("token");
         const response = await postListing(
             selectedImages,
@@ -233,6 +259,14 @@ const UploadForm = () => {
                         />
                     </div>
                     <div className="mt-4">
+                        {Object.values(validationErrors).map(
+                            (error, index) =>
+                                error && (
+                                    <p key={index} className="text-red-500">
+                                        {error}
+                                    </p>
+                                )
+                        )}
                         <button
                             type="submit"
                             className=" w-1/2 p-2 bg-green-gradient font-bold rounded"
