@@ -24,11 +24,11 @@ const Single = () => {
             ); // use the category from the current listing
             if (categoryListings && categoryListings.length > 0) {
                 // Filter out the current listing and the user's listings
-                categoryListings = categoryListings.filter(listing =>
-                    listing.id !== item.id && typeof listing.user === "number"
-                        ? listing.user
-                        : (typeof listing.user === "number" ? listing.user : listing.user.id) !==
-                          user?.id
+                categoryListings = categoryListings.filter(
+                    listing =>
+                        listing.id !== item.id &&
+                        (typeof listing.user === "number" ? listing.user : listing.user.id) !==
+                            user?.id
                 );
                 const shuffled = [...categoryListings].sort(() => 0.5 - Math.random());
                 setRandomListings(shuffled.slice(0, 3));
