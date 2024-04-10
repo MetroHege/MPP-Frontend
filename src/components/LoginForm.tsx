@@ -47,7 +47,7 @@ const LoginForm = () => {
                         </div>
                         <div className="w-full justify-start mt-2">
                             <button
-                                className=" w-1/3 p-2 bg-green-gradient font-bold"
+                                className="w-1/3 p-2 bg-green-gradient font-bold rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                 type="submit"
                             >
                                 Kirjaudu

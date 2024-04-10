@@ -269,7 +269,7 @@ const UploadForm = () => {
                         )}
                         <button
                             type="submit"
-                            className=" w-1/2 p-2 bg-green-gradient font-bold rounded"
+                            className=" w-1/2 p-2 bg-green-gradient font-bold rounded hover:brightness-75"
                         >
                             Jätä ilmoitus!
                         </button>

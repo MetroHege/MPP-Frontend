@@ -5,12 +5,11 @@ import { PostUsersRequest } from "mpp-api-types";
 
 const RegisterForm = () => {
     const { postUser } = useUser();
-    // const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
-    // const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
+    const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
+    const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
+    const { getUsernameAvailable, getEmailAvailable } = useUser();
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const [phoneError, setPhoneError] = useState("");
-    const [emailError, setEmailError] = useState("");
 
     const initValues = {
         username: "",
@@ -50,35 +49,46 @@ const RegisterForm = () => {
         initValues
     );
 
-    const validatePhoneNumber = () => {
-        if (!/^\d*$/.test(inputs.phone ?? "")) {
-            setPhoneError("Vain numerot sallittu");
-        } else {
-            setPhoneError("");
-        }
+    const [validationErrors, setValidationErrors] = useState({
+        username: "",
+        firstName: "",
+        lastName: "",
+        city: "",
+        phone: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    });
+
+    const validateForm = () => {
+        const errors = {
+            username: inputs.username.trim() === "" ? "Käyttäjänimi vaaditaan" : "",
+            firstName: inputs.firstName.trim() === "" ? "Etunimi vaaditaan" : "",
+            lastName: inputs.lastName.trim() === "" ? "Sukunimi vaaditaan" : "",
+            city: inputs.city.trim() === "" ? "Kaupunki vaaditaan" : "",
+            phone: inputs.phone && !/^\+\d*$/.test(inputs.phone) ? "Vain numerot sallittu" : "",
+            email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.email ?? "")
+                ? "Väärä sähköpostimuoto"
+                : "",
+            password: !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(inputs.password)
+                ? "Vähintään 8 merkkiä, iso ja pieni kirjain sekä numero"
+                : "",
+            confirmPassword: inputs.password !== confirmPassword ? "Salasanat eivät täsmää" : ""
+        };
+        setValidationErrors(errors);
+        return !Object.values(errors).some(error => error !== "");
     };
 
-    const validateEmailFormat = () => {
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.email ?? "")) {
-            setEmailError("Kirjoita sähköpostimuodossa");
-        } else {
-            setEmailError("");
-        }
+    const handleUsernameBlur = async (event: React.SyntheticEvent<HTMLInputElement>) => {
+        console.log(event.currentTarget.value);
+        const result = await getUsernameAvailable(event.currentTarget.value);
+        setUsernameAvailable(result.available);
     };
 
-    // const { getUsernameAvailable, getEmailAvailable } = useUser();
-
-    // const handleUsernameBlur = async (event: React.SyntheticEvent<HTMLInputElement>) => {
-    //     console.log(event.currentTarget.value);
-    //     const result = await getUsernameAvailable(event.currentTarget.value);
-    //     setUsernameAvailable(result.available);
-    // };
-
-    // const handleEmailBlur = async () => {
-    //     // can also be used like this
-    //     const result = await getEmailAvailable(inputs.email);
-    //     setEmailAvailable(result.available);
-    // };
+    const handleEmailBlur = async () => {
+        const result = await getEmailAvailable(inputs.email);
+        setEmailAvailable(result.available);
+    };
 
     return (
         <div className="flex w-full">
@@ -96,10 +106,19 @@ const RegisterForm = () => {
                                 type="text"
                                 id="username"
                                 onChange={handleInputChange}
-                                // onBlur={handleUsernameBlur}
+                                onBlur={event => {
+                                    handleUsernameBlur(event);
+                                    validateForm();
+                                }}
                                 autoComplete="username"
                             />
                         </div>
+                        {validationErrors.username ||
+                        (!usernameAvailable && "Username not available!") ? (
+                            <p className="text-red-500 mb-1">
+                                {validationErrors.username || "Username not available!"}
+                            </p>
+                        ) : null}
                         <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="firstname">
                                 Etunimi:
@@ -110,8 +129,12 @@ const RegisterForm = () => {
                                 type="text"
                                 id="firstname"
                                 onChange={handleInputChange}
+                                onBlur={validateForm}
                             />
                         </div>
+                        {validationErrors.firstName && (
+                            <p className="text-red-500 mb-1">{validationErrors.firstName}</p>
+                        )}
                         <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="lastname">
                                 Sukunimi:
@@ -122,8 +145,12 @@ const RegisterForm = () => {
                                 type="text"
                                 id="lastname"
                                 onChange={handleInputChange}
+                                onBlur={validateForm}
                             />
                         </div>
+                        {validationErrors.lastName && (
+                            <p className="text-red-500 mb-1">{validationErrors.lastName}</p>
+                        )}
                         <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="city">
                                 Kaupunki:
@@ -134,8 +161,12 @@ const RegisterForm = () => {
                                 type="text"
                                 id="city"
                                 onChange={handleInputChange}
+                                onBlur={validateForm}
                             />
                         </div>
+                        {validationErrors.city && (
+                            <p className="text-red-500 mb-1">{validationErrors.city}</p>
+                        )}
                         <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="phonenumber">
                                 Puhelinnumero:
@@ -146,14 +177,12 @@ const RegisterForm = () => {
                                 type="tel"
                                 id="phonenumber"
                                 onChange={handleInputChange}
-                                onBlur={validatePhoneNumber}
+                                onBlur={validateForm}
                                 pattern="\d*"
                             />
                         </div>
-                        {phoneError && (
-                            <div className="error-message">
-                                <p className="text-red-500">{phoneError}</p>
-                            </div>
+                        {validationErrors.phone && (
+                            <p className="text-red-500 mb-1">{validationErrors.phone}</p>
                         )}
                         <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="email">
@@ -165,15 +194,18 @@ const RegisterForm = () => {
                                 type="email"
                                 id="email"
                                 onChange={handleInputChange}
-                                onBlur={validateEmailFormat}
+                                onBlur={() => {
+                                    handleEmailBlur();
+                                    validateForm();
+                                }}
                                 autoComplete="email"
                             />
                         </div>
-                        {emailError && (
-                            <div className="error-message">
-                                <p className="text-red-500">{emailError}</p>
-                            </div>
-                        )}
+                        {validationErrors.email || (!emailAvailable && "Email not available!") ? (
+                            <p className="text-red-500 mb-1">
+                                {validationErrors.email || "Email not available!"}
+                            </p>
+                        ) : null}
                         <div className="flex w-full pb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="password">
                                 Salasana:
@@ -188,6 +220,9 @@ const RegisterForm = () => {
                                 autoComplete="new-password"
                             />
                         </div>
+                        {validationErrors.password && (
+                            <p className="text-red-500 mb-1">{validationErrors.password}</p>
+                        )}
                         <div className="flex w-full pb-2 mb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="confirmpassword">
                                 Vahvista Salasana:
@@ -199,11 +234,14 @@ const RegisterForm = () => {
                                     type="password"
                                     id="confirmpassword"
                                     onChange={e => setConfirmPassword(e.target.value)}
+                                    onBlur={validateForm}
                                     autoComplete="new-password"
                                 />
-                                {errorMessage && <p className="text-red-500">{errorMessage}</p>}
                             </div>
                         </div>
+                        {validationErrors.confirmPassword && (
+                            <p className="text-red-500 mb-1">{validationErrors.confirmPassword}</p>
+                        )}
                         <div className="w-full justify-start mb-4">
                             <p>
                                 Luomalla tilin hyväksyt DivariNet:n{" "}
@@ -214,7 +252,7 @@ const RegisterForm = () => {
                         </div>
                         <div className="w-full justify-start mt-2">
                             <button
-                                className=" w-1/3 p-2 bg-green-gradient font-bold mb-4"
+                                className="w-1/3 p-2 mb-2 bg-green-gradient font-bold rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                 type="submit"
                             >
                                 Rekisteröidy
