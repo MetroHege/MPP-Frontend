@@ -11,7 +11,7 @@ import { useUser } from "../hooks/UserHooks";
 import { useCategories } from "../hooks/CategoryHooks";
 
 const Home = () => {
-    const { categories } = useCategories();
+    const { categories, getCategories } = useCategories();
     const [selectedCategory, setSelectedCategory] = useState<number | "">("");
     const { listings, searchTerm, setSearchTerm } = useListing({ category: +selectedCategory });
     const { user } = useUser();
@@ -29,10 +29,6 @@ const Home = () => {
             setSortOrder(savedSortOrder);
         }
     }, []);
-
-    useEffect(() => {
-        localStorage.setItem("selectedCategory", selectedCategory.toString());
-    }, [selectedCategory]);
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
@@ -63,6 +59,10 @@ const Home = () => {
         localStorage.setItem("selectedCategory", selectedCategory.toString());
         localStorage.setItem("sortOrder", sortOrder);
     }, [selectedCategory, sortOrder]);
+
+    useEffect(() => {
+        getCategories();
+    }, []);
 
     const clearFilters = () => {
         setSelectedCategory("");
