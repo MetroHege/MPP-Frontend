@@ -177,7 +177,7 @@ const Home = () => {
                             (listing: Listingtype) =>
                                 listing.user.id !== user?.id &&
                                 (selectedCategory === "" ||
-                                    listing.category.id === selectedCategory)
+                                    listing.category.id === +selectedCategory)
                         )
                         .sort((a, b) => {
                             switch (sortOrder) {
