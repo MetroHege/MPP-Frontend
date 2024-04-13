@@ -164,7 +164,7 @@ const Profile = () => {
                     <p className="text-2xl mb-4">Kaupunki: {user.city}</p>
                     <div className="flex flex-col">
                         <button
-                            className="w-1/2 p-2 bg-yellow-gradient font-bold mb-2 rounded hover:brightness-75"
+                            className="w-1/2 p-2 bg-yellow-gradient font-bold mb-2 rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                             type="submit"
                             onClick={() => setShowForm(true)}
                         >
@@ -176,7 +176,7 @@ const Profile = () => {
                             setParentUser={setUser}
                         />
                         <button
-                            className="w-1/2 p-2 bg-red-gradient font-bold rounded hover:brightness-75"
+                            className="w-1/2 p-2 bg-red-gradient font-bold rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                             type="submit"
                             onClick={handleLogout}
                         >
@@ -187,7 +187,6 @@ const Profile = () => {
                 <div className="w-1/2">
                     <p className="text-4xl mb-4">Aktiivisia ilmoituksia: {listingsCount}</p>
                     <p className="text-4xl mb-4">Kyselyjä ilmoituksissa: 12</p>
-                    <p className="text-4xl mb-4">Tykkäyksiä ilmoituksissa: 4</p>
                     <div className="flex items-center">
                         <p className="mr-2 text-2xl">Vaihda teemaa:</p>
                         <CustomSwitch
@@ -236,7 +235,7 @@ const Profile = () => {
                             Voi ei, näyttää siltä ettei sinulla ole vielä ilmoituksia
                         </p>
                         <button
-                            className=" w-1/4 p-2 bg-green-gradient font-bold rounded mb-10"
+                            className=" w-1/4 p-2 bg-green-gradient font-bold rounded mb-10 text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                             onClick={() => navigate("/upload")}
                         >
                             Jätä ilmoitus

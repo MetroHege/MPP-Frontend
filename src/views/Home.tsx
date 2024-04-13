@@ -132,7 +132,7 @@ const Home = () => {
             <div>
                 <p className="text-2xl mb-4">Suodata ilmoituksia:</p>
             </div>
-            <div className="flex flex-row justify-between items-center mb-10">
+            <div className="flex flex-row justify-between items-center mb-4">
                 <div className="flex items-center">
                     <Dropdown
                         buttonText="Tuotekategoriat"
@@ -147,22 +147,6 @@ const Home = () => {
                         selectedOption={sortOptionsMapping[sortOrder]}
                         handleOptionChange={handleSortChange}
                     />
-                    {(selectedCategory || sortOrder !== "newest") && (
-                        <div className="flex items-center space-x-2 ml-4">
-                            <span>
-                                {selectedCategory &&
-                                    `Kategoria: ${categories.find(category => category.id === +selectedCategory)?.title}`}
-                                {selectedCategory && sortOrder !== "newest" && " | "}
-                                {sortOrder !== "newest" && `${sortOptionsMapping[sortOrder]}`}
-                            </span>
-                            <button
-                                className="bg-transparent border-none cursor-pointer text-2xl text-red-500"
-                                onClick={clearFilters}
-                            >
-                                X
-                            </button>
-                        </div>
-                    )}
                 </div>
                 <input
                     type="text"
@@ -172,6 +156,22 @@ const Home = () => {
                     className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none text-gray-900"
                 />
             </div>
+            {(selectedCategory || sortOrder !== "newest") && (
+                <div className="flex items-center mb-4 space-x-2 ml-4">
+                    <span>
+                        {selectedCategory &&
+                            `${categories.find(category => category.id === +selectedCategory)?.title}`}
+                        {selectedCategory && sortOrder !== "newest" && " | "}
+                        {sortOrder !== "newest" && `${sortOptionsMapping[sortOrder]}`}
+                    </span>
+                    <button
+                        className="bg-transparent border-none cursor-pointer text-2xl text-red-500"
+                        onClick={clearFilters}
+                    >
+                        X
+                    </button>
+                </div>
+            )}
             <div>
                 {listings &&
                     listings
@@ -207,7 +207,7 @@ const Home = () => {
                         <p className="my-8 text-4xl">Hmm...🤔</p>
                         <p className="my-8 text-4xl">
                             Valitettavasti haullasi ei näyttänyt löytynyt yhtään ilmoitusta, kokeile
-                            hakea jollain muulla hakusanalla...
+                            jotain muuta...
                         </p>
                     </div>
                 )}

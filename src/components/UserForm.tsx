@@ -57,7 +57,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                     <hr className="w-full mt-2 mb-3 border-gray-300" />
 
                     <form
-                        className="flex flex-col items-center mb-0 ml-4 mr-4 w-full"
+                        className="flex flex-col ml-4 mr-4 w-full"
                         onSubmit={async e => {
                             e.preventDefault();
                             const token = localStorage.getItem("token");
@@ -70,8 +70,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                             }
                         }}
                     >
-                        <div className="flex w-2/3 pb-2">
-                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="username">
+                        <div className="flex w-full pb-2">
+                            <label
+                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                htmlFor="username"
+                            >
                                 Käyttäjänimi:
                             </label>
                             <input
@@ -84,9 +87,9 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.username}
                             />
                         </div>
-                        <div className="flex w-2/3 pb-2">
+                        <div className="flex w-full pb-2">
                             <label
-                                className="w-1/3 text-left text-xl font-bold"
+                                className="w-1/3 pl-4 text-left text-xl font-bold"
                                 htmlFor="firstName"
                             >
                                 Etunimi:
@@ -100,8 +103,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.firstName}
                             />
                         </div>
-                        <div className="flex w-2/3 pb-2">
-                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
+                        <div className="flex w-full pb-2">
+                            <label
+                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                htmlFor="lastName"
+                            >
                                 Sukunimi:
                             </label>
                             <input
@@ -113,8 +119,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.lastName}
                             />
                         </div>
-                        <div className="flex w-2/3 pb-2">
-                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
+                        <div className="flex w-full pb-2">
+                            <label
+                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                htmlFor="lastName"
+                            >
                                 Puhelinnumero:
                             </label>
                             <input
@@ -126,8 +135,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.phone || ""}
                             />
                         </div>
-                        <div className="flex w-2/3 pb-2">
-                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
+                        <div className="flex w-full pb-2">
+                            <label
+                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                htmlFor="lastName"
+                            >
                                 Sähköposti:
                             </label>
                             <input
@@ -139,8 +151,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.email}
                             />
                         </div>
-                        <div className="flex w-2/3 pb-2">
-                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
+                        <div className="flex w-full pb-2">
+                            <label
+                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                htmlFor="lastName"
+                            >
                                 Salasana:
                             </label>
                             <input
@@ -152,8 +167,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.password}
                             />
                         </div>
-                        <div className="flex w-2/3 pb-2">
-                            <label className="w-1/3 text-left text-xl font-bold" htmlFor="lastName">
+                        <div className="flex w-full pb-2">
+                            <label
+                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                htmlFor="lastName"
+                            >
                                 Kaupunki:
                             </label>
                             <input
@@ -165,7 +183,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.city}
                             />
                         </div>
-                        <div className=" text-left">
+                        <div className="pl-4">
                             <p>
                                 Mikäli haluat poistaa tilisi kokonaisuudessaan, paina{" "}
                                 <button
@@ -180,15 +198,15 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 </button>
                             </p>
                         </div>
-                        <div className="ml-auto mt-4 space-x-4">
+                        <div className="ml-auto mt-4 mr-10 space-x-4">
                             <button
-                                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                className="px-4 py-2 bg-green-gradient rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                 type="submit"
                             >
                                 Tallenna
                             </button>
                             <button
-                                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                className="px-4 py-2 bg-red-gradient rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                 type="button"
                                 onClick={() => setShowForm(false)}
                             >
@@ -230,7 +248,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
 
                                 <div className="ml-auto mt-4 space-x-4">
                                     <button
-                                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                        className="px-4 py-2 bg-green-gradient rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                         onClick={async () => {
                                             const token = localStorage.getItem("token");
                                             if (token) {
@@ -243,7 +261,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                         Hyväksy
                                     </button>
                                     <button
-                                        className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+                                        className="px-4 py-2 bg-red-gradient rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                         onClick={() => setModalIsOpen(false)}
                                     >
                                         Peruuta
@@ -280,7 +298,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 </p>
                                 <div className="ml-auto mt-4 space-x-4">
                                     <button
-                                        className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                        className="px-4 py-2 bg-green-gradient rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                         onClick={() => {
                                             navigate("/");
                                             setIsDeleted(false);
@@ -289,7 +307,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                         Palaa kotisivulle
                                     </button>
                                     <button
-                                        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                        className="px-4 py-2 bg-blue-500 rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                         onClick={() => {
                                             navigate("/contact");
                                             setIsDeleted(false);
