@@ -114,7 +114,7 @@ const Single = () => {
                         {item.images.map((image, index) => (
                             <div key={index}>
                                 <img
-                                    className="w-64 h-130 object-cover rounded"
+                                    className="w-64 h-150 object-cover rounded"
                                     src={image.url}
                                     alt={`Listing ${item.id}`}
                                 />
