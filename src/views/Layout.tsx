@@ -13,15 +13,21 @@ import { useUser } from "../hooks/UserHooks";
 import { useCategories } from "../hooks/CategoryHooks"; // Import the getCategories function
 import useListing from "../hooks/ListingHooks";
 import { useTheme } from "../contexts/ThemeContext";
+import { useUserContext } from "../contexts/ContextHooks";
 
 const Layout = () => {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const { getAllUsers } = useUser();
+    const { user, handleAutoLogin } = useUserContext();
     const [userCount, setUserCount] = useState<number>(0); // Declare setUserCount function
     const { categories, getCategories } = useCategories();
     const { listings } = useListing();
     const { theme } = useTheme();
+
+    if (!user) {
+        handleAutoLogin();
+    }
 
     useEffect(() => {
         getCategories();
@@ -66,30 +72,35 @@ const Layout = () => {
                                     Koti
                                 </Link>
                             </li>
-                            <li>
-                                <Link
-                                    className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/profile" ? "underline" : ""}`}
-                                    to="/profile"
-                                >
-                                    Profiili
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/upload" ? "underline" : ""}`}
-                                    to="/upload"
-                                >
-                                    Ilmoita
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/login" ? "underline" : ""}`}
-                                    to="/login"
-                                >
-                                    <FontAwesomeIcon icon={faUser} />
-                                </Link>
-                            </li>
+                            {user ? (
+                                <>
+                                    <li>
+                                        <Link
+                                            className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/profile" ? "underline" : ""}`}
+                                            to="/profile"
+                                        >
+                                            Profiili
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/upload" ? "underline" : ""}`}
+                                            to="/upload"
+                                        >
+                                            Ilmoita
+                                        </Link>
+                                    </li>
+                                </>
+                            ) : (
+                                <li>
+                                    <Link
+                                        className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/login" ? "underline" : ""}`}
+                                        to="/login"
+                                    >
+                                        <FontAwesomeIcon icon={faUser} />
+                                    </Link>
+                                </li>
+                            )}
                         </ul>
                     </nav>
                 </div>

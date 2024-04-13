@@ -12,6 +12,7 @@ import { UpdateProvider } from "./contexts/UpdateContext";
 import { useEffect } from "react";
 import Contact from "./views/Contact";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
     useEffect(() => {
@@ -26,8 +27,22 @@ const App = () => {
                         <Routes>
                             <Route element={<Layout />}>
                                 <Route path="/" element={<Home />} />
-                                <Route path="/profile" element={<Profile />} />
-                                <Route path="/upload" element={<Upload />} />
+                                <Route
+                                    path="/profile"
+                                    element={
+                                        <ProtectedRoute>
+                                            <Profile />
+                                        </ProtectedRoute>
+                                    }
+                                />
+                                <Route
+                                    path="/upload"
+                                    element={
+                                        <ProtectedRoute>
+                                            <Upload />
+                                        </ProtectedRoute>
+                                    }
+                                />
                                 <Route path="/single" element={<Single />} />
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/rules" element={<Rules />} />
