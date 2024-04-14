@@ -35,8 +35,11 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
     const handleLogin = async (credentials: Credentials) => {
         try {
-            const failedAttempts = Number(localStorage.getItem("failedAttempts") || "0");
-            const lastFailedAttempt = Number(localStorage.getItem("lastFailedAttempt") || "0");
+            const failedAttemptsKey = `${credentials.username}_failedAttempts`;
+            const lastFailedAttemptKey = `${credentials.username}_lastFailedAttempt`;
+
+            const failedAttempts = Number(localStorage.getItem(failedAttemptsKey) || "0");
+            const lastFailedAttempt = Number(localStorage.getItem(lastFailedAttemptKey) || "0");
             const now = Date.now();
 
             if (failedAttempts >= 3 && now - lastFailedAttempt < 5 * 60 * 1000) {
@@ -50,7 +53,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
             if (loginResult) {
                 localStorage.setItem("token", loginResult.token);
-                localStorage.setItem("failedAttempts", "0");
+                localStorage.setItem(failedAttemptsKey, "0");
                 setUser(loginResult.user);
                 let origin = "";
                 if (loginResult.user.admin === true) {
@@ -61,9 +64,12 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 navigate(origin);
             }
         } catch (e) {
-            const failedAttempts = Number(localStorage.getItem("failedAttempts") || "0");
-            localStorage.setItem("failedAttempts", String(failedAttempts + 1));
-            localStorage.setItem("lastFailedAttempt", String(Date.now()));
+            const failedAttemptsKey = `${credentials.username}_failedAttempts`;
+            const lastFailedAttemptKey = `${credentials.username}_lastFailedAttempt`;
+
+            const failedAttempts = Number(localStorage.getItem(failedAttemptsKey) || "0");
+            localStorage.setItem(failedAttemptsKey, String(failedAttempts + 1));
+            localStorage.setItem(lastFailedAttemptKey, String(Date.now()));
             alert((e as Error).message);
         }
     };
