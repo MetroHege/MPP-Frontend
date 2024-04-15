@@ -105,7 +105,10 @@ const UploadForm = () => {
         <form onSubmit={handleSubmit}>
             <div className="flex">
                 <div className="w-1/2 p-4">
-                    <h1 className="text-4xl mb-4">Kuvat:</h1>
+                    <h1 className="text-4xl">Kuvat:</h1>
+                    <h3 className="mb-2 text-xs text-slate-500">
+                        Voit lisätä maksimissaan 5 kuvaa
+                    </h3>
                     <div className="mb-4">
                         {selectedImages.length > 0 && (
                             <p>
@@ -127,7 +130,7 @@ const UploadForm = () => {
                             placeholder="Tuotteen nimi..."
                             value={title}
                             onChange={e => setTitle(e.target.value)}
-                            className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                            className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                         />
                     </div>
                 </div>
@@ -141,7 +144,7 @@ const UploadForm = () => {
                             placeholder="Tuotekuvaus..."
                             value={description}
                             onChange={e => setDescription(e.target.value)}
-                            className="w-2/3 h-30 rounded border border-slate-500 p-2 text-slate-950"
+                            className="w-2/3 h-30 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                         ></textarea>
                     </div>
                     <div className="mb-4">
@@ -255,7 +258,7 @@ const UploadForm = () => {
                             type="text"
                             value={price}
                             onChange={e => setPrice(Number(e.target.value))}
-                            className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                            className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                         />
                     </div>
                     <div className="mt-4">

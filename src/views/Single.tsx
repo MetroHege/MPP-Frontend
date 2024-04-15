@@ -150,7 +150,9 @@ const Single = () => {
                                 className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50"
                                 contentLabel="Edit Listing"
                             >
-                                <div className="bg-main-medium rounded-lg w-1/3">
+                                <div
+                                    className={`bg-main-medium rounded-lg w-1/3 ${theme === "light" ? "text-slate-950 bg-slate-100" : "text-white bg-main-medium"}`}
+                                >
                                     <form
                                         className="flex flex-col items-start p-4"
                                         onSubmit={handleSubmit}
@@ -177,7 +179,7 @@ const Single = () => {
                                                 Otsikko:
                                             </label>
                                             <input
-                                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
+                                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                                 type="text"
                                                 name="title"
                                                 value={formData.title}
@@ -193,7 +195,7 @@ const Single = () => {
                                                 Kuvaus:
                                             </label>
                                             <textarea
-                                                className="w-1/2 h-30 rounded border border-gray-300 p-2 text-gray-600"
+                                                className="w-1/2 h-30 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                                 name="description"
                                                 value={formData.description}
                                                 onChange={handleChange}
@@ -208,7 +210,7 @@ const Single = () => {
                                                 Hinta:
                                             </label>
                                             <input
-                                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-gray-600"
+                                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                                 type="text"
                                                 name="price"
                                                 value={formData.price}
@@ -372,23 +374,21 @@ const Single = () => {
                 <div
                     className={`rounded-lg shadow-lg mb-4 p-4 bg-main-light flex display-flex w-3/4 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                 >
-                    <div className="w-1/2 ml-4">
-                        <p className="text-3xl">Myyjä:</p>
-                        <p className="text-3xl">Tyyppi:</p>
-                        <p className="text-3xl">Ilmoitettu:</p>
-                        <p className="text-3xl">Kaupunki:</p>
-                        <p className="text-3xl">Kunto:</p>
-                        <p className="text-3xl">Kategoria:</p>
+                    <div className="w-1/2 ml-4 text-3xl">
+                        <p>Myyjä:</p>
+                        <p>Tyyppi:</p>
+                        <p>Ilmoitettu:</p>
+                        <p>Kaupunki:</p>
+                        <p>Kunto:</p>
+                        <p>Kategoria:</p>
                     </div>
-                    <div className="w-1/2 ml-4">
-                        <p className="text-3xl">{userItem.username}</p>
-                        <p className="text-3xl">{item.type === "buy" ? "Ostetaan" : "Myydään"}</p>
-                        <p className="text-3xl">
-                            {new Date(item.time).toLocaleDateString("fi-FI")}
-                        </p>
-                        <p className="text-3xl">{userItem.city}</p>
-                        <p className="text-3xl">{qualityToText(item.quality)}</p>
-                        <p className="text-3xl">
+                    <div className="w-1/2 ml-4 text-3xl">
+                        <p>{userItem.username}</p>
+                        <p>{item.type === "buy" ? "Ostetaan" : "Myydään"}</p>
+                        <p>{new Date(item.time).toLocaleDateString("fi-FI")}</p>
+                        <p>{userItem.city}</p>
+                        <p>{qualityToText(item.quality)}</p>
+                        <p>
                             {typeof item.category === "number"
                                 ? item.category
                                 : item.category.title}
@@ -400,7 +400,9 @@ const Single = () => {
                     {randomListings.map((listing, index) => (
                         <Link to="/single" state={listing} key={index}>
                             {" "}
-                            <div className="bg-main-light w-full rounded p-2 flex items-center">
+                            <div
+                                className={`bg-main-light w-full rounded p-2 flex items-center ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                            >
                                 <img
                                     src={
                                         listing.images instanceof Array

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "../hooks/FormHooks";
 import { useUser } from "../hooks/UserHooks";
 import { PostUsersRequest } from "mpp-api-types";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const RegisterForm = () => {
     const { postUser } = useUser();
@@ -9,7 +10,8 @@ const RegisterForm = () => {
     const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
     const { getUsernameAvailable, getEmailAvailable } = useUser();
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const [_errorMessage, setErrorMessage] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const initValues = {
         username: "",
@@ -101,7 +103,7 @@ const RegisterForm = () => {
                                 Käyttäjänimi:
                             </label>
                             <input
-                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                 name="username"
                                 type="text"
                                 id="username"
@@ -124,7 +126,7 @@ const RegisterForm = () => {
                                 Etunimi:
                             </label>
                             <input
-                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                 name="firstName"
                                 type="text"
                                 id="firstname"
@@ -140,7 +142,7 @@ const RegisterForm = () => {
                                 Sukunimi:
                             </label>
                             <input
-                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                 name="lastName"
                                 type="text"
                                 id="lastname"
@@ -156,7 +158,7 @@ const RegisterForm = () => {
                                 Kaupunki:
                             </label>
                             <input
-                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                 name="city"
                                 type="text"
                                 id="city"
@@ -172,7 +174,7 @@ const RegisterForm = () => {
                                 Puhelinnumero:
                             </label>
                             <input
-                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                 name="phone"
                                 type="tel"
                                 id="phonenumber"
@@ -189,7 +191,7 @@ const RegisterForm = () => {
                                 Sähköposti:
                             </label>
                             <input
-                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                 name="email"
                                 type="email"
                                 id="email"
@@ -210,15 +212,27 @@ const RegisterForm = () => {
                             <label className="w-1/3 text-left font-bold" htmlFor="password">
                                 Salasana:
                             </label>
-                            <input
-                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950"
-                                name="password"
-                                type="password"
-                                id="password"
-                                onChange={handleInputChange}
-                                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                                autoComplete="new-password"
-                            />
+                            <div className="relative w-2/4">
+                                <input
+                                    className="w-full h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 pr-12 dark:text-slate-950 dark:bg-slate-50"
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    id="password"
+                                    onChange={handleInputChange}
+                                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                    autoComplete="new-password"
+                                />
+                                <div
+                                    className="absolute inset-y-0 right-0 pr-2 flex items-center cursor-pointer text-gray-500"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? (
+                                        <FiEyeOff className="h-5 w-5" />
+                                    ) : (
+                                        <FiEye className="h-5 w-5" />
+                                    )}
+                                </div>
+                            </div>
                         </div>
                         {validationErrors.password && (
                             <p className="text-red-500 mb-1">{validationErrors.password}</p>
@@ -227,16 +241,26 @@ const RegisterForm = () => {
                             <label className="w-1/3 text-left font-bold" htmlFor="confirmpassword">
                                 Vahvista Salasana:
                             </label>
-                            <div className="w-2/4 flex flex-col">
+                            <div className="relative w-2/4">
                                 <input
-                                    className="w-full h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                    className="h-10 rounded w-full border border-slate-500 p-2 bg-slate-50 pr-12 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                     name="confirmpassword"
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     id="confirmpassword"
                                     onChange={e => setConfirmPassword(e.target.value)}
                                     onBlur={validateForm}
                                     autoComplete="new-password"
                                 />
+                                <div
+                                    className="absolute inset-y-0 right-0 pr-2 flex items-center cursor-pointer text-gray-500"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? (
+                                        <FiEyeOff className="h-5 w-5" />
+                                    ) : (
+                                        <FiEye className="h-5 w-5" />
+                                    )}
+                                </div>
                             </div>
                         </div>
                         {validationErrors.confirmPassword && (

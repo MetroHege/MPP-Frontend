@@ -36,3 +36,14 @@
   font-weight: 200;
   font-style: normal;
 }
+
+.light {
+  --MainDark: #FFFFFF;
+  --MainLight: #FFFFFF;
+  --MainMedium: #FFFFFF;
+  --Blue: linear-gradient(to right, #6AA9FF, #3B7BD9);
+  --Red: linear-gradient(to right, #FF6E6E, #D93B3B);
+  --Yellow: linear-gradient(to right, #F7F77A, #E7E732);
+  --Green: linear-gradient(to right, #72D572, #4CAF50);
+}
+
