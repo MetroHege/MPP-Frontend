@@ -30,15 +30,14 @@ const useListing = (filters?: { category?: number }) => {
             const filteredListings = mediaListings.filter(listing =>
                 listing.title.toLowerCase().includes(searchTerm.toLowerCase())
             );
-
-            setListings(prevListings => [...prevListings, ...filteredListings]);
+            setListings(filteredListings);
         } catch (error) {
             console.error("getListing failed", error);
         }
     };
 
     const loadMore = () => {
-        setRange(prevRange => ({ start: prevRange.end + 1, end: prevRange.end + 25 }));
+        setRange(prevRange => ({ start: 0, end: prevRange.end + 25 }));
     };
 
     useEffect(() => {
