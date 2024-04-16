@@ -257,7 +257,12 @@ const UploadForm = () => {
                         <input
                             type="text"
                             value={price}
-                            onChange={e => setPrice(Number(e.target.value))}
+                            onChange={e => {
+                                const value = Number(e.target.value);
+                                if (!isNaN(value)) {
+                                    setPrice(value);
+                                }
+                            }}
                             className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                         />
                     </div>

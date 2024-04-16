@@ -215,13 +215,12 @@ const Home = () => {
                     </div>
                 )}
                 {listings && listings.length > 0 && (
-                    <button
-                        onClick={loadMore}
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                    >
-                        Load More
-                        <FiChevronDown />
-                    </button>
+                    <div className="flex justify-center items-center my-4">
+                        <FiChevronDown
+                            className="text-6xl cursor-pointer animate-bounce"
+                            onClick={loadMore}
+                        />
+                    </div>
                 )}
             </div>
         </>
