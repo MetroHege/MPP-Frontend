@@ -110,7 +110,7 @@ const Single = () => {
                     &#8592; Takaisin
                 </button>
                 {typeof item.images !== "string" ? (
-                    <Carousel showThumbs={false}>
+                    <Carousel showThumbs={false} selectedItem={0} key={item.id}>
                         {item.images.map((image, index) => (
                             <div key={index}>
                                 <img
