@@ -76,6 +76,11 @@ const UploadForm = () => {
         if (e.target.files) {
             const fileArray = Array.from(e.target.files);
 
+            if (selectedImages.length + fileArray.length > 5) {
+                alert("Voit lisätä maksimissaan 5 kuvaa ilmoitukseen!");
+                return;
+            }
+
             setSelectedImages(prevImages => prevImages.concat(fileArray as File[]));
         }
     };
