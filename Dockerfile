@@ -10,5 +10,3 @@ COPY / /usr/src/app/
 RUN npm install -force
 
 RUN npm run build
-
-RUN npm run build
