@@ -14,7 +14,7 @@ import { FiChevronDown } from "react-icons/fi";
 const Home = () => {
     const { categories, getCategories } = useCategories();
     const [selectedCategory, setSelectedCategory] = useState<number | "">("");
-    const { listings, searchTerm, setSearchTerm, loadMore } = useListing({
+    const { listings, searchTerm, setSearchTerm, loadMore, sort } = useListing({
         category: selectedCategory ? +selectedCategory : undefined
     });
     const { user } = useUser();
@@ -54,7 +54,7 @@ const Home = () => {
         const selectedSortOrder = Object.keys(sortOptionsMapping).find(
             key => sortOptionsMapping[key] === selectedSortOption
         );
-        setSortOrder(selectedSortOrder || "newest");
+        sort((selectedSortOrder as "newest" | "oldest" | "low-high" | "high-low") || "newest");
         localStorage.setItem("sortOrder", selectedSortOrder || "newest");
     };
 
@@ -186,18 +186,6 @@ const Home = () => {
                                       ? listing.category
                                       : listing.category.id === +selectedCategory)
                         )
-                        .sort((a, b) => {
-                            switch (sortOrder) {
-                                case "low-high":
-                                    return a.price - b.price;
-                                case "high-low":
-                                    return b.price - a.price;
-                                case "oldest":
-                                    return a.id - b.id;
-                                default:
-                                    return b.id - a.id;
-                            }
-                        })
                         .map((listing: ListingWithId) => (
                             <Listing
                                 key={listing.id}

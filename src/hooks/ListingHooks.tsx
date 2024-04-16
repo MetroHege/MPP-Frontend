@@ -14,6 +14,9 @@ import {
 const useListing = (filters?: { category?: number }) => {
     const [listings, setListings] = useState<ListingWithId[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [sortOrder, setSortOrder] = useState<"newest" | "oldest" | "low-high" | "high-low">(
+        "newest"
+    );
     const [range, setRange] = useState({ start: 0, end: 25 });
     const { update } = useUpdateContext();
 
@@ -21,16 +24,14 @@ const useListing = (filters?: { category?: number }) => {
         try {
             const url = new URL(import.meta.env.VITE_SERVER + "/listings");
             url.searchParams.append("range", `${range.start}-${range.end}`);
-            if (filters?.category) {
-                url.searchParams.append("category", filters.category.toString());
-            }
+            if (filters?.category) url.searchParams.append("category", filters.category.toString());
+            if (searchTerm) url.searchParams.append("query", searchTerm);
+            url.searchParams.append("sort", sortOrder);
 
-            const mediaListings = await fetchData<GetListingsResponse>(url.toString());
+            const listings = await fetchData<GetListingsResponse>(url.toString());
+            console.log("listings", listings);
 
-            const filteredListings = mediaListings.filter(listing =>
-                listing.title.toLowerCase().includes(searchTerm.toLowerCase())
-            );
-            setListings(filteredListings);
+            setListings(listings);
         } catch (error) {
             console.error("getListing failed", error);
         }
@@ -40,9 +41,13 @@ const useListing = (filters?: { category?: number }) => {
         setRange(prevRange => ({ start: 0, end: prevRange.end + 25 }));
     };
 
+    const sort = (sortOrder: "newest" | "oldest" | "low-high" | "high-low") => {
+        setSortOrder(sortOrder);
+    };
+
     useEffect(() => {
         getListing();
-    }, [update, searchTerm, filters?.category, range]);
+    }, [update, searchTerm, filters?.category, range, sortOrder]);
 
     const getListingWithId = async (id: number) => {
         return await fetchData<GetListingsResponse>(
@@ -143,7 +148,8 @@ const useListing = (filters?: { category?: number }) => {
         setSearchTerm,
         searchTerm,
         fetchListingsByCategory,
-        loadMore
+        loadMore,
+        sort
     };
 };
 
