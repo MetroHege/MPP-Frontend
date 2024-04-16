@@ -9,4 +9,4 @@ COPY / /usr/src/app/
 
 RUN npm install -force
 
-RUN npm run build
+CMD [ "npm", "run", "build" ]
