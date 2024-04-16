@@ -14,11 +14,13 @@ import {
 const useListing = (filters?: { category?: number }) => {
     const [listings, setListings] = useState<ListingWithId[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [range, setRange] = useState({ start: 0, end: 25 });
     const { update } = useUpdateContext();
 
     const getListing = async () => {
         try {
             const url = new URL(import.meta.env.VITE_SERVER + "/listings");
+            url.searchParams.append("range", `${range.start}-${range.end}`);
             if (filters?.category) {
                 url.searchParams.append("category", filters.category.toString());
             }
@@ -29,15 +31,19 @@ const useListing = (filters?: { category?: number }) => {
                 listing.title.toLowerCase().includes(searchTerm.toLowerCase())
             );
 
-            setListings(filteredListings);
+            setListings(prevListings => [...prevListings, ...filteredListings]);
         } catch (error) {
             console.error("getListing failed", error);
         }
     };
 
+    const loadMore = () => {
+        setRange(prevRange => ({ start: prevRange.end + 1, end: prevRange.end + 25 }));
+    };
+
     useEffect(() => {
         getListing();
-    }, [update, searchTerm, filters?.category]);
+    }, [update, searchTerm, filters?.category, range]);
 
     const getListingWithId = async (id: number) => {
         return await fetchData<GetListingsResponse>(
@@ -137,7 +143,8 @@ const useListing = (filters?: { category?: number }) => {
         getListingsFromUser,
         setSearchTerm,
         searchTerm,
-        fetchListingsByCategory
+        fetchListingsByCategory,
+        loadMore
     };
 };
 

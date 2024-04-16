@@ -9,11 +9,14 @@ import FilterDropdown from "../components/FilterDropdown";
 import { ListingWithId, Listing as Listingtype, User } from "mpp-api-types";
 import { useUser } from "../hooks/UserHooks";
 import { useCategories } from "../hooks/CategoryHooks";
+import { FiChevronDown } from "react-icons/fi";
 
 const Home = () => {
     const { categories, getCategories } = useCategories();
     const [selectedCategory, setSelectedCategory] = useState<number | "">("");
-    const { listings, searchTerm, setSearchTerm } = useListing({ category: +selectedCategory });
+    const { listings, searchTerm, setSearchTerm, loadMore } = useListing({
+        category: selectedCategory ? +selectedCategory : undefined
+    });
     const { user } = useUser();
     const [sortOrder, setSortOrder] = useState(localStorage.getItem("sortOrder") || "newest");
 
@@ -210,6 +213,15 @@ const Home = () => {
                             jotain muuta...
                         </p>
                     </div>
+                )}
+                {listings && listings.length > 0 && (
+                    <button
+                        onClick={loadMore}
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Load More
+                        <FiChevronDown />
+                    </button>
                 )}
             </div>
         </>
