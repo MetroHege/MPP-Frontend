@@ -1,12 +1,13 @@
-name: build
+name: TypeScript Build
 
 on:
-  push
+  push:
 
 jobs:
-  build:
+  tsc:
+    name: TypeScript Build
     runs-on: ubuntu-latest
-steps:
+    steps:
     - uses: actions/checkout@v4
     - name: install node
       uses: actions/setup-node@v4
@@ -14,5 +15,5 @@ steps:
         node-version: 20
     - name: npm install
       run: npm install
-    - name: build
-      run: vite build
+    - name: tsc
+      uses: icrawl/action-tsc@v1
