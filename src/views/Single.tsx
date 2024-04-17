@@ -374,7 +374,7 @@ const Single: React.FC<SingleProps> = ({ token }) => {
                 <p className="mb-10">{item.description}</p>
                 <div>
                     <h1 className="text-4xl mb-4">Kysymykset:</h1>
-                    <Messages listingId={listing?.id.toString()} token={token} />
+                    <Messages listingId={item?.id.toString()} token={token} />
                 </div>
             </div>
             <div className="w-1/2 flex flex-col items-start mt-16 ml-4">
@@ -411,11 +411,7 @@ const Single: React.FC<SingleProps> = ({ token }) => {
                                 className={`bg-main-light w-full rounded p-2 flex items-center ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                             >
                                 <img
-                                    src={
-                                        listing.images instanceof Array
-                                            ? listing.images[0].url
-                                            : listing.images.split(",")[0]
-                                    }
+                                    src={item.images[0].url}
                                     alt={`Listing ${listing.id}`}
                                     className="w-36 h-36 object-cover"
                                 />

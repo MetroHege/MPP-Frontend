@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Message as MessageType, PartialUser } from "mpp-api-types";
+import { Message, Message as MessageType, PartialUser } from "mpp-api-types";
 import useMessages from "../hooks/MessageHooks";
 
 interface Props {
     listingId: string;
     token: string;
-    content: string;
-    time: Date;
 }
 
-const Messages: React.FC<Props> = ({ listingId, token, content, time }) => {
+const Messages: React.FC<Props> = ({ listingId, token }) => {
     const { messages, getListingMessages, postMessage } = useMessages();
     const formRef = useRef<HTMLFormElement>(null);
-    const [inputValue, setInputValue] = useState(content);
+    const [inputValue, setInputValue] = useState("");
 
     //console.log(token, listingId, content, time);
 
@@ -55,7 +53,7 @@ const Messages: React.FC<Props> = ({ listingId, token, content, time }) => {
                 <>
                     <h3 className="mb-2 mt-4 text-xl">Messages</h3>
                     <ul>
-                        {messages.map((message: MessageType) => (
+                        {messages.map((message: Message) => (
                             <li key={message.id}>
                                 <div className="rounded-md border border-slate-500 bg-slate-100 p-2 text-slate-950">
                                     <span className="font-bold ">
