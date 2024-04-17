@@ -43,6 +43,10 @@ const Single: React.FC<SingleProps> = ({ token }) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handleImageClick = () => {
+        setModalIsOpen(true);
+    };
+
     const handleDelete = async () => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -116,17 +120,55 @@ const Single: React.FC<SingleProps> = ({ token }) => {
                     &#8592; Takaisin
                 </button>
                 {typeof item.images !== "string" ? (
-                    <Carousel showThumbs={false} selectedItem={0} key={item.id}>
-                        {item.images.map((image, index) => (
-                            <div key={index}>
-                                <img
-                                    className="w-64 h-150 object-cover rounded"
-                                    src={image.url}
-                                    alt={`Listing ${item.id}`}
-                                />
-                            </div>
-                        ))}
-                    </Carousel>
+                    <div className={`relative ${modalIsOpen ? "pointer-events-none" : ""}`}>
+                        <Carousel
+                            showThumbs={false}
+                            selectedItem={0}
+                            key={item.id}
+                            onClickItem={handleImageClick}
+                        >
+                            {item.images.map((image, index) => (
+                                <div key={index}>
+                                    <img
+                                        className="w-64 h-150 object-cover rounded"
+                                        src={image.url}
+                                        alt={`Listing ${item.id}`}
+                                    />
+                                </div>
+                            ))}
+                        </Carousel>
+                        <Modal
+                            isOpen={modalIsOpen}
+                            onRequestClose={() => setModalIsOpen(false)}
+                            className="bg-transparent z-50"
+                            style={{
+                                overlay: {
+                                    backgroundColor: "rgba(0, 0, 0, 0.75)"
+                                }
+                            }}
+                        >
+                            <Carousel showThumbs={false}>
+                                {item.images.map((image, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex justify-center items-center h-full"
+                                    >
+                                        <img
+                                            src={image.url}
+                                            alt={`Listing ${item.id}`}
+                                            className="max-w-2xl max-h-2xl object-contain"
+                                        />
+                                    </div>
+                                ))}
+                            </Carousel>
+                            <button
+                                onClick={() => setModalIsOpen(false)}
+                                className="absolute top-5 right-5 text-white text-4xl bg-transparent border-none"
+                            >
+                                X
+                            </button>
+                        </Modal>
+                    </div>
                 ) : (
                     <></>
                 )}
