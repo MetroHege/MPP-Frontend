@@ -406,12 +406,11 @@ const Single: React.FC<SingleProps> = ({ token }) => {
                 <div className="flex w-3/4 flex-col space-y-4">
                     {randomListings.map((listing, index) => (
                         <Link to="/single" state={listing} key={index}>
-                            {" "}
                             <div
                                 className={`bg-main-light w-full rounded p-2 flex items-center ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                             >
                                 <img
-                                    src={item.images[0].url}
+                                    src={listing.images[0].url}
                                     alt={`Listing ${listing.id}`}
                                     className="w-36 h-36 object-cover"
                                 />
