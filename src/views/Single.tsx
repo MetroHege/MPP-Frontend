@@ -9,6 +9,7 @@ import qualityToText from "../functions/qualityToText";
 import Modal from "react-modal";
 import { useCategories } from "../hooks/CategoryHooks";
 import Dropdown from "../components/Dropdown";
+import Messages from "../components/Messages";
 
 enum Quality {
     New = 5,
@@ -17,8 +18,12 @@ enum Quality {
     Fair = 2,
     Poor = 1
 }
+interface SingleProps {
+    token: string;
+    // other props...
+}
 
-const Single = () => {
+const Single: React.FC<SingleProps> = ({ token }) => {
     const { state } = useLocation();
     const navigate: NavigateFunction = useNavigate();
     const item: PostListingsResponse = state;
@@ -32,6 +37,7 @@ const Single = () => {
     const [category, setCategory] = useState(0);
     const [formData, setFormData] = useState(item);
     const { putListing, deleteListing } = useListing();
+    const [listing, setListing] = useState(null); // initialize listing state
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -368,6 +374,7 @@ const Single = () => {
                 <p className="mb-10">{item.description}</p>
                 <div>
                     <h1 className="text-4xl mb-4">Kysymykset:</h1>
+                    <Messages listingId={item?.id.toString()} token={token} />
                 </div>
             </div>
             <div className="w-1/2 flex flex-col items-start mt-16 ml-4">
@@ -404,11 +411,7 @@ const Single = () => {
                                 className={`bg-main-light w-full rounded p-2 flex items-center ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                             >
                                 <img
-                                    src={
-                                        listing.images instanceof Array
-                                            ? listing.images[0].url
-                                            : listing.images.split(",")[0]
-                                    }
+                                    src={item.images[0].url}
                                     alt={`Listing ${listing.id}`}
                                     className="w-36 h-36 object-cover"
                                 />
