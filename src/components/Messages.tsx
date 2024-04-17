@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Message, Message as MessageType, PartialUser } from "mpp-api-types";
+import { Message, PartialUser } from "mpp-api-types";
 import useMessages from "../hooks/MessageHooks";
 
 interface Props {
@@ -26,6 +26,8 @@ const Messages: React.FC<Props> = ({ listingId, token }) => {
             await postMessage(Number(listingId), { content }, token);
             await getMessages();
 
+            setInputValue("");
+
             if (formRef.current) {
                 formRef.current.reset();
                 setInputValue(content);
@@ -51,17 +53,18 @@ const Messages: React.FC<Props> = ({ listingId, token }) => {
         <>
             {messages.length > 0 && (
                 <>
-                    <h3 className="mb-2 mt-4 text-xl">Messages</h3>
                     <ul>
                         {messages.map((message: Message) => (
                             <li key={message.id}>
-                                <div className="rounded-md border border-slate-500 bg-slate-100 p-2 text-slate-950">
+                                <div className="rounded-md border w-2/3 border-slate-500 bg-slate-100 p-2 text-slate-950 dark:bg-slate-100 dark:text-slate-950 mb-1">
                                     <span className="font-bold ">
                                         {typeof message.user === "object" && message.user !== null
-                                            ? (message.user as PartialUser).username
-                                            : message.user}
+                                            ? (message.user as PartialUser).username + ":"
+                                            : message.user + ":"}
                                     </span>
-                                    <span className="ml-2 ">{message.content}</span>
+                                    <span className="ml-2 whitespace-pre-wrap break-all overflow-wrap break-word max-w-full">
+                                        {message.content}
+                                    </span>
                                 </div>
                             </li>
                         ))}
@@ -78,7 +81,7 @@ const Messages: React.FC<Props> = ({ listingId, token }) => {
                         onChange={e => setInputValue(e.target.value)}
                     />
                     <button
-                        className="py-2 px-4 bg-purple-600 hover:bg-purple-700 focus:ring-purple-500 focus:ring-offset-purple-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
+                        className="py-2 px-4  text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg "
                         type="submit"
                     >
                         Lähetä
