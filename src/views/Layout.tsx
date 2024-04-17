@@ -72,6 +72,14 @@ const Layout = () => {
                             <li>
                                 <Link
                                     className="text-xl text-white hover:text-gray-300"
+                                    to="/admin"
+                                >
+                                    Admin
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    className="text-xl text-white hover:text-gray-300"
                                     to="/login"
                                 >
                                     <FontAwesomeIcon icon={faUser} />
