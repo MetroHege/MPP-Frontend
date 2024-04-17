@@ -15,20 +15,46 @@ enum Quality {
 }
 
 const SortableItem = React.memo(
-    SortableElement<{ index: number; value: string }>(({ value }: { value: string }) => (
-        <img src={value} alt="Uploaded" className="rounded mb-2 w-50 h-50" />
-    ))
+    SortableElement<{ value: string; i: number; deleteImage: (index: number) => void }>(
+        ({
+            value,
+            i,
+            deleteImage
+        }: {
+            value: string;
+            i: number;
+            deleteImage: (index: number) => void;
+        }) => (
+            <div className="relative">
+                <img src={value} alt="Uploaded" className="rounded mb-2" />
+                <button
+                    type="button"
+                    onClick={() => deleteImage(i)}
+                    className="absolute top-1 right-0 text-xl text-red-500 font-bold w-5 h-5 flex items-center justify-center"
+                >
+                    X
+                </button>
+            </div>
+        )
+    )
 );
 
-const SortableList = SortableContainer<{ items: string[] }>(({ items }: { items: string[] }) => {
-    return (
-        <div className="grid grid-cols-2 gap-2">
-            {items.map((value, index) => (
-                <SortableItem key={`item-${index}`} index={index} value={value} />
-            ))}
-        </div>
-    );
-});
+const SortableList = SortableContainer<{ items: string[]; deleteImage: (index: number) => void }>(
+    ({ items, deleteImage }: { items: string[]; deleteImage: (index: number) => void }) => {
+        return (
+            <div className="grid grid-cols-2 gap-2">
+                {items.map((value, index) => (
+                    <SortableItem
+                        key={`item-${index}`}
+                        value={value}
+                        i={index}
+                        deleteImage={deleteImage}
+                    />
+                ))}
+            </div>
+        );
+    }
+);
 
 const UploadForm = () => {
     const { categories, getCategories } = useCategories();
@@ -70,6 +96,11 @@ const UploadForm = () => {
             console.log(newImages);
             return newImages;
         });
+    };
+
+    const deleteImage = (index: number) => {
+        console.log(index);
+        setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index));
     };
 
     const handleImageChange = (e: any) => {
@@ -125,6 +156,7 @@ const UploadForm = () => {
                             items={selectedImages.map(file => URL.createObjectURL(file))}
                             onSortEnd={onSortEnd}
                             axis="xy"
+                            deleteImage={deleteImage}
                         />
                         <input type="file" name="image" onChange={handleImageChange} multiple />
                     </div>

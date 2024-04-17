@@ -29,7 +29,6 @@ const useListing = (filters?: { category?: number }) => {
             url.searchParams.append("sort", sortOrder);
 
             const listings = await fetchData<GetListingsResponse>(url.toString());
-            console.log("listings", listings);
 
             setListings(listings);
         } catch (error) {
