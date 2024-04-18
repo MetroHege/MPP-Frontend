@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Message, PartialUser } from "mpp-api-types";
+import { MessageWithId, PartialUser } from "mpp-api-types";
 import useMessages from "../hooks/MessageHooks";
 
 interface Props {
@@ -57,7 +57,7 @@ const Messages: React.FC<Props> = ({ listingId, token }) => {
             {messages.length > 0 && (
                 <>
                     <ul>
-                        {messages.map((message: Message) => (
+                        {messages.map((message: MessageWithId) => (
                             <li key={message.id}>
                                 <div className="rounded-md border w-2/3 border-slate-500 bg-slate-100 p-2 text-slate-950 dark:bg-slate-100 dark:text-slate-950 mb-1">
                                     <span className="font-bold ">
