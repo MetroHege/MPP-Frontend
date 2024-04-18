@@ -29,6 +29,7 @@ const Single: React.FC = () => {
     const { fetchListingsByCategory } = useListing();
     const [randomListings, setRandomListings] = useState<ListingWithId[]>([]);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [isCarouselModalOpen, setIsCarouselModalOpen] = useState(false);
     const { categories } = useCategories();
     const [category, setCategory] = useState(0);
     const [formData, setFormData] = useState(item);
@@ -41,7 +42,7 @@ const Single: React.FC = () => {
     };
 
     const handleImageClick = () => {
-        setModalIsOpen(true);
+        setIsCarouselModalOpen(true);
     };
 
     const handleDelete = async () => {
@@ -89,9 +90,8 @@ const Single: React.FC = () => {
         const fetchAndSetRandomListings = async () => {
             let categoryListings = await fetchListingsByCategory(
                 typeof item.category === "number" ? item.category : item.category.id
-            ); // use the category from the current listing
+            );
             if (categoryListings && categoryListings.length > 0) {
-                // Filter out the current listing and the user's listings
                 categoryListings = categoryListings.filter(
                     listing =>
                         listing.id !== item.id &&
@@ -117,7 +117,7 @@ const Single: React.FC = () => {
                     &#8592; Takaisin
                 </button>
                 {typeof item.images !== "string" ? (
-                    <div className={`relative ${modalIsOpen ? "pointer-events-none" : ""}`}>
+                    <div className={`relative ${isCarouselModalOpen ? "pointer-events-none" : ""}`}>
                         <Carousel
                             showThumbs={false}
                             selectedItem={0}
@@ -135,8 +135,8 @@ const Single: React.FC = () => {
                             ))}
                         </Carousel>
                         <Modal
-                            isOpen={modalIsOpen}
-                            onRequestClose={() => setModalIsOpen(false)}
+                            isOpen={isCarouselModalOpen}
+                            onRequestClose={() => setIsCarouselModalOpen(false)}
                             className="bg-transparent z-50"
                             style={{
                                 overlay: {
@@ -159,7 +159,7 @@ const Single: React.FC = () => {
                                 ))}
                             </Carousel>
                             <button
-                                onClick={() => setModalIsOpen(false)}
+                                onClick={() => setIsCarouselModalOpen(false)}
                                 className="absolute top-5 right-5 text-white text-4xl bg-transparent border-none"
                             >
                                 X
