@@ -24,7 +24,8 @@ const RegisterForm = () => {
     };
 
     const doRegister = async () => {
-        if (inputs.password !== confirmPassword) {
+        const isValid = validateForm();
+        if (!isValid || inputs.password !== confirmPassword) {
             setErrorMessage("Salasanat eivät täsmää");
             return;
         }
@@ -110,7 +111,6 @@ const RegisterForm = () => {
                                 onChange={handleInputChange}
                                 onBlur={event => {
                                     handleUsernameBlur(event);
-                                    validateForm();
                                 }}
                                 autoComplete="username"
                             />
@@ -131,7 +131,6 @@ const RegisterForm = () => {
                                 type="text"
                                 id="firstname"
                                 onChange={handleInputChange}
-                                onBlur={validateForm}
                             />
                         </div>
                         {validationErrors.firstName && (
@@ -147,7 +146,6 @@ const RegisterForm = () => {
                                 type="text"
                                 id="lastname"
                                 onChange={handleInputChange}
-                                onBlur={validateForm}
                             />
                         </div>
                         {validationErrors.lastName && (
@@ -163,7 +161,6 @@ const RegisterForm = () => {
                                 type="text"
                                 id="city"
                                 onChange={handleInputChange}
-                                onBlur={validateForm}
                             />
                         </div>
                         {validationErrors.city && (
@@ -179,8 +176,7 @@ const RegisterForm = () => {
                                 type="tel"
                                 id="phonenumber"
                                 onChange={handleInputChange}
-                                onBlur={validateForm}
-                                pattern="\d*"
+                                pattern="\+\d*"
                             />
                         </div>
                         {validationErrors.phone && (
@@ -198,7 +194,6 @@ const RegisterForm = () => {
                                 onChange={handleInputChange}
                                 onBlur={() => {
                                     handleEmailBlur();
-                                    validateForm();
                                 }}
                                 autoComplete="email"
                             />
@@ -248,7 +243,6 @@ const RegisterForm = () => {
                                     type={showPassword ? "text" : "password"}
                                     id="confirmpassword"
                                     onChange={e => setConfirmPassword(e.target.value)}
-                                    onBlur={validateForm}
                                     autoComplete="new-password"
                                 />
                                 <div
