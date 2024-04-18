@@ -48,6 +48,7 @@ const SortableList = SortableContainer<{ items: string[]; deleteImage: (index: n
                         key={`item-${index}`}
                         value={value}
                         i={index}
+                        index={index}
                         deleteImage={deleteImage}
                     />
                 ))}

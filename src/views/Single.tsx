@@ -18,12 +18,8 @@ enum Quality {
     Fair = 2,
     Poor = 1
 }
-interface SingleProps {
-    token: string;
-    // other props...
-}
 
-const Single: React.FC<SingleProps> = ({ token }) => {
+const Single: React.FC = () => {
     const { state } = useLocation();
     const navigate: NavigateFunction = useNavigate();
     const item: PostListingsResponse = state;
@@ -37,7 +33,8 @@ const Single: React.FC<SingleProps> = ({ token }) => {
     const [category, setCategory] = useState(0);
     const [formData, setFormData] = useState(item);
     const { putListing, deleteListing } = useListing();
-    const [listing, setListing] = useState(null); // initialize listing state
+
+    const token = localStorage.getItem("token") || "";
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
