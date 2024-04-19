@@ -7,6 +7,8 @@ WORKDIR /usr/src/app
 
 COPY / /usr/src/app/
 
-RUN npm install -force
+RUN npm install --force
 
-CMD [ "npm", "run", "build" ]
+RUN npm run build
+
+CMD [ "npm", "start" ]
