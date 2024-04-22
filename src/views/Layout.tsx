@@ -42,6 +42,20 @@ const Layout = () => {
         fetchUsers();
     }, []);
 
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth > 640 && isOpen) {
+                setIsOpen(false);
+            }
+        };
+
+        window.addEventListener("resize", handleResize);
+
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };
+    }, [isOpen]);
+
     return (
         <>
             <header
