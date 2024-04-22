@@ -47,7 +47,6 @@ const Layout = () => {
             <header
                 className={`w-full ${theme === "light" ? "bg-slate-200 text-gray-900" : "bg-main-dark"}`}
             >
-                {" "}
                 <div className="flex justify-between p-2 items-center">
                     <Link to="/">
                         <img
@@ -58,14 +57,15 @@ const Layout = () => {
                     </Link>
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="xl:hidden flex items-center px-3 py-2 border rounded text-white border-white"
+                        className="sm:hidden flex items-center px-3 py-2 border rounded text-white border-white"
                     >
                         <FontAwesomeIcon icon={faBars} />
                     </button>
-                    <nav className="xl:flex hidden">
+                    <nav className="sm:flex hidden">
                         <ul className="flex space-x-4 mr-4">
                             <li>
                                 <Link
+                                    onClick={() => setIsOpen(false)}
                                     className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/" ? "underline" : ""}`}
                                     to="/"
                                 >
@@ -76,6 +76,7 @@ const Layout = () => {
                                 <>
                                     <li>
                                         <Link
+                                            onClick={() => setIsOpen(false)}
                                             className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/profile" ? "underline" : ""}`}
                                             to="/profile"
                                         >
@@ -84,6 +85,7 @@ const Layout = () => {
                                     </li>
                                     <li>
                                         <Link
+                                            onClick={() => setIsOpen(false)}
                                             className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/upload" ? "underline" : ""}`}
                                             to="/upload"
                                         >
@@ -94,6 +96,7 @@ const Layout = () => {
                             ) : (
                                 <li>
                                     <Link
+                                        onClick={() => setIsOpen(false)}
                                         className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/login" ? "underline" : ""}`}
                                         to="/login"
                                     >
@@ -105,37 +108,49 @@ const Layout = () => {
                     </nav>
                 </div>
                 {isOpen && (
-                    <div className="transition-transform duration-500 ease-in-out transform translate-x-0 xl:translate-x-full bg-main-dark">
+                    <div className="transition-transform duration-500 ease-in-out transform translate-x-0 sm:translate-x-full bg-main-dark">
                         <ul className="flex flex-col space-y-4 p-2 items-end">
                             <li>
-                                <Link className="text-xl text-white hover:text-gray-300" to="/">
+                                <Link
+                                    onClick={() => setIsOpen(false)}
+                                    className="text-xl text-white hover:text-gray-300"
+                                    to="/"
+                                >
                                     Koti
                                 </Link>
                             </li>
-                            <li>
-                                <Link
-                                    className="text-xl text-white hover:text-gray-300"
-                                    to="/profile"
-                                >
-                                    Profiili
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    className="text-xl text-white hover:text-gray-300"
-                                    to="/upload"
-                                >
-                                    Ilmoita
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    className="text-xl text-white hover:text-gray-300"
-                                    to="/login"
-                                >
-                                    <FontAwesomeIcon icon={faUser} />
-                                </Link>
-                            </li>
+                            {user ? (
+                                <>
+                                    <li>
+                                        <Link
+                                            onClick={() => setIsOpen(false)}
+                                            className="text-xl text-white hover:text-gray-300"
+                                            to="/profile"
+                                        >
+                                            Profiili
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            onClick={() => setIsOpen(false)}
+                                            className="text-xl text-white hover:text-gray-300"
+                                            to="/upload"
+                                        >
+                                            Ilmoita
+                                        </Link>
+                                    </li>
+                                </>
+                            ) : (
+                                <li>
+                                    <Link
+                                        onClick={() => setIsOpen(false)}
+                                        className="text-xl text-white hover:text-gray-300"
+                                        to="/login"
+                                    >
+                                        <FontAwesomeIcon icon={faUser} />
+                                    </Link>
+                                </li>
+                            )}
                         </ul>
                     </div>
                 )}
@@ -144,27 +159,24 @@ const Layout = () => {
                 {location.pathname === "/" && (
                     <div className="relative">
                         <div
-                            className={`absolute top-10 left-10 p-4 z-10 w-1/2 ${theme === "light" ? "text-gray-900" : ""}`}
+                            className={`absolute top-5 left-5 p-4 z-10 w-full md:top-10 md:left-10 md:w-1/2 ${theme === "light" ? "text-gray-900" : ""}`}
                         >
-                            {" "}
-                            <h2 className="font-bold text-4xl mb-4">Tervetuloa DivariNet:iin!</h2>
-                            <p className="text-xl">
-                                DivariNet on suunniteltu kaikille, urheilusta kiinnostuneille,
-                                olitpa sitten ostamassa tai myymässä vanhoja
-                                urheiluvaatteita/-välineitä!
+                            <h2 className="font-bold text-4xl mb-4">Tervetuloa DivariNetiin!</h2>
+                            <p className="text-lg md:text-xl overflow-auto md:overflow-visible">
+                                DivariNet on suunniteltu kaikille urheilusta kiinnostuneille, olitpa
+                                ostamassa tai myymässä vanhoja urheiluvaatteita/-välineitä!
                             </p>
                         </div>
                         <div
-                            className={`absolute top-10 right-10 p-4 z-10 w-1/2 text-right ${theme === "light" ? "text-gray-800" : ""}`}
+                            className={`absolute top-10 md:right-10 p-4 z-10 w-full md:block text-right ${theme === "light" ? "text-gray-800" : ""}`}
                         >
-                            {" "}
-                            <p className="text-xl">
+                            <p className="text-xl md:block hidden">
                                 Aktiivisia käyttäjiä: <strong>{userCount}</strong>
                             </p>
-                            <p className="text-xl">
+                            <p className="text-xl md:block hidden">
                                 Ilmoituksia jätetty: <strong>{listings.length}</strong>
                             </p>
-                            <p className="text-xl">
+                            <p className="text-xl md:block hidden">
                                 Tuotekategorioita: <strong>{categories.length}</strong>
                             </p>
                         </div>

@@ -247,7 +247,7 @@ const RegisterForm = () => {
                         )}
                         <div className="flex w-full pb-2 mb-2">
                             <label className="w-1/3 text-left font-bold" htmlFor="confirmpassword">
-                                Vahvista Salasana:
+                                Vahvista salasana:
                             </label>
                             <div className="relative w-2/4">
                                 <input
@@ -275,7 +275,7 @@ const RegisterForm = () => {
                         )}
                         <div className="w-full justify-start mb-4">
                             <p>
-                                Luomalla tilin hyväksyt DivariNet:n{" "}
+                                Luomalla tilin hyväksyt DivariNetin{" "}
                                 <a href="/rules" className="text-blue-500">
                                     säännöt
                                 </a>

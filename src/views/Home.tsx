@@ -135,8 +135,8 @@ const Home = () => {
             <div>
                 <p className="text-2xl mb-4">Suodata ilmoituksia:</p>
             </div>
-            <div className="flex flex-row justify-between items-center mb-4">
-                <div className="flex items-center">
+            <div className="flex flex-col md:flex-row justify-start items-start md:items-center md:justify-between mb-4">
+                <div className="flex items-center mb-4 md:mb-0">
                     <Dropdown
                         buttonText="Tuotekategoriat"
                         className="mr-2"

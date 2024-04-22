@@ -23,7 +23,7 @@ const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
                             {typeof item.price === "number" ? item.price : +item.price} €
                         </p>
                     </div>
-                    <div className="flex flex-col items-center justify-center p-3 w-full md:w-1/5">
+                    <div className="flex flex-row md:flex-col space-x-2 md:space-x-0 items-center justify-center p-3 w-full md:w-1/5">
                         <p className="text-base md:text-lg">
                             {new Date(item.time).toLocaleDateString("fi-FI")}
                         </p>{" "}
