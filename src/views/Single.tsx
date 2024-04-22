@@ -57,6 +57,7 @@ const Single: React.FC = () => {
         } else {
             console.log("Token not found");
         }
+        navigate("/profile");
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

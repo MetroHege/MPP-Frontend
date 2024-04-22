@@ -221,7 +221,6 @@ const Profile = () => {
                                 : listing.user.id === user?.id
                         )
                         .slice()
-                        .reverse()
                         .map((listing: ListingWithId) => (
                             <Listing
                                 key={listing.id}

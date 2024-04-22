@@ -34,7 +34,7 @@ const useUser = () => {
             body: JSON.stringify(user)
         };
 
-        await fetchData<PostUsersResponse>(import.meta.env.VITE_SERVER + "/users", options);
+        return await fetchData<PostUsersResponse>(import.meta.env.VITE_SERVER + "/users", options);
     };
 
     const getUserById = async (id: number) => {
