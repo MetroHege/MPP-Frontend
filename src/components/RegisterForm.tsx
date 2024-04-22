@@ -1,17 +1,23 @@
 import { useState } from "react";
 import { useForm } from "../hooks/FormHooks";
-import { useUser } from "../hooks/UserHooks";
+import { useAuthentication, useUser } from "../hooks/UserHooks";
 import { PostUsersRequest } from "mpp-api-types";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import PhoneInput from "react-phone-number-input/input";
+import validator from "validator";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
     const { postUser } = useUser();
+    const { postLogin } = useAuthentication();
     const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
     const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
     const { getUsernameAvailable, getEmailAvailable } = useUser();
     const [confirmPassword, setConfirmPassword] = useState("");
     const [_errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [value, setValue] = useState<number>(0);
+    const navigate = useNavigate();
 
     const initValues = {
         username: "",
@@ -31,17 +37,23 @@ const RegisterForm = () => {
         }
         setErrorMessage("");
         try {
-            await postUser({
+            const userResponse = await postUser({
                 username: inputs.username,
                 password: inputs.password,
                 email: inputs.email,
                 firstName: inputs.firstName,
                 lastName: inputs.lastName,
-                phone: inputs.phone ?? "",
+                phone: inputs.phone,
                 city: inputs.city
             });
             resetForm();
             setConfirmPassword("");
+            const loginResponse = await postLogin({
+                username: userResponse.username,
+                password: inputs.password
+            });
+            localStorage.setItem("token", loginResponse.token);
+            navigate("/profile");
         } catch (error) {
             console.log((error as Error).message);
         }
@@ -69,7 +81,11 @@ const RegisterForm = () => {
             firstName: inputs.firstName.trim() === "" ? "Etunimi vaaditaan" : "",
             lastName: inputs.lastName.trim() === "" ? "Sukunimi vaaditaan" : "",
             city: inputs.city.trim() === "" ? "Kaupunki vaaditaan" : "",
-            phone: inputs.phone && !/^\+\d*$/.test(inputs.phone) ? "Vain numerot sallittu" : "",
+            phone:
+                inputs.phone &&
+                !validator.isMobilePhone(inputs.phone, "fi-FI", { strictMode: false })
+                    ? "Syötä suomalainen puhelinnumero"
+                    : "",
             email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.email ?? "")
                 ? "Väärä sähköpostimuoto"
                 : "",
@@ -176,7 +192,6 @@ const RegisterForm = () => {
                                 type="tel"
                                 id="phonenumber"
                                 onChange={handleInputChange}
-                                pattern="\+\d*"
                             />
                         </div>
                         {validationErrors.phone && (
