@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
-import { useNavigate } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
 
 export default function ContactForm() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const { theme } = useTheme();
 
-    const [error, setError] = useState("");
+    const [_error, setError] = useState("");
 
     function onSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -48,7 +49,7 @@ export default function ContactForm() {
                     Koko nimesi
                 </label>
                 <input
-                    className="h-10 rounded border border-gray-300 p-2 text-gray-600"
+                    className="h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                     type="text"
                     value={name}
                     onChange={e => setName(e.target.value)}
@@ -61,7 +62,7 @@ export default function ContactForm() {
                     Sähköpostisi
                 </label>
                 <input
-                    className="h-10 rounded border border-gray-300 p-2 text-gray-600"
+                    className="h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                     type="email"
                     value={email}
                     onChange={e => setEmail(e.target.value)}
@@ -78,7 +79,7 @@ export default function ContactForm() {
                     selvittää asiasi nopeammin ja tehokkaammin!
                 </p>
                 <textarea
-                    className="h-64 mb-4 rounded border border-gray-300 text-gray-600"
+                    className="h-64 mb-4 rounded border border-gray-300 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                     value={message}
                     onChange={e => setMessage(e.target.value)}
                     id="message"
@@ -100,7 +101,9 @@ export default function ContactForm() {
                 className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50"
                 contentLabel="Form Submitted"
             >
-                <div className="bg-main-medium rounded-lg w-1/3">
+                <div
+                    className={`bg-main-medium rounded-lg w-1/3 ${theme === "light" ? "text-slate-950 bg-slate-100" : "text-white bg-main-medium"}`}
+                >
                     <div className="flex flex-col items-start p-4">
                         <div className="flex items-center w-full">
                             <div className="font-medium text-lg">Kiitos yhteystiedoistasi!</div>

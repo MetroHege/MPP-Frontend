@@ -1,5 +1,5 @@
 import ContactForm from "../components/ContactForm";
-import Kuva from "../image/nörtti-2.jpg";
+import Kuva from "../img/nörtti-2.jpg";
 
 const Contact = () => {
     return (

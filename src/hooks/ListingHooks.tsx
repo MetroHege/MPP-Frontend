@@ -4,31 +4,53 @@ import { fetchData } from "../lib/functions";
 import {
     DeleteListingResponse,
     GetListingsResponse,
-    Listing,
     ListingWithId,
     PostListingsRequest,
     PostListingsResponse,
+    PutListingRequest,
     PutListingResponse
 } from "mpp-api-types";
 
-const useListing = () => {
+const useListing = (filters?: { category?: number }) => {
     const [listings, setListings] = useState<ListingWithId[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [sortOrder, setSortOrder] = useState<"newest" | "oldest" | "low-high" | "high-low">(
+        "newest"
+    );
+    const [range, setRange] = useState({ start: 0, end: 25 });
+    const [hasMore, setHasMore] = useState(true);
     const { update } = useUpdateContext();
 
     const getListing = async () => {
         try {
-            const mediaListings = await fetchData<GetListingsResponse>(
-                import.meta.env.VITE_SERVER + "/listings"
-            );
+            const url = new URL(import.meta.env.VITE_SERVER + "/listings");
+            url.searchParams.append("range", `${range.start}-${range.end}`);
+            if (filters?.category) url.searchParams.append("category", filters.category.toString());
+            if (searchTerm) url.searchParams.append("query", searchTerm);
+            url.searchParams.append("sort", sortOrder);
 
-            setListings(mediaListings);
+            const listings = await fetchData<GetListingsResponse>(url.toString());
+
+            setListings(listings);
+            if (listings.length < range.end - range.start) {
+                setHasMore(false);
+            }
         } catch (error) {
             console.error("getListing failed", error);
         }
     };
+
+    const loadMore = () => {
+        setRange(prevRange => ({ start: 0, end: prevRange.end + 25 }));
+    };
+
+    const sort = (sortOrder: "newest" | "oldest" | "low-high" | "high-low") => {
+        setSortOrder(sortOrder);
+    };
+
     useEffect(() => {
         getListing();
-    }, [update]);
+    }, [update, searchTerm, filters?.category, range, sortOrder]);
 
     const getListingWithId = async (id: number) => {
         return await fetchData<GetListingsResponse>(
@@ -42,7 +64,20 @@ const useListing = () => {
         );
     };
 
-    const putListing = async (id: number, listing: Listing, token: string) => {
+    const fetchListingsByCategory = async (category: number) => {
+        try {
+            const url = new URL(import.meta.env.VITE_SERVER + "/listings");
+            url.searchParams.append("category", category.toString());
+
+            const mediaListings = await fetchData<GetListingsResponse>(url.toString());
+
+            return mediaListings;
+        } catch (error) {
+            console.error("fetchListingsByCategory failed", error);
+        }
+    };
+
+    const putListing = async (id: number, listing: PutListingRequest, token: string) => {
         const options = {
             method: "PUT",
             headers: {
@@ -112,7 +147,13 @@ const useListing = () => {
         getListing,
         getListingWithId,
         listings,
-        getListingsFromUser
+        getListingsFromUser,
+        setSearchTerm,
+        searchTerm,
+        fetchListingsByCategory,
+        loadMore,
+        hasMore,
+        sort
     };
 };
 

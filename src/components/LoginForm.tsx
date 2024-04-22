@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { useUserContext } from "../contexts/ContextHooks";
 import { useForm } from "../hooks/FormHooks";
 import { Credentials } from "../types/LocalTypes";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const LoginForm = () => {
     const { handleLogin } = useUserContext();
+    const [showPassword, setShowPassword] = useState(false);
 
     const initValues: Credentials = { username: "", password: "" };
 
@@ -24,7 +27,7 @@ const LoginForm = () => {
                                 Käyttäjänimi:
                             </label>
                             <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                                className="w-2/4 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                 name="username"
                                 type="text"
                                 id="username"
@@ -36,18 +39,30 @@ const LoginForm = () => {
                             <label className="w-1/3 text-left font-bold" htmlFor="loginpassword">
                                 Salasana:
                             </label>
-                            <input
-                                className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
-                                name="password"
-                                type="password"
-                                id="loginpassword"
-                                onChange={handleInputChange}
-                                autoComplete="current-password"
-                            />
+                            <div className="relative w-2/4">
+                                <input
+                                    className="h-10 rounded w-full border border-slate-500 p-2  bg-slate-50 pr-12 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    id="loginpassword"
+                                    onChange={handleInputChange}
+                                    autoComplete="current-password"
+                                />
+                                <div
+                                    className="absolute inset-y-0 right-0 pr-2 flex items-center cursor-pointer text-gray-500 "
+                                    onClick={() => setShowPassword(!showPassword)}
+                                >
+                                    {showPassword ? (
+                                        <FiEyeOff className="h-5 w-5" />
+                                    ) : (
+                                        <FiEye className="h-5 w-5" />
+                                    )}
+                                </div>
+                            </div>
                         </div>
                         <div className="w-full justify-start mt-2">
                             <button
-                                className=" w-1/2 p-2 bg-green-gradient font-bold"
+                                className="w-1/3 p-2 bg-green-gradient font-bold rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                 type="submit"
                             >
                                 Kirjaudu

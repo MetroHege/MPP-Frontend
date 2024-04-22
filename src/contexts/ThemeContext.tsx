@@ -1,4 +1,4 @@
-import { createContext, useState, useContext } from "react";
+import { createContext, useState, useContext, useEffect } from "react";
 
 type Theme = "light" | "dark";
 type ThemeContextProps = {
@@ -20,6 +20,19 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
         window.localStorage.setItem("theme", newTheme);
         return newTheme;
     };
+
+    useEffect(() => {
+        const root = document.getElementById("root");
+        if (root) {
+            if (theme === "light") {
+                root.classList.add("light");
+                root.classList.remove("dark");
+            } else {
+                root.classList.add("dark");
+                root.classList.remove("light");
+            }
+        }
+    }, [theme]);
 
     return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
 };

@@ -1,10 +1,18 @@
-import { PostListingsRequest, User } from "mpp-api-types";
+import { PostLoginRequest, UserWithId } from "mpp-api-types";
 
-export type Credentials = Pick<User, keyof User>;
+export type Credentials = PostLoginRequest;
 
 export type AuthContextType = {
-    user: PostListingsRequest | null;
+    user: UserWithId | null;
     handleLogin: (credentials: Credentials) => void;
     handleLogout: () => void;
     handleAutoLogin: () => void;
 };
+
+export enum Quality {
+    New = 5,
+    LikeNew = 4,
+    Good = 3,
+    Fair = 2,
+    Poor = 1
+}

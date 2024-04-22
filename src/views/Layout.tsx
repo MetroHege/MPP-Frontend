@@ -1,7 +1,8 @@
 import { faUser, faBars } from "@fortawesome/free-solid-svg-icons";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import logo from "../image/divarinet-white.png";
+import darkLogo from "../img/divarinet-white.png";
+import lightLogo from "../img/divarinet-black.png";
 import { useEffect, useState } from "react";
 import { faFacebookF, faInstagram, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import field1 from "../img/field-1.jpg";
@@ -12,15 +13,21 @@ import { useUser } from "../hooks/UserHooks";
 import { useCategories } from "../hooks/CategoryHooks"; // Import the getCategories function
 import useListing from "../hooks/ListingHooks";
 import { useTheme } from "../contexts/ThemeContext";
+import { useUserContext } from "../contexts/ContextHooks";
 
 const Layout = () => {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const { getAllUsers } = useUser();
+    const { user, handleAutoLogin } = useUserContext();
     const [userCount, setUserCount] = useState<number>(0); // Declare setUserCount function
     const { categories, getCategories } = useCategories();
     const { listings } = useListing();
     const { theme } = useTheme();
+
+    if (!user) {
+        handleAutoLogin();
+    }
 
     useEffect(() => {
         getCategories();
@@ -37,9 +44,18 @@ const Layout = () => {
 
     return (
         <>
-            <header className="w-full bg-main-dark">
+            <header
+                className={`w-full ${theme === "light" ? "bg-slate-200 text-gray-900" : "bg-main-dark"}`}
+            >
+                {" "}
                 <div className="flex justify-between p-2 items-center">
-                    <img src={logo} alt="DivariNet" className="h-10 w-auto" />
+                    <Link to="/">
+                        <img
+                            src={theme === "light" ? lightLogo : darkLogo}
+                            alt="DivariNet"
+                            className="h-10 w-auto"
+                        />{" "}
+                    </Link>
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="xl:hidden flex items-center px-3 py-2 border rounded text-white border-white"
@@ -49,42 +65,42 @@ const Layout = () => {
                     <nav className="xl:flex hidden">
                         <ul className="flex space-x-4 mr-4">
                             <li>
-                                <Link className="text-xl text-white hover:text-gray-300" to="/">
+                                <Link
+                                    className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/" ? "underline" : ""}`}
+                                    to="/"
+                                >
                                     Koti
                                 </Link>
                             </li>
-                            <li>
-                                <Link
-                                    className="text-xl text-white hover:text-gray-300"
-                                    to="/profile"
-                                >
-                                    Profiili
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    className="text-xl text-white hover:text-gray-300"
-                                    to="/upload"
-                                >
-                                    Ilmoita
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    className="text-xl text-white hover:text-gray-300"
-                                    to="/admin"
-                                >
-                                    Admin
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    className="text-xl text-white hover:text-gray-300"
-                                    to="/login"
-                                >
-                                    <FontAwesomeIcon icon={faUser} />
-                                </Link>
-                            </li>
+                            {user ? (
+                                <>
+                                    <li>
+                                        <Link
+                                            className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/profile" ? "underline" : ""}`}
+                                            to="/profile"
+                                        >
+                                            Profiili
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link
+                                            className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/upload" ? "underline" : ""}`}
+                                            to="/upload"
+                                        >
+                                            Ilmoita
+                                        </Link>
+                                    </li>
+                                </>
+                            ) : (
+                                <li>
+                                    <Link
+                                        className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/login" ? "underline" : ""}`}
+                                        to="/login"
+                                    >
+                                        <FontAwesomeIcon icon={faUser} />
+                                    </Link>
+                                </li>
+                            )}
                         </ul>
                     </nav>
                 </div>
@@ -172,7 +188,9 @@ const Layout = () => {
                                 <div
                                     className={`absolute inset-0 bg-gradient-to-t ${theme === "light" ? "from-slate-100 to-transparent" : "from-main-medium to-transparent"}`}
                                 ></div>{" "}
-                                <div className="h-5 absolute inset-0 bg-gradient-to-b from-main-dark to-transparent"></div>
+                                <div
+                                    className={`h-5 absolute inset-0 ${theme === "light" ? "bg-gradient-to-b from-slate-200 to-transparent" : "bg-gradient-to-b from-main-dark to-transparent"}`}
+                                ></div>{" "}
                             </div>
                             <div>
                                 <img
@@ -183,7 +201,9 @@ const Layout = () => {
                                 <div
                                     className={`absolute inset-0 bg-gradient-to-t ${theme === "light" ? "from-slate-100 to-transparent" : "from-main-medium to-transparent"}`}
                                 ></div>{" "}
-                                <div className="h-5 absolute inset-0 bg-gradient-to-b from-main-dark to-transparent"></div>
+                                <div
+                                    className={`h-5 absolute inset-0 ${theme === "light" ? "bg-gradient-to-b from-slate-200 to-transparent" : "bg-gradient-to-b from-main-dark to-transparent"}`}
+                                ></div>{" "}
                             </div>
                             <div>
                                 <img
@@ -194,33 +214,32 @@ const Layout = () => {
                                 <div
                                     className={`absolute inset-0 bg-gradient-to-t ${theme === "light" ? "from-slate-100 to-transparent" : "from-main-medium to-transparent"}`}
                                 ></div>{" "}
-                                <div className="h-5 absolute inset-0 bg-gradient-to-b from-main-dark to-transparent"></div>
+                                <div
+                                    className={`h-5 absolute inset-0 ${theme === "light" ? "bg-gradient-to-b from-slate-200 to-transparent" : "bg-gradient-to-b from-main-dark to-transparent"}`}
+                                ></div>{" "}
                             </div>
                         </Carousel>
-                        {/* <div className="relative">
-                            <video className="w-full h-130 object-cover" autoPlay loop muted>
-                                <source src={yourVideoSource} type="video/mp4" />
-                            </video>
-                            <div className="absolute inset-0 bg-gradient-to-t from-main-medium to-transparent"></div>
-                            <div className="h-5 absolute inset-0 bg-gradient-to-b from-main-dark to-transparent"></div>
-                        </div> */}
                     </div>
                 )}
             </div>
-            <body className={`${theme === "light" ? "bg-slate-100 text-gray-900" : ""}`}>
+            <div className={`${theme === "light" ? "bg-slate-100 text-gray-900" : ""}`}>
                 <main
                     className={`w-4/5 mx-auto p-4 ${theme === "light" ? "bg-slate-100 text-gray-900" : ""}`}
                 >
                     <Outlet />
                 </main>
-            </body>
+            </div>
             <footer
-                className={`py-10 px-6 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                className={`py-10 px-6 bg-main-dark ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
             >
                 {" "}
                 <div className="flex w-full">
                     <div className="w-1/3">
-                        <img src={logo} alt="DivariNet" className="h-10 w-auto" />
+                        <img
+                            src={theme === "light" ? lightLogo : darkLogo}
+                            alt="DivariNet"
+                            className="h-10 w-auto"
+                        />{" "}
                         <p className="text-sm mt-2">
                             Luotetun markkinapaikan tarjoaja käytetyille urheiluvälineille.
                         </p>

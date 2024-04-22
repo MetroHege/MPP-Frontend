@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dropdown from "../components/Dropdown";
 import useListing from "../hooks/ListingHooks";
 import { useCategories } from "../hooks/CategoryHooks";
 import { SortableContainer, SortableElement } from "react-sortable-hoc";
 import { arrayMove } from "react-sortable-hoc";
+import { useNavigate } from "react-router-dom";
 
-export enum Quality {
+enum Quality {
     New = 5,
     LikeNew = 4,
     Good = 3,
@@ -14,68 +15,141 @@ export enum Quality {
 }
 
 const SortableItem = React.memo(
-    SortableElement(({ value }: { value: string }) => (
-        <img src={value} alt="Uploaded" className="rounded mb-2 w-50 h-50" />
-    ))
+    SortableElement<{ value: string; i: number; deleteImage: (index: number) => void }>(
+        ({
+            value,
+            i,
+            deleteImage
+        }: {
+            value: string;
+            i: number;
+            deleteImage: (index: number) => void;
+        }) => (
+            <div className="relative">
+                <img src={value} alt="Uploaded" className="rounded mb-2" />
+                <button
+                    type="button"
+                    onClick={() => deleteImage(i)}
+                    className="absolute top-1 right-0 text-xl text-red-500 font-bold w-5 h-5 flex items-center justify-center"
+                >
+                    X
+                </button>
+            </div>
+        )
+    )
 );
 
-const SortableList = SortableContainer(({ items }) => {
-    return (
-        <div className="grid grid-cols-2 gap-2">
-            {items.map((value, index) => (
-                <SortableItem key={`item-${index}`} index={index} value={value} />
-            ))}
-        </div>
-    );
-});
+const SortableList = SortableContainer<{ items: string[]; deleteImage: (index: number) => void }>(
+    ({ items, deleteImage }: { items: string[]; deleteImage: (index: number) => void }) => {
+        return (
+            <div className="grid grid-cols-2 gap-2">
+                {items.map((value, index) => (
+                    <SortableItem
+                        key={`item-${index}`}
+                        value={value}
+                        i={index}
+                        index={index}
+                        deleteImage={deleteImage}
+                    />
+                ))}
+            </div>
+        );
+    }
+);
 
 const UploadForm = () => {
-    const { categories } = useCategories();
+    const { categories, getCategories } = useCategories();
     const [category, setCategory] = useState(0);
-    const [selectedImage, setSelectedImage] = useState("https://placehold.co/300x300");
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [type, setType] = useState<"buy" | "sell">("buy");
+    const [type, setType] = useState<"buy" | "sell" | "">("");
     const [quality, setQuality] = useState(0);
     const [price, setPrice] = useState(0);
     const { postListing } = useListing();
-    const [selectedImages, setSelectedImages] = useState<File[]>([]); // Provide an initial value for selectedImages
+    const [selectedImages, setSelectedImages] = useState<File[]>([]);
+    const navigate = useNavigate();
+
+    const [validationErrors, setValidationErrors] = useState({
+        image: "",
+        category: "",
+        title: "",
+        description: "",
+        quality: "",
+        type: ""
+    });
+
+    const validateForm = () => {
+        const errors = {
+            image: selectedImages.length === 0 ? "Lataa vähintään yksi kuva" : "",
+            title: title === "" ? "Anna ilmoitukselle otsikko" : "",
+            description: description === "" ? "Anna ilmoitukselle kuvaus" : "",
+            type: type !== "buy" && type !== "sell" ? "Valitse ilmoituksen tyyppi" : "",
+            quality: quality === 0 ? "Valitse tuotteen kunto" : "",
+            category: category === 0 ? "Valitse tuotteen kategoria" : ""
+        };
+        setValidationErrors(errors);
+        return !Object.values(errors).some(error => error !== "");
+    };
 
     const onSortEnd = ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) => {
         setSelectedImages(prevImages => {
             const newImages = arrayMove(prevImages, oldIndex, newIndex);
-            console.log(newImages); // Log the new order of images
+            console.log(newImages);
             return newImages;
         });
+    };
+
+    const deleteImage = (index: number) => {
+        console.log(index);
+        setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index));
     };
 
     const handleImageChange = (e: any) => {
         if (e.target.files) {
             const fileArray = Array.from(e.target.files);
 
+            if (selectedImages.length + fileArray.length > 5) {
+                alert("Voit lisätä maksimissaan 5 kuvaa ilmoitukseen!");
+                return;
+            }
+
             setSelectedImages(prevImages => prevImages.concat(fileArray as File[]));
         }
     };
 
-    const handleSubmit = async e => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            return;
+        }
         const token = localStorage.getItem("token");
-        await postListing(
+        const response = await postListing(
             selectedImages,
             { type, category, quality, price, title, description },
             token as string
         );
+        if (response) {
+            navigate("/profile");
+        }
     };
+
+    useEffect(() => {
+        getCategories();
+    }, []);
 
     return (
         <form onSubmit={handleSubmit}>
             <div className="flex">
                 <div className="w-1/2 p-4">
-                    <h1 className="text-4xl mb-4">Kuvat:</h1>
+                    <h1 className="text-4xl">Kuvat:</h1>
+                    <h3 className="mb-2 text-xs text-slate-500">
+                        Voit lisätä maksimissaan 5 kuvaa
+                    </h3>
                     <div className="mb-4">
                         {selectedImages.length > 0 && (
                             <p>
-                                Voit vaihtaa kuvien järjestystä raahaamalla niitä (ylin on
+                                Voit vaihtaa kuvien järjestystä raahaamalla niitä (ensimmäinen on
                                 kansikuva)
                             </p>
                         )}
@@ -83,9 +157,12 @@ const UploadForm = () => {
                             items={selectedImages.map(file => URL.createObjectURL(file))}
                             onSortEnd={onSortEnd}
                             axis="xy"
+                            deleteImage={deleteImage}
                         />
                         <input type="file" name="image" onChange={handleImageChange} multiple />
                     </div>
+                </div>
+                <div className="w-1/2 p-4">
                     <div className="mb-4">
                         <h2 className="text-2xl mb-2">Ilmoituksen otsikko:</h2>
                         <input
@@ -93,11 +170,9 @@ const UploadForm = () => {
                             placeholder="Tuotteen nimi..."
                             value={title}
                             onChange={e => setTitle(e.target.value)}
-                            className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                            className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                         />
                     </div>
-                </div>
-                <div className="w-1/2 p-4">
                     <div className="mb-4">
                         <h2 className="text-2xl">Ilmoitusteksti:</h2>
                         <h3 className="mb-2 text-xs text-slate-500">
@@ -107,7 +182,7 @@ const UploadForm = () => {
                             placeholder="Tuotekuvaus..."
                             value={description}
                             onChange={e => setDescription(e.target.value)}
-                            className="w-2/3 h-30 rounded border border-slate-500 p-2 text-slate-950"
+                            className="w-2/3 h-30 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                         ></textarea>
                     </div>
                     <div className="mb-4">
@@ -193,18 +268,24 @@ const UploadForm = () => {
                             className="mb-4"
                             value={category}
                             onChange={e => setCategory(Number(e.target.value))}
-                            onOptionSelect={(id: number) => setCategory(id)}
+                            onOptionSelect={(id: number) => {
+                                console.log("Selected category ID:", id);
+                                setCategory(id);
+                            }}
                         />
-                        {category && category !== 0 && (
+                        {category !== 0 && (
                             <div className="flex items-center space-x-2">
-                                {categories.find(cat => cat.id === category) && (
+                                {categories.find(cat => cat.id === category)?.title && (
                                     <span>
-                                        {categories.find(cat => cat.id === category)?.title !== "0"
-                                            ? categories.find(cat => cat.id === category)?.title
-                                            : ""}
+                                        {categories.find(cat => cat.id === category)?.title}
                                     </span>
                                 )}
-                                <button onClick={() => setCategory(0)}>X</button>
+                                <button
+                                    className="bg-transparent border-none cursor-pointer text-2xl text-red-500"
+                                    onClick={() => setCategory(0)}
+                                >
+                                    X
+                                </button>
                             </div>
                         )}
                     </div>
@@ -214,14 +295,27 @@ const UploadForm = () => {
                         <input
                             type="text"
                             value={price}
-                            onChange={e => setPrice(Number(e.target.value))}
-                            className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950"
+                            onChange={e => {
+                                const value = Number(e.target.value);
+                                if (!isNaN(value)) {
+                                    setPrice(value);
+                                }
+                            }}
+                            className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                         />
                     </div>
                     <div className="mt-4">
+                        {Object.values(validationErrors).map(
+                            (error, index) =>
+                                error && (
+                                    <p key={index} className="text-red-500">
+                                        {error}
+                                    </p>
+                                )
+                        )}
                         <button
                             type="submit"
-                            className=" w-1/2 p-2 bg-green-gradient font-bold rounded"
+                            className=" w-1/2 p-2 bg-green-gradient font-bold rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                         >
                             Jätä ilmoitus!
                         </button>
