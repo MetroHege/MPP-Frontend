@@ -421,7 +421,7 @@ const Single: React.FC = () => {
                 <div
                     className={`rounded-lg shadow-lg mb-4 p-4 bg-main-light flex display-flex w-3/4 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                 >
-                    <div className="w-1/2 ml-4 text-2xl">
+                    <div className="w-1/2 xl-0 md:ml-4 text-2xl">
                         <p>Myyjä:</p>
                         <p>Tyyppi:</p>
                         <p>Ilmoitettu:</p>
