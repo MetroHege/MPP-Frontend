@@ -20,7 +20,7 @@ const Rules = () => {
     return (
         <>
             <h1 className="text-4xl mt-4">
-                <strong>DivariNet:n säännöt ja käyttöehdot</strong>
+                <strong>DivariNetin säännöt ja käyttöehdot</strong>
             </h1>
             <p className="text-xl mt-2 mb-4">
                 Tervetuloa DivariNet-palveluun! Olemme innoissamme siitä, että olet kiinnostunut
@@ -84,21 +84,21 @@ const Rules = () => {
             {openSections[4] && (
                 <p className="text-xl mt-2 mb-4 ml-7">
                     Palvelussa on mahdollista julkaista erilaisia ilmoituksia ja sisältöä. Pidätämme
-                    kuitenkin oikeuden tarkistaa ja tarvittaessa muokata tai poistaa tällaista
-                    sisältöä, jos se rikkoo käyttöehtojamme tai on muutoin sopimatonta.
-                    Tavoitteenamme on tarjota käyttäjillemme turvallinen ja viihtyisä ympäristö,
-                    jossa voi jakaa ja löytää kiinnostavaa sisältöä.
+                    kuitenkin oikeuden tarkistaa ja tarvittaessa muokata tai poistaa sisältöä, jos
+                    se rikkoo käyttöehtojamme tai on muutoin sopimatonta. Tavoitteenamme on tarjota
+                    käyttäjillemme turvallinen ja viihtyisä ympäristö, jossa voi jakaa ja löytää
+                    kiinnostavaa sisältöä.
                 </p>
             )}
 
             <h2 onClick={() => handleClick(5)} className="cursor-pointer text-2xl font-bold">
-                6. Vastuunrajoitus {openSections[5] ? "▲" : "▼"}
+                6. Vastuun rajoitus {openSections[5] ? "▲" : "▼"}
             </h2>
             {openSections[5] && (
                 <p className="text-xl mt-2 mb-4 ml-7">
                     Emme voi taata palvelumme virheettömyyttä tai täydellisyyttä, emmekä siksi ole
                     vastuussa mahdollisista vahingoista tai menetyksistä, jotka voivat aiheutua
-                    palvelun käytöstä. Käyttäjänä ymmärrät ja hyväksyt tämän vastuunrajoituksen, ja
+                    palvelun käytöstä. Käyttäjänä ymmärrät ja hyväksyt tämän vastuun rajoituksen, ja
                     käytät palveluamme omalla vastuullasi.
                 </p>
             )}
@@ -132,14 +132,14 @@ const Rules = () => {
             {openSections[8] && (
                 <p className="text-xl mt-2 mb-4 ml-7">
                     Kaikki käyttäjän luoma sisältö, kuten tekstit, kuvat ja videot, ovat käyttäjän
-                    omistuksessa ja vastuulla. Käyttäjä on vastuussa varmistamaan, että luotu
-                    sisältö ei loukkaa kolmansien osapuolien oikeuksia eikä riko sovellettavia
-                    lakeja tai sääntöjä.
+                    omistuksessa ja vastuulla. Käyttäjän vastuulla on varmistaa, ettei luotu sisältö
+                    ei loukkaa kolmansien osapuolien oikeuksia eikä riko sovellettavia lakeja tai
+                    sääntöjä.
                 </p>
             )}
 
             <h2 onClick={() => handleClick(9)} className="cursor-pointer text-2xl font-bold">
-                10. Käyttäjän käytöksen säännöt {openSections[9] ? "▲" : "▼"}
+                10. Käyttäjän toiminnan säännöt {openSections[9] ? "▲" : "▼"}
             </h2>
             {openSections[9] && (
                 <p className="text-xl mt-2 mb-4 ml-7">

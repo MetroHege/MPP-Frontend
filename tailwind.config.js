@@ -26,6 +26,12 @@ export default {
                 110: "27.5rem",
                 130: "32.5rem",
                 150: "37.5rem"
+            },
+            screens: {
+                sm: "640px",
+                md: "768px",
+                lg: "1024px",
+                xl: "1280px"
             }
         }
     },

@@ -164,7 +164,7 @@ const Profile = () => {
                     <p className="text-2xl mb-4">Kaupunki: {user.city}</p>
                     <div className="flex flex-col">
                         <button
-                            className="w-1/2 p-2 bg-yellow-gradient font-bold mb-2 rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
+                            className="w-3/4 md:w-1/2 p-2 bg-yellow-gradient font-bold mb-2 rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                             type="submit"
                             onClick={() => setShowForm(true)}
                         >
@@ -176,7 +176,7 @@ const Profile = () => {
                             setParentUser={setUser}
                         />
                         <button
-                            className="w-1/2 p-2 bg-red-gradient font-bold rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
+                            className="w-3/4 md:w-1/2 p-2 bg-red-gradient font-bold rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                             type="submit"
                             onClick={handleLogout}
                         >
@@ -185,10 +185,12 @@ const Profile = () => {
                     </div>
                 </div>
                 <div className="w-1/2">
-                    <p className="text-4xl mb-4">Aktiivisia ilmoituksia: {listingsCount}</p>
-                    <p className="text-4xl mb-4">Kyselyjä ilmoituksissa: 12</p>
+                    <p className="text-3xl md:text-4xl mb-4">
+                        Aktiivisia ilmoituksia: {listingsCount}
+                    </p>
+                    <p className="text-3xl md:text-4xl mb-4">Kyselyjä ilmoituksissa: 12</p>
                     <div className="flex items-center">
-                        <p className="mr-2 text-2xl">Vaihda teemaa:</p>
+                        <p className="text-xl md:text-2xl mr-2">Vaihda teemaa:</p>
                         <CustomSwitch
                             onChange={toggleTheme}
                             checked={theme === "dark"}

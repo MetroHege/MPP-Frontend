@@ -140,8 +140,8 @@ const UploadForm = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <div className="flex">
-                <div className="w-1/2 p-4">
+            <div className="flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2 p-4">
                     <h1 className="text-4xl">Kuvat:</h1>
                     <h3 className="mb-2 text-xs text-slate-500">
                         Voit lisätä maksimissaan 5 kuvaa
@@ -162,7 +162,8 @@ const UploadForm = () => {
                         <input type="file" name="image" onChange={handleImageChange} multiple />
                     </div>
                 </div>
-                <div className="w-1/2 p-4">
+                <div className="w-full md:w-1/2 p-4">
+                    {" "}
                     <div className="mb-4">
                         <h2 className="text-2xl mb-2">Ilmoituksen otsikko:</h2>
                         <input

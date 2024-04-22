@@ -45,7 +45,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
             contentLabel="Modal"
         >
             <div
-                className={`bg-main-medium rounded-lg w-1/3 ${theme === "light" ? "text-slate-950 bg-slate-100" : ""}`}
+                className={`bg-main-medium rounded-lg w-1/2 ${theme === "light" ? "text-slate-950 bg-slate-100" : ""}`}
             >
                 <div className="flex flex-col items-start p-4">
                     <div className="flex items-center w-full">

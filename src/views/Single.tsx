@@ -421,7 +421,7 @@ const Single: React.FC = () => {
                 <div
                     className={`rounded-lg shadow-lg mb-4 p-4 bg-main-light flex display-flex w-3/4 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                 >
-                    <div className="w-1/2 ml-4 text-3xl">
+                    <div className="w-1/2 xl-0 md:ml-4 text-2xl">
                         <p>Myyjä:</p>
                         <p>Tyyppi:</p>
                         <p>Ilmoitettu:</p>
@@ -429,7 +429,7 @@ const Single: React.FC = () => {
                         <p>Kunto:</p>
                         <p>Kategoria:</p>
                     </div>
-                    <div className="w-1/2 ml-4 text-3xl">
+                    <div className="w-1/2 ml-4 text-2xl">
                         <p>{userItem.username}</p>
                         <p>{item.type === "buy" ? "Ostetaan" : "Myydään"}</p>
                         <p>{new Date(item.time).toLocaleDateString("fi-FI")}</p>
@@ -442,8 +442,12 @@ const Single: React.FC = () => {
                         </p>
                     </div>
                 </div>
-                <h1 className="text-2xl mb-4">Muita ilmoituksia samasta kategoriasta:</h1>
-                <div className="flex w-3/4 flex-col space-y-4">
+                {randomListings.length > 0 && (
+                    <h1 className="text-2xl mb-4 hidden md:block">
+                        Muita ilmoituksia samasta kategoriasta:
+                    </h1>
+                )}
+                <div className="flex w-3/4 flex-col space-y-4 hidden md:block">
                     {randomListings.map((listing, index) => (
                         <Link to="/single" state={listing} key={index}>
                             <div
