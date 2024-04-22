@@ -3,7 +3,6 @@ import { useForm } from "../hooks/FormHooks";
 import { useAuthentication, useUser } from "../hooks/UserHooks";
 import { PostUsersRequest } from "mpp-api-types";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import PhoneInput from "react-phone-number-input/input";
 import validator from "validator";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +15,6 @@ const RegisterForm = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [_errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
-    const [value, setValue] = useState<number>(0);
     const navigate = useNavigate();
 
     const initValues = {
