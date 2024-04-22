@@ -14,7 +14,7 @@ import { FiChevronDown } from "react-icons/fi";
 const Home = () => {
     const { categories, getCategories } = useCategories();
     const [selectedCategory, setSelectedCategory] = useState<number | "">("");
-    const { listings, searchTerm, setSearchTerm, loadMore, sort } = useListing({
+    const { listings, searchTerm, setSearchTerm, loadMore, sort, hasMore } = useListing({
         category: selectedCategory ? +selectedCategory : undefined
     });
     const { user } = useUser();
@@ -202,7 +202,7 @@ const Home = () => {
                         </p>
                     </div>
                 )}
-                {listings && listings.length > 0 && (
+                {listings && listings.length > 0 && hasMore && (
                     <div className="flex justify-center items-center my-4">
                         <FiChevronDown
                             className="text-6xl cursor-pointer animate-bounce"

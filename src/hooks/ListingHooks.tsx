@@ -18,6 +18,7 @@ const useListing = (filters?: { category?: number }) => {
         "newest"
     );
     const [range, setRange] = useState({ start: 0, end: 25 });
+    const [hasMore, setHasMore] = useState(true);
     const { update } = useUpdateContext();
 
     const getListing = async () => {
@@ -31,6 +32,9 @@ const useListing = (filters?: { category?: number }) => {
             const listings = await fetchData<GetListingsResponse>(url.toString());
 
             setListings(listings);
+            if (listings.length < range.end - range.start) {
+                setHasMore(false);
+            }
         } catch (error) {
             console.error("getListing failed", error);
         }
@@ -148,6 +152,7 @@ const useListing = (filters?: { category?: number }) => {
         searchTerm,
         fetchListingsByCategory,
         loadMore,
+        hasMore,
         sort
     };
 };
