@@ -161,6 +161,8 @@ const UploadForm = () => {
                         />
                         <input type="file" name="image" onChange={handleImageChange} multiple />
                     </div>
+                </div>
+                <div className="w-1/2 p-4">
                     <div className="mb-4">
                         <h2 className="text-2xl mb-2">Ilmoituksen otsikko:</h2>
                         <input
@@ -171,8 +173,6 @@ const UploadForm = () => {
                             className="w-2/3 h-10 rounded border border-slate-500 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                         />
                     </div>
-                </div>
-                <div className="w-1/2 p-4">
                     <div className="mb-4">
                         <h2 className="text-2xl">Ilmoitusteksti:</h2>
                         <h3 className="mb-2 text-xs text-slate-500">
