@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import AdminUser from "../components/AdminUser";
 import AdminListing from "../components/AdminListing";
 import AdminCategory from "../components/AdminCategory";
+import AdminMessage from "../components/AdminMessage";
 
 const Admin: React.FC = () => {
     return (
@@ -13,6 +14,8 @@ const Admin: React.FC = () => {
                 <AdminListing />
                 <h2 className="text-xl font-semibold">Categories</h2>
                 <AdminCategory />
+                <h2 className="text-xl font-semibold">Messages</h2>
+                <AdminMessage listingId={""} token={""} />
             </ul>
         </div>
     );

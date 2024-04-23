@@ -79,9 +79,59 @@ const AdminUser: React.FC = () => {
                         <label className="block">
                             <span className="text-gray-700">Username:</span>
                             <input
-                            type="text"
-                                name="username"
+                                type="text"
+                                name="userName"
                                 value={selectedUser.username}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-1/2 p-2 border-gray-300 rounded-md"
+                            />
+                        </label>
+                        <label className="block">
+                            <span className="text-gray-700">First Name:</span>
+                            <input
+                                type="text"
+                                name="firstName"
+                                value={selectedUser.firstName}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-1/2 p-2 border-gray-300 rounded-md"
+                            />
+                        </label>
+                        <label className="block">
+                            <span className="text-gray-700">Last Name:</span>
+                            <input
+                                type="text"
+                                name="lastName"
+                                value={selectedUser.lastName}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-1/2 p-2 border-gray-300 rounded-md"
+                            />
+                        </label>
+                        <label className="block">
+                            <span className="text-gray-700">City:</span>
+                            <input
+                                type="text"
+                                name="city"
+                                value={selectedUser.city}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-1/2 p-2 border-gray-300 rounded-md"
+                            />
+                        </label>
+                        <label className="block">
+                            <span className="text-gray-700">Phone Number:</span>
+                            <input
+                                type="text"
+                                name="phone"
+                                value={selectedUser.phone}
+                                onChange={handleInputChange}
+                                className="mt-1 block w-1/2 p-2 border-gray-300 rounded-md"
+                            />
+                        </label>
+                        <label className="block">
+                            <span className="text-gray-700">Email:</span>
+                            <input
+                                type="text"
+                                name="email"
+                                value={selectedUser.email}
                                 onChange={handleInputChange}
                                 className="mt-1 block w-1/2 p-2 border-gray-300 rounded-md"
                             />
