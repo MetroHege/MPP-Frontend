@@ -152,16 +152,31 @@ const Profile = () => {
                     <FaArrowUp style={{ fontSize: "40px", color: "#fff", zIndex: 2 }} />
                 </button>
             )}
-            <div className="flex mt-10 mb-10">
-                <div className="w-1/2">
+            <div className="flex flex-col xsm:flex-row mt-5 mb-5 xsm:mt-10 xsm:mb-10">
+                <div className="w-full mb-4 xsm:w-1/2">
                     <h1 className="text-4xl mb-4">Tietoni:</h1>
-                    <p className="text-2xl mb-2">Käyttäjänimi: {user.username}</p>
-                    <p className="text-2xl mb-2">Etunimi: {user.firstName}</p>
-                    <p className="text-2xl mb-2">Sukunimi: {user.lastName}</p>
-                    <p className="text-2xl mb-2">Puhelinnumero: {user.phone}</p>
-                    <p className="text-2xl mb-2">Sähköposti: {user.email}</p>
-                    <p className="text-2xl mb-2">Salasana: **********</p>
-                    <p className="text-2xl mb-4">Kaupunki: {user.city}</p>
+                    <p className="text-2xl mb-2">
+                        <span>Käyttäjänimi:</span>{" "}
+                        <span className="font-bold">{user.username}</span>
+                    </p>
+                    <p className="text-2xl mb-2">
+                        <span>Etunimi:</span> <span className="font-bold">{user.firstName}</span>
+                    </p>
+                    <p className="text-2xl mb-2">
+                        <span>Sukunimi:</span> <span className="font-bold">{user.lastName}</span>
+                    </p>
+                    <p className="text-2xl mb-2">
+                        <span>Puhelinnumero:</span> <span className="font-bold">{user.phone}</span>
+                    </p>
+                    <p className="text-2xl mb-2">
+                        <span>Sähköposti:</span> <span className="font-bold">{user.email}</span>
+                    </p>
+                    <p className="text-2xl mb-2">
+                        <span>Salasana:</span> <span className="font-bold">**********</span>
+                    </p>
+                    <p className="text-2xl mb-4">
+                        <span>Kaupunki:</span> <span className="font-bold">{user.city}</span>
+                    </p>
                     <div className="flex flex-col">
                         <button
                             className="w-3/4 md:w-1/2 p-2 bg-yellow-gradient font-bold mb-2 rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
@@ -184,11 +199,13 @@ const Profile = () => {
                         </button>
                     </div>
                 </div>
-                <div className="w-1/2">
-                    <p className="text-3xl md:text-4xl mb-4">
+                <div className="w-full xsm:w-1/2">
+                    <p className="hidden xsm:block text-3xl md:text-4xl mb-4">
                         Aktiivisia ilmoituksia: {listingsCount}
                     </p>
-                    <p className="text-3xl md:text-4xl mb-4">Kyselyjä ilmoituksissa: 12</p>
+                    <p className="hidden xsm:block text-3xl md:text-4xl mb-4">
+                        Kyselyjä ilmoituksissa: 12
+                    </p>
                     <div className="flex items-center">
                         <p className="text-xl md:text-2xl mr-2">Vaihda teemaa:</p>
                         <CustomSwitch
@@ -203,7 +220,7 @@ const Profile = () => {
                             activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
                             height={20}
                             width={48}
-                            className="react-switch"
+                            className="react-switch mt-2 xsm:mt-0"
                             id="material-switch"
                         />
                     </div>

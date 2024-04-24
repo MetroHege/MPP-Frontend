@@ -28,6 +28,7 @@ export default {
                 150: "37.5rem"
             },
             screens: {
+                xsm: "375px",
                 sm: "640px",
                 md: "768px",
                 lg: "1024px",

@@ -250,7 +250,7 @@ const Layout = () => {
             </div>
             <div className={`${theme === "light" ? "bg-slate-100 text-gray-900" : ""}`}>
                 <main
-                    className={`w-4/5 mx-auto p-4 ${theme === "light" ? "bg-slate-100 text-gray-900" : ""}`}
+                    className={`w-full md:w-4/5 mx-auto p-4 ${theme === "light" ? "bg-slate-100 text-gray-900" : ""}`}
                 >
                     <Outlet />
                 </main>

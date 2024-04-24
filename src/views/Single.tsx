@@ -118,7 +118,9 @@ const Single: React.FC = () => {
                     &#8592; Takaisin
                 </button>
                 {typeof item.images !== "string" ? (
-                    <div className={`relative ${isCarouselModalOpen ? "pointer-events-none" : ""}`}>
+                    <div
+                        className={`relative ${isCarouselModalOpen || modalIsOpen ? "pointer-events-none" : ""}`}
+                    >
                         <Carousel
                             showThumbs={false}
                             selectedItem={0}
@@ -128,7 +130,7 @@ const Single: React.FC = () => {
                             {item.images.map((image, index) => (
                                 <div key={index}>
                                     <img
-                                        className="w-64 h-150 object-cover rounded"
+                                        className="w-64 h-64 sm:h-64 md:h-110 lg:h-130 xl:h-150 object-cover rounded"
                                         src={image.url}
                                         alt={`Listing ${item.id}`}
                                     />
@@ -197,7 +199,7 @@ const Single: React.FC = () => {
                                 contentLabel="Edit Listing"
                             >
                                 <div
-                                    className={`bg-main-medium rounded-lg w-1/3 ${theme === "light" ? "text-slate-950 bg-slate-100" : "text-white bg-main-medium"}`}
+                                    className={`bg-main-medium rounded-lg w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/2 xl:w-1/3 ${theme === "light" ? "text-slate-950 bg-slate-100" : "text-white bg-main-medium"}`}
                                 >
                                     <form
                                         className="flex flex-col items-start p-4"
@@ -296,7 +298,8 @@ const Single: React.FC = () => {
                                             >
                                                 Kunto:
                                             </label>
-                                            <div className="grid grid-cols-2 gap-4 pb-2">
+                                            <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 pb-2">
+                                                {" "}
                                                 <label className="col-span-1">
                                                     <input
                                                         type="radio"
@@ -419,26 +422,40 @@ const Single: React.FC = () => {
             </div>
             <div className="w-1/2 flex flex-col items-start mt-16 ml-4">
                 <div
-                    className={`rounded-lg shadow-lg mb-4 p-4 bg-main-light flex display-flex w-3/4 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                    className={`rounded-lg shadow-lg mb-4 p-4 bg-main-light flex display-flex w-1/2 ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                 >
-                    <div className="w-1/2 xl-0 md:ml-4 text-2xl">
-                        <p>Myyjä:</p>
-                        <p>Tyyppi:</p>
-                        <p>Ilmoitettu:</p>
-                        <p>Kaupunki:</p>
-                        <p>Kunto:</p>
-                        <p>Kategoria:</p>
-                    </div>
-                    <div className="w-1/2 ml-4 text-2xl">
-                        <p>{userItem.username}</p>
-                        <p>{item.type === "buy" ? "Ostetaan" : "Myydään"}</p>
-                        <p>{new Date(item.time).toLocaleDateString("fi-FI")}</p>
-                        <p>{userItem.city}</p>
-                        <p>{qualityToText(item.quality)}</p>
+                    <div className="w-full xl-0 md:ml-4 text-2xl">
                         <p>
-                            {typeof item.category === "number"
-                                ? item.category
-                                : item.category.title}
+                            <span>Myyjä:</span>{" "}
+                            <span className="font-bold">{userItem.username}</span>
+                        </p>
+                        <p>
+                            <span>Tyyppi:</span>{" "}
+                            <span className="font-bold">
+                                {item.type === "buy" ? "Ostetaan" : "Myydään"}
+                            </span>
+                        </p>
+                        <p>
+                            <span>Ilmoitettu:</span>{" "}
+                            <span className="font-bold">
+                                {new Date(item.time).toLocaleDateString("fi-FI")}
+                            </span>
+                        </p>
+                        <p>
+                            <span>Kaupunki:</span>{" "}
+                            <span className="font-bold">{userItem.city}</span>
+                        </p>
+                        <p>
+                            <span>Kunto:</span>{" "}
+                            <span className="font-bold">{qualityToText(item.quality)}</span>
+                        </p>
+                        <p>
+                            <span>Kategoria:</span>{" "}
+                            <span className="font-bold">
+                                {typeof item.category === "number"
+                                    ? item.category
+                                    : item.category.title}
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -458,7 +475,7 @@ const Single: React.FC = () => {
                                     alt={`Listing ${listing.id}`}
                                     className="w-36 h-36 object-cover"
                                 />
-                                <div className="ml-4 flex flex-row">
+                                <div className="ml-4 flex flex-row w-full">
                                     <div className="w-1/2">
                                         <h2 className="text-xl my-2">{listing.title}</h2>
                                         <p className="text-xl my-2">{+listing.price} €</p>
