@@ -15,8 +15,6 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
-    console.log("Version: 0.0.5");
-
     useEffect(() => {
         Modal.setAppElement("#root");
     }, []);
