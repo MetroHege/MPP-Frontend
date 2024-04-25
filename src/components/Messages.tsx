@@ -8,7 +8,7 @@ interface Props {
 }
 
 const Messages: React.FC<Props> = ({ listingId, token }) => {
-    const { messages, getListingMessages, postMessage } = useMessages();
+    const { messages, getListingMessages, postMessage, deleteMessage } = useMessages();
     const formRef = useRef<HTMLFormElement>(null);
     const [inputValue, setInputValue] = useState("");
 
@@ -67,6 +67,24 @@ const Messages: React.FC<Props> = ({ listingId, token }) => {
                                     </span>
                                     <span className="ml-2 whitespace-pre-wrap overflow-wrap break-word max-w-full">
                                         {message.content}
+                                        {token && (
+                                            <button
+                                                className="float-right text-red-500 font-bold"
+                                                onClick={async () => {
+                                                    try {
+                                                        await deleteMessage(message.id, token);
+                                                        await getMessages();
+                                                    } catch (error) {
+                                                        console.error(
+                                                            "deleteMessage failed",
+                                                            error
+                                                        );
+                                                    }
+                                                }}
+                                            >
+                                                X
+                                            </button>
+                                        )}
                                     </span>
                                 </div>
                             </li>
