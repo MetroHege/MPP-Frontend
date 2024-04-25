@@ -11,6 +11,7 @@ import {
     PutListingResponse
 } from "mpp-api-types";
 
+// This hook is used to fetch and manage listings from the server.
 const useListing = (filters?: { category?: number }) => {
     const [listings, setListings] = useState<ListingWithId[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
@@ -21,6 +22,7 @@ const useListing = (filters?: { category?: number }) => {
     const [hasMore, setHasMore] = useState(true);
     const { update } = useUpdateContext();
 
+    // This function is used to fetch listings from the server.
     const getListing = async () => {
         try {
             const url = new URL(import.meta.env.VITE_SERVER + "/listings");
@@ -40,10 +42,12 @@ const useListing = (filters?: { category?: number }) => {
         }
     };
 
+    // This function is used to load more listings.
     const loadMore = () => {
         setRange(prevRange => ({ start: 0, end: prevRange.end + 25 }));
     };
 
+    // This function is used to sort listings.
     const sort = (sortOrder: "newest" | "oldest" | "low-high" | "high-low") => {
         setSortOrder(sortOrder);
     };
@@ -52,18 +56,21 @@ const useListing = (filters?: { category?: number }) => {
         getListing();
     }, [update, searchTerm, filters?.category, range, sortOrder]);
 
+    // This function is used to fetch a listing with a specific id.
     const getListingWithId = async (id: number) => {
         return await fetchData<GetListingsResponse>(
             import.meta.env.VITE_SERVER + "/listings/" + id
         );
     };
 
+    // This function is used to fetch listings from a specific user.
     const getListingsFromUser = async (id: number) => {
         return await fetchData<GetListingsResponse>(
             import.meta.env.VITE_SERVER + "/users/" + id + "/listings"
         );
     };
 
+    // This function is used to fetch listings by category.
     const fetchListingsByCategory = async (category: number) => {
         try {
             const url = new URL(import.meta.env.VITE_SERVER + "/listings");
@@ -77,6 +84,7 @@ const useListing = (filters?: { category?: number }) => {
         }
     };
 
+    // This function is used to update a listing.
     const putListing = async (id: number, listing: PutListingRequest, token: string) => {
         const options = {
             method: "PUT",
@@ -92,6 +100,7 @@ const useListing = (filters?: { category?: number }) => {
         );
     };
 
+    // This function is used to post a listing.
     const postListing = (
         files: File[],
         inputs: Record<string, number | string | string[]>,
@@ -107,6 +116,7 @@ const useListing = (filters?: { category?: number }) => {
             description: inputs.description as string
         };
 
+        // Create a FormData object to send the files and listing data.
         const formData = new FormData();
         files.forEach(file => {
             formData.append("file", file);
@@ -127,6 +137,7 @@ const useListing = (filters?: { category?: number }) => {
         return fetchData<PostListingsResponse>(import.meta.env.VITE_SERVER + "/listings", options);
     };
 
+    // This function is used to delete a listing.
     const deleteListing = async (id: number, token: string) => {
         const options = {
             method: "DELETE",

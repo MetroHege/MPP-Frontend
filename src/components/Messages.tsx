@@ -8,11 +8,13 @@ interface Props {
     userId: string;
 }
 
+// This component is used to display messages for a listing.
 const Messages: React.FC<Props> = ({ listingId, token, userId }) => {
     const { messages, getListingMessages, postMessage, deleteMessage } = useMessages();
     const formRef = useRef<HTMLFormElement>(null);
     const [inputValue, setInputValue] = useState("");
 
+    // This function is used to post a message.
     const doMessage = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -35,6 +37,7 @@ const Messages: React.FC<Props> = ({ listingId, token, userId }) => {
         }
     };
 
+    // This function is used to get messages.
     const getMessages = async () => {
         try {
             await getListingMessages(Number(listingId));

@@ -1,6 +1,7 @@
 import ContactForm from "../components/ContactForm";
 import Kuva from "../img/nörtti-2.jpg";
 
+// This component is used to display the contact page.
 const Contact = () => {
     return (
         <>
@@ -19,6 +20,7 @@ const Contact = () => {
                     <img src={Kuva} alt="nörtti" className="rounded lg:block hidden" />
                 </div>
                 <div className="w-full lg:w-1/2">
+                    {/* This component is used to render a contact form. */}
                     <ContactForm />
                 </div>
             </div>

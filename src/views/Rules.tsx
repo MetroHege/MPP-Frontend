@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// This component is used to render the rules and terms of service.
 const Rules = () => {
     const [openSections, setOpenSections] = useState([
         false,
@@ -11,6 +12,7 @@ const Rules = () => {
         false
     ]);
 
+    // This function is used to handle the click event on a section.
     const handleClick = (sectionIndex: number) => {
         const newOpenSections = [...openSections];
         newOpenSections[sectionIndex] = !newOpenSections[sectionIndex];

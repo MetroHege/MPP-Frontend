@@ -2,6 +2,7 @@ import { PostListingsResponse, User } from "mpp-api-types";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 
+// This component is used to display a single listing.
 const Listing = (props: { item: PostListingsResponse; userItem: User }) => {
     const item = props.item;
     const userItem = props.userItem;

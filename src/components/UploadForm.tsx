@@ -14,6 +14,7 @@ enum Quality {
     Poor = 1
 }
 
+// This component is a sortable item.
 const SortableItem = React.memo(
     SortableElement<{ value: string; i: number; deleteImage: (index: number) => void }>(
         ({
@@ -39,6 +40,7 @@ const SortableItem = React.memo(
     )
 );
 
+// This component is a sortable list.
 const SortableList = SortableContainer<{ items: string[]; deleteImage: (index: number) => void }>(
     ({ items, deleteImage }: { items: string[]; deleteImage: (index: number) => void }) => {
         return (
@@ -57,6 +59,7 @@ const SortableList = SortableContainer<{ items: string[]; deleteImage: (index: n
     }
 );
 
+// This component is a form for uploading a new listing.
 const UploadForm = () => {
     const { categories, getCategories } = useCategories();
     const [category, setCategory] = useState(0);
@@ -78,6 +81,7 @@ const UploadForm = () => {
         type: ""
     });
 
+    // This function validates the form.
     const validateForm = () => {
         const errors = {
             image: selectedImages.length === 0 ? "Lataa vähintään yksi kuva" : "",
@@ -91,6 +95,7 @@ const UploadForm = () => {
         return !Object.values(errors).some(error => error !== "");
     };
 
+    // This function is used to sort the images.
     const onSortEnd = ({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) => {
         setSelectedImages(prevImages => {
             const newImages = arrayMove(prevImages, oldIndex, newIndex);
@@ -99,11 +104,13 @@ const UploadForm = () => {
         });
     };
 
+    // This function is used to delete an image.
     const deleteImage = (index: number) => {
         console.log(index);
         setSelectedImages(prevImages => prevImages.filter((_, i) => i !== index));
     };
 
+    // This function is used to handle image changes.
     const handleImageChange = (e: any) => {
         if (e.target.files) {
             const fileArray = Array.from(e.target.files);
@@ -117,6 +124,7 @@ const UploadForm = () => {
         }
     };
 
+    // This function is used to handle form submission.
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 

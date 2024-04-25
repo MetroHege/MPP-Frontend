@@ -19,6 +19,7 @@ enum Quality {
     Poor = 1
 }
 
+// This component is used to display a single listing.
 const Single: React.FC = () => {
     const { state } = useLocation();
     const navigate: NavigateFunction = useNavigate();
@@ -37,14 +38,17 @@ const Single: React.FC = () => {
 
     const token = localStorage.getItem("token") || "";
 
+    // This function is used to handle the change of form data.
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    // This function is used to handle the image click to open image array in full screen view.
     const handleImageClick = () => {
         setIsCarouselModalOpen(true);
     };
 
+    // This function is used to handle the delete of a listing.
     const handleDelete = async () => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -60,6 +64,7 @@ const Single: React.FC = () => {
         navigate("/profile");
     };
 
+    // This function is used to handle the submit of the form.
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const token = localStorage.getItem("token");
@@ -137,6 +142,7 @@ const Single: React.FC = () => {
                                 </div>
                             ))}
                         </Carousel>
+                        {/* This component is used to display a modal. */}
                         <Modal
                             isOpen={isCarouselModalOpen}
                             onRequestClose={() => setIsCarouselModalOpen(false)}
@@ -192,6 +198,7 @@ const Single: React.FC = () => {
                             >
                                 Poista
                             </button>
+                            {/* This component is used to display a modal. */}
                             <Modal
                                 isOpen={modalIsOpen}
                                 onRequestClose={() => setModalIsOpen(false)}
@@ -359,6 +366,7 @@ const Single: React.FC = () => {
                                             >
                                                 Kategoria:
                                             </label>
+                                            {/* This component is used to render a dropdown. */}
                                             <Dropdown
                                                 buttonText="Tuotekategoriat"
                                                 className="mb-4"
@@ -417,6 +425,7 @@ const Single: React.FC = () => {
                 <p className="mb-10">{item.description}</p>
                 <div>
                     <h1 className="text-4xl mb-4">Kysymykset:</h1>
+                    {/* This component is used to display messages. */}
                     <Messages
                         listingId={item?.id.toString()}
                         token={token}

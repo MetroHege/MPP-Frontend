@@ -6,6 +6,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import validator from "validator";
 import { useNavigate } from "react-router-dom";
 
+// This component is used to render a registration form.
 const RegisterForm = () => {
     const { postUser } = useUser();
     const { postLogin } = useAuthentication();
@@ -27,6 +28,7 @@ const RegisterForm = () => {
         city: ""
     };
 
+    // This function is used to register a user.
     const doRegister = async () => {
         const isValid = validateForm();
         if (!isValid || inputs.password !== confirmPassword) {
@@ -57,21 +59,25 @@ const RegisterForm = () => {
         }
     };
 
+    // This hook is used to manage the registration form.
     const { handleSubmit, handleInputChange, inputs, resetForm } = useForm<PostUsersRequest>(
         doRegister,
         initValues
     );
 
+    // This function is used to check if the username is available.
     const handleUsernameBlur = async () => {
         const result = await getUsernameAvailable(inputs.username);
         setUsernameAvailable(result.available);
     };
 
+    // This function is used to check if the email is available.
     const handleEmailBlur = async () => {
         const result = await getEmailAvailable(inputs.email);
         setEmailAvailable(result.available);
     };
 
+    // This function is used to validate the registration form.
     const [validationErrors, setValidationErrors] = useState({
         username: "",
         firstName: "",
@@ -83,6 +89,7 @@ const RegisterForm = () => {
         confirmPassword: ""
     });
 
+    // This function is used to validate the registration form.
     const validateForm = () => {
         const errors = {
             username:

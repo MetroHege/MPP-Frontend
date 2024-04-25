@@ -1,3 +1,4 @@
+// This snippet is used to export an array of encouragement messages.
 export const encouragementMessages: string[] = [
     "Tsemppiä sinulle! 🌿 Kierrät urheiluvälineitäsi ja teet ympäristöystävällisen valinnan. Jatka samaan malliin!",
     "Kiitos, että olet mukana edistämässä kestävämpää tulevaisuutta urheiluvälineiden kierrätyksen avulla. 💪 Jokainen teko luo muutosta – olet osa tärkeää muutosta!",
@@ -50,6 +51,7 @@ export const encouragementMessages: string[] = [
     "Olet osa suurta ekologista vallankumousta! Kiitos, että olet mukana taistelemassa ympäristömme puolesta. 🌱"
 ];
 
+// This function is used to get a random encouragement message.
 export const getRandomEncouragementMessage = (): string => {
     const randomIndex = Math.floor(Math.random() * encouragementMessages.length);
     return encouragementMessages[randomIndex];

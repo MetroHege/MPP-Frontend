@@ -7,6 +7,7 @@ import { PostUsersResponse } from "mpp-api-types";
 
 const UserContext = createContext<AuthContextType | null>(null);
 
+// This provider is used to wrap the application and provide the user context.
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<PostUsersResponse | null>(null);
     const { postLogin } = useAuthentication();
@@ -14,25 +15,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    // const handleLogin = async (credentials: Credentials) => {
-    //     try {
-    //         const loginResult = await postLogin(credentials);
-    //         if (loginResult) {
-    //             localStorage.setItem("token", loginResult.token);
-    //             setUser(loginResult.user);
-    //             let origin = "";
-    //             if (loginResult.user.admin) {
-    //                 origin = "/admin";
-    //             } else {
-    //                 origin = "/";
-    //             }
-    //             navigate(origin);
-    //         }
-    //     } catch (e) {
-    //         alert((e as Error).message);
-    //     }
-    // };
-
+    // This function is used to handle the login process.
     const handleLogin = async (credentials: Credentials) => {
         try {
             const failedAttemptsKey = `${credentials.username}_failedAttempts`;
@@ -49,6 +32,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
                 return;
             }
 
+            // This function is used to post a login request to the server.
             const loginResult = await postLogin(credentials);
 
             if (loginResult) {
@@ -74,6 +58,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
+    // This function is used to handle the logout process.
     const handleLogout = () => {
         try {
             localStorage.removeItem("token");
@@ -84,7 +69,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
-    // handleAutoLogin is used when the app is loaded to check if there is a valid token in local storage
+    // This function is used to handle the automatic login process.
     const handleAutoLogin = async () => {
         try {
             const token = localStorage.getItem("token");

@@ -12,6 +12,7 @@ interface UserFormProps {
     setParentUser: Dispatch<SetStateAction<UserWithId | null>>;
 }
 
+// This component is used to render a user form.
 const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUser }) => {
     const [user, setUser] = useState<PutUserRequest>({});
     const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -29,6 +30,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
         setOriginalUser(user);
     }, []);
 
+    // This function is used to handle the change event.
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         if (originalUser && value !== originalUser[name as keyof typeof originalUser]) {
@@ -44,11 +46,13 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
         email: user.email ?? ""
     };
 
+    // This function is used to check if the username is available.
     const handleUsernameBlur = async () => {
         const result = await getUsernameAvailable(inputs.username);
         setUsernameAvailable(result.available);
     };
 
+    // This function is used to check if the email is available.
     const handleEmailBlur = async () => {
         const result = await getEmailAvailable(inputs.email);
         setEmailAvailable(result.available);
