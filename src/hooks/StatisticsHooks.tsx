@@ -29,7 +29,7 @@ const useStatistics = () => {
     const getUserListingStatistics = async (id: number) => {
         try {
             const url = new URL(
-                import.meta.env.VITE_SERVER + "/statistics/users/" + id + "/statistics"
+                import.meta.env.VITE_SERVER + "/statistics/users/" + id + "/listings"
             );
             const statistics = await fetchData<GetUserListingStatisticResponse>(url.toString());
             return statistics;
