@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { fetchData } from "../lib/functions";
-import { GetMessagesResponse, Message, PostMessagesRequest } from "mpp-api-types";
+import {
+    DeleteMessageResponse,
+    GetMessagesResponse,
+    Message,
+    PostMessagesRequest
+} from "mpp-api-types";
 
 const useMessages = () => {
     const [messages, setMessages] = useState<WithId<Message>[]>([]);
@@ -39,7 +44,19 @@ const useMessages = () => {
         await fetchData(import.meta.env.VITE_SERVER + "/listings/" + id + "/messages", options);
     };
 
-    return { messages, getListingMessages, postMessage, getMessagesByListingId };
+    const deleteMessage = async (id: number, token: string): Promise<DeleteMessageResponse> => {
+        const options: RequestInit = {
+            method: "DELETE",
+            headers: {
+                Authorization: "Bearer " + token
+            }
+        };
+
+        const response = await fetchData(import.meta.env.VITE_SERVER + "/messages/" + id, options);
+        return response as DeleteMessageResponse;
+    };
+
+    return { messages, getListingMessages, postMessage, getMessagesByListingId, deleteMessage };
 };
 
 export default useMessages;
