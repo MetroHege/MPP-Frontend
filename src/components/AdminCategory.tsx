@@ -31,17 +31,19 @@ const AdminCategory: React.FC = () => {
 
     return (
         <>
-            {categories.map(category => (
-                <li key={category.id} className="p-4 border border-gray-200 rounded shadow-sm">
-                    <p className="mb-2 font-semibold">{category.title}</p>
-                    <button
-                        onClick={() => handleDeleteCategory(category.id)}
-                        className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
-                    >
-                        Delete Category
-                    </button>
-                </li>
-            ))}
+            <div className="grid grid-cols-2 gap-4">
+                {categories.map(category => (
+                    <div key={category.id} className="p-4 border border-gray-200 rounded shadow-sm">
+                        <p className="mb-2">{category.title}</p>
+                        <button
+                            onClick={() => handleDeleteCategory(category.id)}
+                            className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+                        >
+                            Poista
+                        </button>
+                    </div>
+                ))}
+            </div>
             <form onSubmit={handlePostCategory}>
                 <input
                     type="text"
