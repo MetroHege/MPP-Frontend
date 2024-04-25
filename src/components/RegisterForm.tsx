@@ -62,6 +62,16 @@ const RegisterForm = () => {
         initValues
     );
 
+    const handleUsernameBlur = async () => {
+        const result = await getUsernameAvailable(inputs.username);
+        setUsernameAvailable(result.available);
+    };
+
+    const handleEmailBlur = async () => {
+        const result = await getEmailAvailable(inputs.email);
+        setEmailAvailable(result.available);
+    };
+
     const [validationErrors, setValidationErrors] = useState({
         username: "",
         firstName: "",
@@ -75,7 +85,12 @@ const RegisterForm = () => {
 
     const validateForm = () => {
         const errors = {
-            username: inputs.username.trim() === "" ? "Käyttäjänimi vaaditaan" : "",
+            username:
+                inputs.username.trim() === ""
+                    ? "Käyttäjänimi vaaditaan"
+                    : !usernameAvailable
+                      ? "Käyttäjänimi on jo käytössä"
+                      : "",
             firstName: inputs.firstName.trim() === "" ? "Etunimi vaaditaan" : "",
             lastName: inputs.lastName.trim() === "" ? "Sukunimi vaaditaan" : "",
             city: inputs.city.trim() === "" ? "Kaupunki vaaditaan" : "",
@@ -87,7 +102,9 @@ const RegisterForm = () => {
                       : "",
             email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.email ?? "")
                 ? "Väärä sähköpostimuoto"
-                : "",
+                : !emailAvailable
+                  ? "Sähköposti on jo käytössä"
+                  : "",
             password: !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(inputs.password)
                 ? "Vähintään 8 merkkiä, iso ja pieni kirjain sekä numero"
                 : "",
@@ -95,17 +112,6 @@ const RegisterForm = () => {
         };
         setValidationErrors(errors);
         return !Object.values(errors).some(error => error !== "");
-    };
-
-    const handleUsernameBlur = async (event: React.SyntheticEvent<HTMLInputElement>) => {
-        console.log(event.currentTarget.value);
-        const result = await getUsernameAvailable(event.currentTarget.value);
-        setUsernameAvailable(result.available);
-    };
-
-    const handleEmailBlur = async () => {
-        const result = await getEmailAvailable(inputs.email);
-        setEmailAvailable(result.available);
     };
 
     return (
@@ -127,17 +133,15 @@ const RegisterForm = () => {
                                 type="text"
                                 id="username"
                                 onChange={handleInputChange}
-                                onBlur={event => {
-                                    handleUsernameBlur(event);
-                                }}
+                                onBlur={handleUsernameBlur}
                                 autoComplete="username"
                             />
                         </div>
                         {validationErrors.username ||
-                        (!usernameAvailable && "Username not available!") ? (
+                        (!usernameAvailable && "Käyttäjänimi on jo käytössä") ? (
                             <div className="flex w-full justify-start lg:justify-center">
                                 <p className="text-red-500 mb-1">
-                                    {validationErrors.username || "Username not available!"}
+                                    {validationErrors.username || "Käyttäjänimi on jo käytössä"}
                                 </p>
                             </div>
                         ) : null}
@@ -228,9 +232,7 @@ const RegisterForm = () => {
                                 type="email"
                                 id="email"
                                 onChange={handleInputChange}
-                                onBlur={() => {
-                                    handleEmailBlur();
-                                }}
+                                onBlur={handleEmailBlur}
                                 autoComplete="email"
                             />
                         </div>
@@ -319,6 +321,11 @@ const RegisterForm = () => {
                             </p>
                         </div>
                         <div className="w-full justify-start mt-2">
+                            {!emailAvailable && (
+                                <div className="flex w-3/5 justify-end pr-4">
+                                    <p className="text-rose-500">Email not available!</p>
+                                </div>
+                            )}
                             <button
                                 className="w-2/3 lg:w-1/3 p-2 mb-2 bg-green-gradient font-bold rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                 type="submit"

@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Modal from "react-modal";
-import { useMe } from "../hooks/UserHooks";
+import { useMe, useUser } from "../hooks/UserHooks";
 import { useNavigate } from "react-router-dom";
 import { PutUserRequest, UserWithId } from "mpp-api-types";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -14,7 +14,6 @@ interface UserFormProps {
 
 const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUser }) => {
     const [user, setUser] = useState<PutUserRequest>({});
-
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const { deleteMe, putMe } = useMe();
     const [isDeleted, setIsDeleted] = useState(false);
@@ -22,6 +21,9 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
     const [originalUser, setOriginalUser] = useState(user);
     const [showPassword, setShowPassword] = useState(false);
     const { theme } = useTheme();
+    const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
+    const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
+    const { getUsernameAvailable, getEmailAvailable } = useUser();
 
     useEffect(() => {
         setOriginalUser(user);
@@ -35,6 +37,21 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                 [name]: value
             });
         }
+    };
+
+    const inputs = {
+        username: user.username ?? "",
+        email: user.email ?? ""
+    };
+
+    const handleUsernameBlur = async () => {
+        const result = await getUsernameAvailable(inputs.username);
+        setUsernameAvailable(result.available);
+    };
+
+    const handleEmailBlur = async () => {
+        const result = await getEmailAvailable(inputs.email);
+        setEmailAvailable(result.available);
     };
 
     return (
@@ -89,10 +106,16 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 name="username"
                                 value={user.username}
                                 onChange={handleChange}
+                                onBlur={handleUsernameBlur}
                                 autoComplete="username"
                                 placeholder={user.username}
                             />
                         </div>
+                        {!usernameAvailable && (
+                            <div className="flex w-2/5 justify-end pr-4">
+                                <p className="font-bold text-rose-500">Username not available!</p>
+                            </div>
+                        )}
                         <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
                                 className="w-full md:w-1/3 pl-4 text-left text-xl font-bold mb-0 md:mb-2"
@@ -154,9 +177,15 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 name="email"
                                 value={user.email}
                                 onChange={handleChange}
+                                onBlur={handleEmailBlur}
                                 placeholder={user.email}
                             />
                         </div>
+                        {!emailAvailable && (
+                            <div className="flex w-3/5 justify-end pr-4">
+                                <p className="text-rose-500">Email not available!</p>
+                            </div>
+                        )}
                         <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
                                 className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
