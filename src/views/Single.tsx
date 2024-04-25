@@ -417,7 +417,11 @@ const Single: React.FC = () => {
                 <p className="mb-10">{item.description}</p>
                 <div>
                     <h1 className="text-4xl mb-4">Kysymykset:</h1>
-                    <Messages listingId={item?.id.toString()} token={token} />
+                    <Messages
+                        listingId={item?.id.toString()}
+                        token={token}
+                        userId={String(user?.id)}
+                    />
                 </div>
             </div>
             <div className="w-1/2 flex flex-col items-start mt-16 ml-4">
