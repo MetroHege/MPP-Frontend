@@ -80,10 +80,11 @@ const RegisterForm = () => {
             lastName: inputs.lastName.trim() === "" ? "Sukunimi vaaditaan" : "",
             city: inputs.city.trim() === "" ? "Kaupunki vaaditaan" : "",
             phone:
-                inputs.phone &&
-                !validator.isMobilePhone(inputs.phone, "fi-FI", { strictMode: false })
-                    ? "Syötä suomalainen puhelinnumero"
-                    : "",
+                inputs.phone?.trim() === ""
+                    ? "Puhelinnumero vaaditaan"
+                    : !validator.isMobilePhone(inputs.phone ?? "", "fi-FI", { strictMode: false })
+                      ? "Syötä suomalainen puhelinnumero"
+                      : "",
             email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.email ?? "")
                 ? "Väärä sähköpostimuoto"
                 : "",
