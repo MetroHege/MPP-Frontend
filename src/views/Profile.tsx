@@ -10,6 +10,7 @@ import Listing from "../components/Listing";
 import { FaBasketball } from "react-icons/fa6";
 import { useTheme } from "../contexts/ThemeContext";
 import { useNavigate } from "react-router-dom";
+import useStatistics from "../hooks/StatisticsHooks";
 
 interface CustomSwitchProps {
     checked: boolean;
@@ -47,23 +48,33 @@ const Profile = () => {
     const [showForm, setShowForm] = useState(false);
     const [user, setUser] = useState<UserWithId | null>(null);
     const { getMe } = useMe();
-    const [listingsCount, setListingsCount] = useState(0);
-    const { listings, getListingsFromUser } = useListing();
+    const { listings } = useListing();
     const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
-
+    const { getUserListingStatistics } = useStatistics();
+    const [userListingsCount, setUserListingsCount] = useState<number>(0);
+    const [listingMessagesCount, setListingMessagesCount] = useState<number>(0);
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        // Replace with your actual user ID
-        getListingsFromUser(user?.id as number)
-            .then(response => {
-                setListingsCount(response.length);
-            })
-            .catch(error => {
-                console.error("Error fetching listings:", error);
-            });
-    }, []);
+        const fetchStatistics = async () => {
+            const token = localStorage.getItem("token");
+            if (token) {
+                const me = await getMe(token);
+                if (me) {
+                    const userListingStatistics = await getUserListingStatistics(me.id);
+                    if (userListingStatistics) {
+                        setUserListingsCount(userListingStatistics.listings);
+                        setListingMessagesCount(
+                            userListingStatistics.messages - userListingStatistics.ownMessages
+                        );
+                    }
+                }
+            }
+        };
+
+        fetchStatistics();
+    }, [getUserListingStatistics, getMe]);
 
     useEffect(() => {
         const checkScroll = () => {
@@ -201,10 +212,10 @@ const Profile = () => {
                 </div>
                 <div className="w-full xsm:w-1/2">
                     <p className="hidden xsm:block text-3xl md:text-4xl mb-4">
-                        Aktiivisia ilmoituksia: {listingsCount}
+                        Aktiivisia ilmoituksia: {userListingsCount}
                     </p>
                     <p className="hidden xsm:block text-3xl md:text-4xl mb-4">
-                        Kyselyjä ilmoituksissa: 12
+                        Kyselyjä ilmoituksissa: {listingMessagesCount}
                     </p>
                     <div className="flex items-center">
                         <p className="text-xl md:text-2xl mr-2">Vaihda teemaa:</p>

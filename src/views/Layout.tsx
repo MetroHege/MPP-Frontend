@@ -10,19 +10,20 @@ import field2 from "../img/field-2.jpg";
 import field3 from "../img/field-3.jpg";
 import { Carousel } from "react-responsive-carousel";
 import { useUser } from "../hooks/UserHooks";
-import { useCategories } from "../hooks/CategoryHooks"; // Import the getCategories function
-import useListing from "../hooks/ListingHooks";
+import { useCategories } from "../hooks/CategoryHooks";
 import { useTheme } from "../contexts/ThemeContext";
 import { useUserContext } from "../contexts/ContextHooks";
+import useStatistics from "../hooks/StatisticsHooks";
 
 const Layout = () => {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
     const { getAllUsers } = useUser();
     const { user, handleAutoLogin } = useUserContext();
-    const [userCount, setUserCount] = useState<number>(0); // Declare setUserCount function
+    const [userCount, setUserCount] = useState<number>(0);
+    const { getListingStatistics, getUserStatistics } = useStatistics();
+    const [listingsCount, setListingsCount] = useState<number>(0);
     const { categories, getCategories } = useCategories();
-    const { listings } = useListing();
     const { theme } = useTheme();
 
     if (!user) {
@@ -32,6 +33,21 @@ const Layout = () => {
     useEffect(() => {
         getCategories();
     }, []);
+
+    useEffect(() => {
+        const fetchStatistics = async () => {
+            const listingStatistics = await getListingStatistics();
+            const userStatistics = await getUserStatistics();
+            if (listingStatistics) {
+                setListingsCount(listingStatistics.listings);
+            }
+            if (userStatistics) {
+                setUserCount(userStatistics.users);
+            }
+        };
+
+        fetchStatistics();
+    }, [getListingStatistics, getUserStatistics]);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -188,7 +204,7 @@ const Layout = () => {
                                 Aktiivisia käyttäjiä: <strong>{userCount}</strong>
                             </p>
                             <p className="text-xl md:block hidden">
-                                Ilmoituksia jätetty: <strong>{listings.length}</strong>
+                                Ilmoituksia jätetty: <strong>{listingsCount}</strong>
                             </p>
                             <p className="text-xl md:block hidden">
                                 Tuotekategorioita: <strong>{categories.length}</strong>
