@@ -45,7 +45,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
             contentLabel="Modal"
         >
             <div
-                className={`bg-main-medium rounded-lg w-1/2 ${theme === "light" ? "text-slate-950 bg-slate-100" : ""}`}
+                className={`bg-main-medium rounded-lg w-3/4 md:w-2/3 lg:w-1/2 ${theme === "light" ? "text-slate-950 bg-slate-100" : ""}`}
             >
                 <div className="flex flex-col items-start p-4">
                     <div className="flex items-center w-full">
@@ -76,15 +76,15 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                             }
                         }}
                     >
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold mb-2 md:mb-0"
                                 htmlFor="username"
                             >
                                 Käyttäjänimi:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="username"
                                 value={user.username}
@@ -93,15 +93,15 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.username}
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold mb-0 md:mb-2"
                                 htmlFor="firstName"
                             >
                                 Etunimi:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="firstName"
                                 value={user.firstName}
@@ -109,15 +109,15 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.firstName}
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
                                 htmlFor="lastName"
                             >
                                 Sukunimi:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="lastName"
                                 value={user.lastName}
@@ -125,15 +125,15 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.lastName}
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
-                                htmlFor="lastName"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
+                                htmlFor="phone"
                             >
                                 Puhelinnumero:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="phone"
                                 value={user.phone || ""}
@@ -141,15 +141,15 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.phone || ""}
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
-                                htmlFor="lastName"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
+                                htmlFor="email"
                             >
                                 Sähköposti:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="email"
                                 name="email"
                                 value={user.email}
@@ -157,16 +157,16 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.email}
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
-                                htmlFor="lastName"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
+                                htmlFor="password"
                             >
                                 Salasana:
                             </label>
-                            <div className="relative w-1/2">
+                            <div className="relative w-2/3 md:w-1/2">
                                 <input
-                                    className="w-full h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                    className="w-full h-10 ml-4 md:ml-0 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                     type={showPassword ? "text" : "password"}
                                     name="password"
                                     value={user.password}
@@ -185,15 +185,15 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 </div>
                             </div>
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
-                                htmlFor="lastName"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
+                                htmlFor="city"
                             >
                                 Kaupunki:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="city"
                                 value={user.city}
@@ -239,7 +239,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                         contentLabel="Modal"
                     >
                         <div
-                            className={`bg-main-medium rounded-lg w-1/4 ${theme === "light" ? "text-slate-950 bg-slate-100" : ""}`}
+                            className={`bg-main-medium rounded-lg w-3/4 sm:w-1/2 md:w-1/3 lg:w-1/4 ${theme === "light" ? "text-slate-950 bg-slate-100" : ""}`}
                         >
                             <div className="flex flex-col items-start p-4">
                                 <div className="flex items-center w-full">
@@ -297,7 +297,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                         contentLabel="Account Deleted"
                     >
                         <div
-                            className={`rounded-lg w-1/4 ${theme === "light" ? "text-slate-950 bg-slate-100" : "text-white bg-main-medium"}`}
+                            className={`rounded-lg w-3/4 sm:w-1/2 md:w-1/3 lg:w-1/4 ${theme === "light" ? "text-slate-950 bg-slate-100" : "text-white bg-main-medium"}`}
                         >
                             <div className="flex flex-col items-start p-4">
                                 <div className="flex items-center w-full">
@@ -318,9 +318,9 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                     Käyttäjätilisi ja siihen liittyvät tiedot on poistettu
                                     pysyvästi.
                                 </p>
-                                <div className="ml-auto mt-4 space-x-4">
+                                <div className="flex flex-col ml-auto mt-4 space-x-4">
                                     <button
-                                        className="px-4 py-2 bg-green-gradient rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
+                                        className="px-4 mb-2 py-2 bg-green-gradient rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                         onClick={() => {
                                             navigate("/");
                                             setIsDeleted(false);
