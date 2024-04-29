@@ -23,7 +23,7 @@ enum Quality {
 const Single: React.FC = () => {
     const { state } = useLocation();
     const navigate: NavigateFunction = useNavigate();
-    const item: PostListingsResponse = state;
+    const [item, setItem] = useState<ListingWithId>(state);
     const userItem: User = state.user;
     const { user } = useUser();
     const { theme } = useTheme();
@@ -78,13 +78,15 @@ const Single: React.FC = () => {
                 time: undefined
             };
 
-            await putListing(
+            const response = await putListing(
                 item.id,
                 {
                     ...listing
                 },
                 token
             );
+
+            setItem(response);
 
             setModalIsOpen(false);
         } else {
