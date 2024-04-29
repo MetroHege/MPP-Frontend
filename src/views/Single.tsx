@@ -494,11 +494,11 @@ const Single: React.FC = () => {
                             Muita ilmoituksia samasta kategoriasta:
                         </h1>
                     )}
-                    <div className="flex w-full flex-col space-y-4 hidden sm:block">
+                    <div className="flex w-2/3 flex-col space-y-4 hidden sm:block">
                         {randomListings.map((listing, index) => (
                             <Link to="/single" state={listing} key={index}>
                                 <div
-                                    className={`bg-main-light w-auto rounded mb-2 p-2 flex flex-col lg:flex-row items-center ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                                    className={`bg-main-light w-auto rounded mb-2 p-2 flex flex-col xl:flex-row items-center ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                                 >
                                     <img
                                         src={listing.images[0].url}
@@ -506,11 +506,11 @@ const Single: React.FC = () => {
                                         className="w-full lg:w-36 h-36 object-cover"
                                     />
                                     <div className="ml-4 flex flex-row lg:flex-row w-full">
-                                        <div className="w-full lg:w-1/3">
+                                        <div className="w-full lg:w-1/2">
                                             <h2 className="text-2xl my-2">{listing.title}</h2>
                                             <p className="text-2xl my-2">{+listing.price} €</p>
                                         </div>
-                                        <div className="ml-4 w-full lg:w-1/3">
+                                        <div className="ml-4 w-full lg:w-1/2">
                                             <p className="text-xl my-2">
                                                 {new Date(listing.time).toLocaleDateString("fi-FI")}
                                             </p>
