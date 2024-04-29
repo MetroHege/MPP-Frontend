@@ -167,6 +167,14 @@ const Profile = () => {
                     <FaArrowUp style={{ fontSize: "40px", color: "#fff", zIndex: 2 }} />
                 </button>
             )}
+            <button>
+                <a
+                    className=" w-1/4 p-2 bg-green-gradient font-bold rounded mb-10 text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
+                    href="/"
+                >
+                    &#8592; Etusivulle
+                </a>
+            </button>
             <div className="flex flex-col xsm:flex-row mt-5 mb-5 xsm:mt-10 xsm:mb-10">
                 <div className="w-full mb-4 xsm:w-1/2">
                     <h1 className="text-4xl mb-4">Tietoni:</h1>
