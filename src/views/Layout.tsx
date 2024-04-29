@@ -222,6 +222,7 @@ const Layout = () => {
                             showArrows={false}
                             interval={10000}
                             transitionTime={2000}
+                            swipeable={false}
                         >
                             <div>
                                 <img
