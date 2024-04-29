@@ -7,6 +7,7 @@ import {
     PostMessagesRequest
 } from "mpp-api-types";
 
+// This hook is used to fetch and manage messages from the server.
 const useMessages = () => {
     const [messages, setMessages] = useState<WithId<Message>[]>([]);
 
@@ -21,6 +22,7 @@ const useMessages = () => {
         }
     };
 
+    // This function is used to fetch messages by listing id.
     const getMessagesByListingId = async (id: number) => {
         try {
             const url = new URL(import.meta.env.VITE_SERVER + "/listings/" + id + "/messages");
@@ -31,6 +33,7 @@ const useMessages = () => {
         }
     };
 
+    // This function is used to post a message to the server.
     const postMessage = async (id: number, message: PostMessagesRequest, token: string) => {
         const options: RequestInit = {
             method: "POST",
@@ -44,6 +47,7 @@ const useMessages = () => {
         await fetchData(import.meta.env.VITE_SERVER + "/listings/" + id + "/messages", options);
     };
 
+    // This function is used to delete a message from the server.
     const deleteMessage = async (id: number, token: string): Promise<DeleteMessageResponse> => {
         const options: RequestInit = {
             method: "DELETE",

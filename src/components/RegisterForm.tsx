@@ -6,12 +6,10 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import validator from "validator";
 import { useNavigate } from "react-router-dom";
 
+// This component is used to render a registration form.
 const RegisterForm = () => {
     const { postUser } = useUser();
     const { postLogin } = useAuthentication();
-    const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
-    const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
-    const { getUsernameAvailable, getEmailAvailable } = useUser();
     const [confirmPassword, setConfirmPassword] = useState("");
     const [_errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -27,6 +25,7 @@ const RegisterForm = () => {
         city: ""
     };
 
+    // This function is used to register a user.
     const doRegister = async () => {
         const isValid = validateForm();
         if (!isValid || inputs.password !== confirmPassword) {
@@ -52,16 +51,42 @@ const RegisterForm = () => {
             });
             localStorage.setItem("token", loginResponse.token);
             navigate("/profile");
-        } catch (error) {
+        } catch (error: any) {
+            const errors = {
+                username: "",
+                firstName: "",
+                lastName: "",
+                city: "",
+                phone: "",
+                email: "",
+                password: "",
+                confirmPassword: ""
+            };
+
+            switch (error.message) {
+                case "Username already in use":
+                    errors.username = "Käyttäjänimi on jo käytössä";
+                    break;
+                case "Email already in use":
+                    errors.email = "Sähköposti on jo käytössä";
+                    break;
+                default:
+                    setErrorMessage(error.message);
+                    break;
+            }
+            setValidationErrors(errors);
+
             console.log((error as Error).message);
         }
     };
 
+    // This hook is used to manage the registration form.
     const { handleSubmit, handleInputChange, inputs, resetForm } = useForm<PostUsersRequest>(
         doRegister,
         initValues
     );
 
+    // This function is used to validate the registration form.
     const [validationErrors, setValidationErrors] = useState({
         username: "",
         firstName: "",
@@ -73,9 +98,15 @@ const RegisterForm = () => {
         confirmPassword: ""
     });
 
+    // This function is used to validate the registration form.
     const validateForm = () => {
         const errors = {
-            username: inputs.username.trim() === "" ? "Käyttäjänimi vaaditaan" : "",
+            username:
+                inputs.username.trim() !== "" && inputs.username.trim() === ""
+                    ? "Käyttäjänimi vaaditaan"
+                    : inputs.username.length < 3
+                      ? "Käyttäjänimen tulee olla vähintään 3 merkkiä"
+                      : "",
             firstName: inputs.firstName.trim() === "" ? "Etunimi vaaditaan" : "",
             lastName: inputs.lastName.trim() === "" ? "Sukunimi vaaditaan" : "",
             city: inputs.city.trim() === "" ? "Kaupunki vaaditaan" : "",
@@ -97,17 +128,6 @@ const RegisterForm = () => {
         return !Object.values(errors).some(error => error !== "");
     };
 
-    const handleUsernameBlur = async (event: React.SyntheticEvent<HTMLInputElement>) => {
-        console.log(event.currentTarget.value);
-        const result = await getUsernameAvailable(event.currentTarget.value);
-        setUsernameAvailable(result.available);
-    };
-
-    const handleEmailBlur = async () => {
-        const result = await getEmailAvailable(inputs.email);
-        setEmailAvailable(result.available);
-    };
-
     return (
         <div className="flex w-full">
             <div className="flex flex-wrap w-full">
@@ -127,17 +147,13 @@ const RegisterForm = () => {
                                 type="text"
                                 id="username"
                                 onChange={handleInputChange}
-                                onBlur={event => {
-                                    handleUsernameBlur(event);
-                                }}
                                 autoComplete="username"
                             />
                         </div>
-                        {validationErrors.username ||
-                        (!usernameAvailable && "Username not available!") ? (
+                        {validationErrors.username ? (
                             <div className="flex w-full justify-start lg:justify-center">
                                 <p className="text-red-500 mb-1">
-                                    {validationErrors.username || "Username not available!"}
+                                    {validationErrors.username || "Käyttäjänimi on jo käytössä"}
                                 </p>
                             </div>
                         ) : null}
@@ -228,13 +244,10 @@ const RegisterForm = () => {
                                 type="email"
                                 id="email"
                                 onChange={handleInputChange}
-                                onBlur={() => {
-                                    handleEmailBlur();
-                                }}
                                 autoComplete="email"
                             />
                         </div>
-                        {validationErrors.email || (!emailAvailable && "Email not available!") ? (
+                        {validationErrors.email ? (
                             <div className="flex w-full justify-start lg:justify-center">
                                 <p className="text-red-500 mb-1">
                                     {validationErrors.email || "Email not available!"}

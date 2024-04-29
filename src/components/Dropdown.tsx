@@ -2,6 +2,7 @@ import { CategoryWithId } from "mpp-api-types";
 import { useState, useEffect, useRef } from "react";
 import { useCategories } from "../hooks/CategoryHooks";
 
+// This component is a dropdown menu that displays a list of categories.
 const Dropdown = ({
     buttonText,
     className,

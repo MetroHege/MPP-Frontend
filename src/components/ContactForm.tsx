@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { useTheme } from "../contexts/ThemeContext";
 
+// This component is used to render a contact form.
 export default function ContactForm() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ export default function ContactForm() {
 
     const [_error, setError] = useState("");
 
+    // This function is used to handle form submission.
     function onSubmit(e: React.FormEvent) {
         e.preventDefault();
         e.stopPropagation();

@@ -11,6 +11,7 @@ import { useUser } from "../hooks/UserHooks";
 import { useCategories } from "../hooks/CategoryHooks";
 import { FiChevronDown } from "react-icons/fi";
 
+// This component is the home view of the application.
 const Home = () => {
     const { categories, getCategories } = useCategories();
     const [selectedCategory, setSelectedCategory] = useState<number | "">("");
@@ -33,10 +34,12 @@ const Home = () => {
         }
     }, []);
 
+    // This function is used to handle the search change.
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
+    // This object maps sort options to their corresponding strings.
     const sortOptionsMapping: { [key: string]: string } = {
         newest: "Uusimmat",
         oldest: "Vanhimmat",
@@ -44,12 +47,14 @@ const Home = () => {
         "high-low": "Hinta laskeva"
     };
 
+    // This object maps category ids to their corresponding strings.
     const categoryMapping: { [key: string]: string } = {};
 
     categories.forEach(category => {
         categoryMapping[category.id] = category.title;
     });
 
+    // This function is used to handle the sort change.
     const handleSortChange = (selectedSortOption: string) => {
         const selectedSortOrder = Object.keys(sortOptionsMapping).find(
             key => sortOptionsMapping[key] === selectedSortOption
@@ -67,11 +72,13 @@ const Home = () => {
         getCategories();
     }, []);
 
+    // This function is used to clear the filters.
     const clearFilters = () => {
         setSelectedCategory("");
         setSortOrder("newest");
     };
 
+    // This state is used to determine if the scroll button should be visible.
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -87,6 +94,7 @@ const Home = () => {
         return () => window.removeEventListener("scroll", checkScroll);
     }, [isVisible]);
 
+    // This function is used to scroll to the top of the page.
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -137,13 +145,15 @@ const Home = () => {
             </div>
             <div className="flex flex-col md:flex-row justify-start items-start md:items-center md:justify-between mb-4">
                 <div className="flex items-center mb-4 md:mb-0">
+                    {/* This component is used to render a dropdown. */}
                     <Dropdown
                         buttonText="Tuotekategoriat"
                         className="mr-2"
                         value={+selectedCategory}
                         onChange={() => {}}
                         onOptionSelect={setSelectedCategory}
-                    />{" "}
+                    />
+                    {/* This component is used to render a filter dropdown. */}
                     <FilterDropdown
                         options={Object.values(sortOptionsMapping)}
                         buttonText="Lajittele"
@@ -187,6 +197,7 @@ const Home = () => {
                                       : listing.category.id === +selectedCategory)
                         )
                         .map((listing: ListingWithId) => (
+                            // This component is used to display a single listing.
                             <Listing
                                 key={listing.id}
                                 item={{ ...listing, id: listing.id }}

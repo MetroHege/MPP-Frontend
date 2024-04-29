@@ -7,6 +7,7 @@ interface FilterDropdownProps {
     handleOptionChange: (selectedOption: string) => void;
 }
 
+// This component is used to render a filter dropdown.
 const FilterDropdown: React.FC<FilterDropdownProps> = ({
     options,
     buttonText,

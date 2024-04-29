@@ -2,9 +2,11 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { useMe } from "../hooks/UserHooks";
 import { useNavigate } from "react-router-dom";
-import { PutUserRequest, UserWithId } from "mpp-api-types";
+import { Error, PutMeRequest, PutUserRequest, UserWithId } from "mpp-api-types";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useTheme } from "../contexts/ThemeContext";
+import validator from "validator";
+import { useForm } from "../hooks/FormHooks";
 
 interface UserFormProps {
     showForm: boolean;
@@ -12,9 +14,9 @@ interface UserFormProps {
     setParentUser: Dispatch<SetStateAction<UserWithId | null>>;
 }
 
+// This component is used to render a user form.
 const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUser }) => {
     const [user, setUser] = useState<PutUserRequest>({});
-
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const { deleteMe, putMe } = useMe();
     const [isDeleted, setIsDeleted] = useState(false);
@@ -22,12 +24,86 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
     const [originalUser, setOriginalUser] = useState(user);
     const [showPassword, setShowPassword] = useState(false);
     const { theme } = useTheme();
+    const [_errorMessage, setErrorMessage] = useState("");
+
+    const initValues = {
+        username: "",
+        password: "",
+        email: "",
+        firstName: "",
+        lastName: "",
+        phone: "",
+        city: ""
+    };
 
     useEffect(() => {
         setOriginalUser(user);
     }, []);
 
+    // This function is used to register a user.
+    const doUserUpdate = async () => {
+        const isValid = validateForm();
+        if (!isValid) return;
+        setErrorMessage("");
+        try {
+            const token = localStorage.getItem("token");
+            if (token) {
+                const me = await putMe(
+                    {
+                        username: inputs.username === "" ? undefined : inputs.username,
+                        password: inputs.password === "" ? undefined : inputs.password,
+                        email: inputs.email === "" ? undefined : inputs.email,
+                        firstName: inputs.firstName === "" ? undefined : inputs.firstName,
+                        lastName: inputs.lastName === "" ? undefined : inputs.lastName,
+                        phone: inputs.phone === "" ? undefined : inputs.phone,
+                        city: inputs.city === "" ? undefined : inputs.city
+                    },
+                    token
+                );
+                setParentUser(me);
+                setShowForm(false);
+            } else {
+                console.log("Token not found");
+            }
+            resetForm();
+            navigate("/profile");
+        } catch (error: any) {
+            const errors = {
+                username: "",
+                firstName: "",
+                lastName: "",
+                city: "",
+                phone: "",
+                email: "",
+                password: ""
+            };
+
+            switch (error.message) {
+                case "Username already in use":
+                    errors.username = "Käyttäjänimi on jo käytössä";
+                    break;
+                case "Email already in use":
+                    errors.email = "Sähköposti on jo käytössä";
+                    break;
+                default:
+                    setErrorMessage(error.message);
+                    break;
+            }
+            setValidationErrors(errors);
+
+            console.log((error as Error).message);
+        }
+    };
+
+    // This hook is used to manage the registration form.
+    const { handleSubmit, handleInputChange, inputs, resetForm } = useForm<PutMeRequest>(
+        doUserUpdate,
+        initValues
+    );
+
+    // This function is used to handle the change event.
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        handleInputChange(event);
         const { name, value } = event.target;
         if (originalUser && value !== originalUser[name as keyof typeof originalUser]) {
             setUser({
@@ -35,6 +111,64 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                 [name]: value
             });
         }
+    };
+
+    // This function is used to validate the registration form.
+    const [validationErrors, setValidationErrors] = useState({
+        username: "",
+        firstName: "",
+        lastName: "",
+        city: "",
+        phone: "",
+        email: "",
+        password: ""
+    });
+
+    // This function is used to validate the registration form.
+    const validateForm = () => {
+        const errors = {
+            username:
+                inputs.username?.trim() !== "" && inputs.username?.trim() === ""
+                    ? "Käyttäjänimi vaaditaan"
+                    : (inputs.username !== "" ? (inputs.username as string) : "xyz").length < 3
+                      ? "Käyttäjänimen tulee olla vähintään 3 merkkiä"
+                      : "",
+            firstName:
+                inputs.firstName?.trim() !== "" && inputs.firstName?.trim() === ""
+                    ? "Etunimi vaaditaan"
+                    : "",
+            lastName:
+                inputs.lastName?.trim() !== "" && inputs.lastName?.trim() === ""
+                    ? "Sukunimi vaaditaan"
+                    : "",
+            city:
+                inputs.city?.trim() !== "" && inputs.city?.trim() === ""
+                    ? "Kaupunki vaaditaan"
+                    : "",
+            phone:
+                (inputs.phone?.trim() !== "" &&
+                    (inputs.phone?.trim() === ""
+                        ? "Puhelinnumero vaaditaan"
+                        : !validator.isMobilePhone(inputs.phone ?? "", "fi-FI", {
+                                strictMode: false
+                            })
+                          ? "Syötä suomalainen puhelinnumero"
+                          : "")) ||
+                "",
+            email:
+                (inputs.email !== "" &&
+                    (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.email ?? "")
+                        ? "Väärä sähköpostimuoto"
+                        : "")) ||
+                "",
+            password:
+                inputs.password !== "" &&
+                !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(inputs.password as string)
+                    ? "Vähintään 8 merkkiä, iso ja pieni kirjain sekä numero"
+                    : ""
+        };
+        setValidationErrors(errors);
+        return !Object.values(errors).some(error => error !== "");
     };
 
     return (
@@ -62,20 +196,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
 
                     <hr className="w-full mt-2 mb-3 border-gray-300" />
 
-                    <form
-                        className="flex flex-col ml-4 mr-4 w-full"
-                        onSubmit={async e => {
-                            e.preventDefault();
-                            const token = localStorage.getItem("token");
-                            if (token) {
-                                const me = await putMe(user, token);
-                                setParentUser(me);
-                                setShowForm(false);
-                            } else {
-                                console.log("Token not found");
-                            }
-                        }}
-                    >
+                    <form className="flex flex-col ml-4 mr-4 w-full" onSubmit={handleSubmit}>
                         <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
                                 className="w-full md:w-1/3 pl-4 text-left text-xl font-bold mb-2 md:mb-0"
@@ -93,6 +214,13 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.username}
                             />
                         </div>
+                        {validationErrors.username ? (
+                            <div className="flex w-full justify-start lg:justify-center">
+                                <p className="text-red-500 mb-1">
+                                    {validationErrors.username || "Käyttäjänimi on jo käytössä"}
+                                </p>
+                            </div>
+                        ) : null}
                         <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
                                 className="w-full md:w-1/3 pl-4 text-left text-xl font-bold mb-0 md:mb-2"
@@ -109,6 +237,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.firstName}
                             />
                         </div>
+                        {validationErrors.firstName && (
+                            <div className="flex w-full justify-start lg:justify-center">
+                                <p className="text-red-500 mb-1">{validationErrors.firstName}</p>
+                            </div>
+                        )}
                         <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
                                 className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
@@ -125,6 +258,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.lastName}
                             />
                         </div>
+                        {validationErrors.lastName && (
+                            <div className="flex w-full justify-start lg:justify-center">
+                                <p className="text-red-500 mb-1">{validationErrors.lastName}</p>
+                            </div>
+                        )}
                         <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
                                 className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
@@ -141,6 +279,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.phone || ""}
                             />
                         </div>
+                        {validationErrors.phone && (
+                            <div className="flex w-full justify-start lg:justify-center">
+                                <p className="text-red-500 mb-1">{validationErrors.phone}</p>
+                            </div>
+                        )}
                         <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
                                 className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
@@ -157,6 +300,13 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.email}
                             />
                         </div>
+                        {validationErrors.email ? (
+                            <div className="flex w-full justify-start lg:justify-center">
+                                <p className="text-red-500 mb-1">
+                                    {validationErrors.email || "Email not available!"}
+                                </p>
+                            </div>
+                        ) : null}
                         <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
                                 className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
@@ -185,6 +335,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 </div>
                             </div>
                         </div>
+                        {validationErrors.password && (
+                            <div className="flex w-full justify-start lg:justify-center">
+                                <p className="text-red-500 mb-1">{validationErrors.password}</p>
+                            </div>
+                        )}
                         <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
                                 className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
@@ -201,6 +356,11 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.city}
                             />
                         </div>
+                        {validationErrors.city && (
+                            <div className="flex w-full justify-start lg:justify-center">
+                                <p className="text-red-500 mb-1">{validationErrors.city}</p>
+                            </div>
+                        )}
                         <div className="pl-4">
                             <p>
                                 Mikäli haluat poistaa tilisi kokonaisuudessaan, paina{" "}

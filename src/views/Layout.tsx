@@ -1,4 +1,4 @@
-import { faUser, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import darkLogo from "../img/divarinet-white.png";
@@ -15,6 +15,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import { useUserContext } from "../contexts/ContextHooks";
 import useStatistics from "../hooks/StatisticsHooks";
 
+// This component is used to render the layout of the application.
 const Layout = () => {
     const location = useLocation();
     const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +27,7 @@ const Layout = () => {
     const { categories, getCategories } = useCategories();
     const { theme } = useTheme();
 
+    // This function is used to handle the auto login process.
     if (!user) {
         handleAutoLogin();
     }
@@ -130,7 +132,7 @@ const Layout = () => {
                                         className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/login" ? "underline" : ""}`}
                                         to="/login"
                                     >
-                                        <FontAwesomeIcon icon={faUser} />
+                                        Kirjaudu
                                     </Link>
                                 </li>
                             )}
@@ -177,7 +179,7 @@ const Layout = () => {
                                         className="text-xl text-white hover:text-gray-300"
                                         to="/login"
                                     >
-                                        <FontAwesomeIcon icon={faUser} />
+                                        Kirjaudu
                                     </Link>
                                 </li>
                             )}
@@ -268,6 +270,7 @@ const Layout = () => {
                 <main
                     className={`w-full md:w-4/5 mx-auto p-4 ${theme === "light" ? "bg-slate-100 text-gray-900" : ""}`}
                 >
+                    {/* This component is used to render the content of the application. */}
                     <Outlet />
                 </main>
             </div>

@@ -28,6 +28,7 @@ interface CustomSwitchProps {
     id?: string;
 }
 
+// This component is a custom switch that can be toggled on and off.
 const CustomSwitch: React.FC<CustomSwitchProps> = ({ checked, onChange }) => {
     return (
         <label
@@ -44,6 +45,7 @@ const CustomSwitch: React.FC<CustomSwitchProps> = ({ checked, onChange }) => {
     );
 };
 
+// This component is the profile view of the application.
 const Profile = () => {
     const [showForm, setShowForm] = useState(false);
     const [user, setUser] = useState<UserWithId | null>(null);
@@ -89,6 +91,7 @@ const Profile = () => {
         return () => window.removeEventListener("scroll", checkScroll);
     }, [isVisible]);
 
+    // This function is used to scroll to the top of the page.
     const scrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -112,6 +115,7 @@ const Profile = () => {
         fetchUser();
     }, []);
 
+    // If the user is not loaded yet, display a loading message.
     if (!user) {
         return (
             <div>
@@ -196,6 +200,7 @@ const Profile = () => {
                         >
                             Muokkaa tietoja
                         </button>
+                        {/* This component is a form that allows the user to edit their information. */}
                         <UserForm
                             showForm={showForm}
                             setShowForm={setShowForm}
@@ -219,6 +224,7 @@ const Profile = () => {
                     </p>
                     <div className="flex items-center">
                         <p className="text-xl md:text-2xl mr-2">Vaihda teemaa:</p>
+                        {/* This component is a custom switch that can be toggled on and off. */}
                         <CustomSwitch
                             onChange={toggleTheme}
                             checked={theme === "dark"}

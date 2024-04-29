@@ -4,16 +4,19 @@ import { useForm } from "../hooks/FormHooks";
 import { Credentials } from "../types/LocalTypes";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
+// This component is used to render a login form.
 const LoginForm = () => {
     const { handleLogin } = useUserContext();
     const [showPassword, setShowPassword] = useState(false);
 
     const initValues: Credentials = { username: "", password: "" };
 
+    // This function is used to handle the login process.
     const doLogin = async () => {
         handleLogin(inputs as Credentials);
     };
 
+    // This hook is used to manage the login form.
     const { handleSubmit, handleInputChange, inputs } = useForm(doLogin, initValues);
 
     return (
