@@ -12,7 +12,6 @@ const RegisterForm = () => {
     const { postLogin } = useAuthentication();
     const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
     const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
-    const { getUsernameAvailable, getEmailAvailable } = useUser();
     const [confirmPassword, setConfirmPassword] = useState("");
     const [_errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -54,7 +53,31 @@ const RegisterForm = () => {
             });
             localStorage.setItem("token", loginResponse.token);
             navigate("/profile");
-        } catch (error) {
+        } catch (error: any) {
+            const errors = {
+                username: "",
+                firstName: "",
+                lastName: "",
+                city: "",
+                phone: "",
+                email: "",
+                password: "",
+                confirmPassword: ""
+            };
+
+            switch (error.message) {
+                case "Username already in use":
+                    errors.username = "Käyttäjänimi on jo käytössä";
+                    break;
+                case "Email already in use":
+                    errors.email = "Sähköposti on jo käytössä";
+                    break;
+                default:
+                    setErrorMessage(error.message);
+                    break;
+            }
+            setValidationErrors(errors);
+
             console.log((error as Error).message);
         }
     };
@@ -64,18 +87,6 @@ const RegisterForm = () => {
         doRegister,
         initValues
     );
-
-    // This function is used to check if the username is available.
-    const handleUsernameBlur = async () => {
-        const result = await getUsernameAvailable(inputs.username);
-        setUsernameAvailable(result.available);
-    };
-
-    // This function is used to check if the email is available.
-    const handleEmailBlur = async () => {
-        const result = await getEmailAvailable(inputs.email);
-        setEmailAvailable(result.available);
-    };
 
     // This function is used to validate the registration form.
     const [validationErrors, setValidationErrors] = useState({
@@ -93,10 +104,10 @@ const RegisterForm = () => {
     const validateForm = () => {
         const errors = {
             username:
-                inputs.username.trim() === ""
+                inputs.username.trim() !== "" && inputs.username.trim() === ""
                     ? "Käyttäjänimi vaaditaan"
-                    : !usernameAvailable
-                      ? "Käyttäjänimi on jo käytössä"
+                    : inputs.username.length < 3
+                      ? "Käyttäjänimen tulee olla vähintään 3 merkkiä"
                       : "",
             firstName: inputs.firstName.trim() === "" ? "Etunimi vaaditaan" : "",
             lastName: inputs.lastName.trim() === "" ? "Sukunimi vaaditaan" : "",
@@ -140,7 +151,6 @@ const RegisterForm = () => {
                                 type="text"
                                 id="username"
                                 onChange={handleInputChange}
-                                onBlur={handleUsernameBlur}
                                 autoComplete="username"
                             />
                         </div>
@@ -239,7 +249,6 @@ const RegisterForm = () => {
                                 type="email"
                                 id="email"
                                 onChange={handleInputChange}
-                                onBlur={handleEmailBlur}
                                 autoComplete="email"
                             />
                         </div>

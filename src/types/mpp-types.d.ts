@@ -1,9 +1,14 @@
-// Version 1.5.0
+// Version 1.5.1
 
 type WithId<T> = T & { id: number };
 type WithPassword<T> = T & { password: string };
 
 declare module "mpp-api-types" {
+    export interface Error {
+        status: number;
+        message: string;
+    }
+
     export interface User {
         username: string;
         firstName?: string;
@@ -16,7 +21,7 @@ declare module "mpp-api-types" {
 
     export type UserWithId = WithId<User>;
 
-    export type PartialUser = Pick<UserWithId, "id" | "username" | "city" | "admin">;
+    export type PartialUser = Pick<UserWithId, "id" | "username" | "city" | "admin" | "email">;
 
     export enum Quality {
         New = 5,
