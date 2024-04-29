@@ -187,243 +187,248 @@ const Single: React.FC = () => {
                     </div>
                     <div className="flex justify-between items-center">
                         <h2 className=" text-2xl">Lisätiedot</h2>
-                        {user?.id ===
-                            (typeof item.user === "number" ? item.user : item.user.id) && (
-                            <div className="mt-2">
-                                <button
-                                    onClick={() => setModalIsOpen(true)}
-                                    className="px-4 py-2 bg-yellow-gradient rounded font-bold text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
-                                >
-                                    Muokkaa
-                                </button>
-                                <button
-                                    onClick={handleDelete}
-                                    className="px-4 py-2 ml-2 bg-red-gradient rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md font-bold"
-                                >
-                                    Poista
-                                </button>
-                                {/* This component is used to display a modal. */}
-                                <Modal
-                                    isOpen={modalIsOpen}
-                                    onRequestClose={() => setModalIsOpen(false)}
-                                    className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50"
-                                    contentLabel="Edit Listing"
-                                >
-                                    <div
-                                        className={`bg-main-medium rounded-lg w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/2 xl:w-1/3 ${theme === "light" ? "text-slate-950 bg-slate-100" : "text-white bg-main-medium"}`}
+                        {user?.id === (typeof item.user === "number" ? item.user : item.user.id) ||
+                            (user?.admin && (
+                                <div className="mt-2">
+                                    <button
+                                        onClick={() => setModalIsOpen(true)}
+                                        className="px-4 py-2 bg-yellow-gradient rounded font-bold text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                     >
-                                        <form
-                                            className="flex flex-col items-start p-4"
-                                            onSubmit={handleSubmit}
+                                        Muokkaa
+                                    </button>
+                                    <button
+                                        onClick={handleDelete}
+                                        className="px-4 py-2 ml-2 bg-red-gradient rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md font-bold"
+                                    >
+                                        Poista
+                                    </button>
+                                    {/* This component is used to display a modal. */}
+                                    <Modal
+                                        isOpen={modalIsOpen}
+                                        onRequestClose={() => setModalIsOpen(false)}
+                                        className="flex items-center justify-center fixed left-0 bottom-0 w-full h-full bg-gray-800 bg-opacity-50"
+                                        contentLabel="Edit Listing"
+                                    >
+                                        <div
+                                            className={`bg-main-medium rounded-lg w-3/4 sm:w-2/3 md:w-1/2 lg:w-1/2 xl:w-1/3 ${theme === "light" ? "text-slate-950 bg-slate-100" : "text-white bg-main-medium"}`}
                                         >
-                                            <div className="flex items-center w-full">
-                                                <div className="font-medium text-lg">
-                                                    Muokkaa ilmoitusta
-                                                </div>
-                                                <svg
-                                                    onClick={() => setModalIsOpen(false)}
-                                                    className="ml-auto fill-current w-6 h-6 cursor-pointer"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 18 18"
-                                                >
-                                                    <path d="M18 1.3L16.7 0 9 7.6 1.3 0 0 1.3 7.6 9 0 16.7 1.3 18 9 10.4 16.7 18 18 16.7 10.4 9 18 1.3z" />
-                                                </svg>
-                                            </div>
-                                            <hr className="w-full mt-2 mb-3 border-gray-300" />
-                                            <div className="flex w-full pb-2">
-                                                <label
-                                                    className="w-1/3 pl-4 text-left text-xl font-bold"
-                                                    htmlFor="title"
-                                                >
-                                                    Otsikko:
-                                                </label>
-                                                <input
-                                                    className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
-                                                    type="text"
-                                                    name="title"
-                                                    value={formData.title}
-                                                    onChange={handleChange}
-                                                    placeholder="Title"
-                                                />
-                                            </div>
-                                            <div className="flex w-full pb-2">
-                                                <label
-                                                    className="w-1/3 pl-4 text-left text-xl font-bold"
-                                                    htmlFor="description"
-                                                >
-                                                    Kuvaus:
-                                                </label>
-                                                <textarea
-                                                    className="w-1/2 h-30 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
-                                                    name="description"
-                                                    value={formData.description}
-                                                    onChange={handleChange}
-                                                    placeholder="Description"
-                                                />
-                                            </div>
-                                            <div className="flex w-full pb-2">
-                                                <label
-                                                    className="w-1/3 pl-4 text-left text-xl font-bold"
-                                                    htmlFor="price"
-                                                >
-                                                    Hinta:
-                                                </label>
-                                                <input
-                                                    className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
-                                                    type="text"
-                                                    name="price"
-                                                    value={formData.price}
-                                                    onChange={handleChange}
-                                                    placeholder="Price"
-                                                />
-                                            </div>
-                                            <div className="flex w-full pb-2">
-                                                <p className="w-1/3 pl-4 text-left text-xl font-bold">
-                                                    Tyyppi:
-                                                </p>
-                                                <div className="w-1/2 flex items-center flex-row">
-                                                    <input
-                                                        className="mr-2"
-                                                        type="radio"
-                                                        name="type"
-                                                        value="buy"
-                                                        checked={formData.type === "buy"}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <p className="text-lg">Ostetaan</p>
-                                                    <input
-                                                        className="ml-4 mr-2"
-                                                        type="radio"
-                                                        name="type"
-                                                        value="sell"
-                                                        checked={formData.type === "sell"}
-                                                        onChange={handleChange}
-                                                    />
-                                                    <p className="text-lg">Myydään</p>
-                                                </div>
-                                            </div>
-                                            <div className="flex w-full pb-2">
-                                                <label
-                                                    className="w-1/3 pl-4 text-left text-xl font-bold"
-                                                    htmlFor="quality"
-                                                >
-                                                    Kunto:
-                                                </label>
-                                                <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 pb-2">
-                                                    {" "}
-                                                    <label className="col-span-1">
-                                                        <input
-                                                            type="radio"
-                                                            name="quality"
-                                                            value={Quality.New}
-                                                            onChange={handleChange}
-                                                            className="mr-1"
-                                                        />
-                                                        Uusi
-                                                    </label>
-                                                    <label className="col-span-1">
-                                                        <input
-                                                            type="radio"
-                                                            name="quality"
-                                                            value={Quality.LikeNew}
-                                                            onChange={handleChange}
-                                                            className="mr-1"
-                                                        />
-                                                        Erinomainen
-                                                    </label>
-                                                    <label className="col-span-1">
-                                                        <input
-                                                            type="radio"
-                                                            name="quality"
-                                                            value={Quality.Good}
-                                                            onChange={handleChange}
-                                                            className="mr-1"
-                                                        />
-                                                        Hyvä
-                                                    </label>
-                                                    <label className="col-span-1">
-                                                        <input
-                                                            type="radio"
-                                                            name="quality"
-                                                            value={Quality.Fair}
-                                                            onChange={handleChange}
-                                                            className="mr-1"
-                                                        />
-                                                        Tyydyttävä
-                                                    </label>
-                                                    <label className="col-span-2">
-                                                        <input
-                                                            type="radio"
-                                                            name="quality"
-                                                            value={Quality.Poor}
-                                                            onChange={handleChange}
-                                                            className="mr-1"
-                                                        />
-                                                        Huono
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div className="flex w-full pb-2">
-                                                <label
-                                                    className="w-1/3 pl-4 text-left text-xl font-bold"
-                                                    htmlFor="category"
-                                                >
-                                                    Kategoria:
-                                                </label>
-                                                {/* This component is used to render a dropdown. */}
-                                                <Dropdown
-                                                    buttonText="Tuotekategoriat"
-                                                    className="mb-4"
-                                                    value={category}
-                                                    onChange={e => {
-                                                        setCategory(Number(e.target.value));
-                                                    }}
-                                                    onOptionSelect={(id: number) => {
-                                                        console.log("Selected category ID:", id);
-                                                        setCategory(id);
-                                                    }}
-                                                />
-                                                {category !== 0 && (
-                                                    <div className="flex items-center space-x-2">
-                                                        {categories.find(cat => cat.id === category)
-                                                            ?.title && (
-                                                            <span>
-                                                                {
-                                                                    categories.find(
-                                                                        cat => cat.id === category
-                                                                    )?.title
-                                                                }
-                                                            </span>
-                                                        )}
-                                                        <button
-                                                            className="bg-transparent border-none cursor-pointer text-2xl text-red-500"
-                                                            onClick={() => setCategory(0)}
-                                                        >
-                                                            X
-                                                        </button>
+                                            <form
+                                                className="flex flex-col items-start p-4"
+                                                onSubmit={handleSubmit}
+                                            >
+                                                <div className="flex items-center w-full">
+                                                    <div className="font-medium text-lg">
+                                                        Muokkaa ilmoitusta
                                                     </div>
-                                                )}
-                                            </div>
-                                            <div className="ml-auto mt-4 pr-4 space-x-4">
-                                                <button
-                                                    className="px-4 py-2 bg-green-gradient rounded font-bold text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
-                                                    type="submit"
-                                                >
-                                                    Tallenna
-                                                </button>
-                                                <button
-                                                    className="px-4 py-2 bg-red-gradient rounded font-bold text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
-                                                    type="button"
-                                                    onClick={() => setModalIsOpen(false)}
-                                                >
-                                                    Peruuta
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </Modal>
-                            </div>
-                        )}
+                                                    <svg
+                                                        onClick={() => setModalIsOpen(false)}
+                                                        className="ml-auto fill-current w-6 h-6 cursor-pointer"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                        viewBox="0 0 18 18"
+                                                    >
+                                                        <path d="M18 1.3L16.7 0 9 7.6 1.3 0 0 1.3 7.6 9 0 16.7 1.3 18 9 10.4 16.7 18 18 16.7 10.4 9 18 1.3z" />
+                                                    </svg>
+                                                </div>
+                                                <hr className="w-full mt-2 mb-3 border-gray-300" />
+                                                <div className="flex w-full pb-2">
+                                                    <label
+                                                        className="w-1/3 pl-4 text-left text-xl font-bold"
+                                                        htmlFor="title"
+                                                    >
+                                                        Otsikko:
+                                                    </label>
+                                                    <input
+                                                        className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                                        type="text"
+                                                        name="title"
+                                                        value={formData.title}
+                                                        onChange={handleChange}
+                                                        placeholder="Title"
+                                                    />
+                                                </div>
+                                                <div className="flex w-full pb-2">
+                                                    <label
+                                                        className="w-1/3 pl-4 text-left text-xl font-bold"
+                                                        htmlFor="description"
+                                                    >
+                                                        Kuvaus:
+                                                    </label>
+                                                    <textarea
+                                                        className="w-1/2 h-30 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                                        name="description"
+                                                        value={formData.description}
+                                                        onChange={handleChange}
+                                                        placeholder="Description"
+                                                    />
+                                                </div>
+                                                <div className="flex w-full pb-2">
+                                                    <label
+                                                        className="w-1/3 pl-4 text-left text-xl font-bold"
+                                                        htmlFor="price"
+                                                    >
+                                                        Hinta:
+                                                    </label>
+                                                    <input
+                                                        className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                                        type="text"
+                                                        name="price"
+                                                        value={formData.price}
+                                                        onChange={handleChange}
+                                                        placeholder="Price"
+                                                    />
+                                                </div>
+                                                <div className="flex w-full pb-2">
+                                                    <p className="w-1/3 pl-4 text-left text-xl font-bold">
+                                                        Tyyppi:
+                                                    </p>
+                                                    <div className="w-1/2 flex items-center flex-row">
+                                                        <input
+                                                            className="mr-2"
+                                                            type="radio"
+                                                            name="type"
+                                                            value="buy"
+                                                            checked={formData.type === "buy"}
+                                                            onChange={handleChange}
+                                                        />
+                                                        <p className="text-lg">Ostetaan</p>
+                                                        <input
+                                                            className="ml-4 mr-2"
+                                                            type="radio"
+                                                            name="type"
+                                                            value="sell"
+                                                            checked={formData.type === "sell"}
+                                                            onChange={handleChange}
+                                                        />
+                                                        <p className="text-lg">Myydään</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex w-full pb-2">
+                                                    <label
+                                                        className="w-1/3 pl-4 text-left text-xl font-bold"
+                                                        htmlFor="quality"
+                                                    >
+                                                        Kunto:
+                                                    </label>
+                                                    <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4 pb-2">
+                                                        {" "}
+                                                        <label className="col-span-1">
+                                                            <input
+                                                                type="radio"
+                                                                name="quality"
+                                                                value={Quality.New}
+                                                                onChange={handleChange}
+                                                                className="mr-1"
+                                                            />
+                                                            Uusi
+                                                        </label>
+                                                        <label className="col-span-1">
+                                                            <input
+                                                                type="radio"
+                                                                name="quality"
+                                                                value={Quality.LikeNew}
+                                                                onChange={handleChange}
+                                                                className="mr-1"
+                                                            />
+                                                            Erinomainen
+                                                        </label>
+                                                        <label className="col-span-1">
+                                                            <input
+                                                                type="radio"
+                                                                name="quality"
+                                                                value={Quality.Good}
+                                                                onChange={handleChange}
+                                                                className="mr-1"
+                                                            />
+                                                            Hyvä
+                                                        </label>
+                                                        <label className="col-span-1">
+                                                            <input
+                                                                type="radio"
+                                                                name="quality"
+                                                                value={Quality.Fair}
+                                                                onChange={handleChange}
+                                                                className="mr-1"
+                                                            />
+                                                            Tyydyttävä
+                                                        </label>
+                                                        <label className="col-span-2">
+                                                            <input
+                                                                type="radio"
+                                                                name="quality"
+                                                                value={Quality.Poor}
+                                                                onChange={handleChange}
+                                                                className="mr-1"
+                                                            />
+                                                            Huono
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div className="flex w-full pb-2">
+                                                    <label
+                                                        className="w-1/3 pl-4 text-left text-xl font-bold"
+                                                        htmlFor="category"
+                                                    >
+                                                        Kategoria:
+                                                    </label>
+                                                    {/* This component is used to render a dropdown. */}
+                                                    <Dropdown
+                                                        buttonText="Tuotekategoriat"
+                                                        className="mb-4"
+                                                        value={category}
+                                                        onChange={e => {
+                                                            setCategory(Number(e.target.value));
+                                                        }}
+                                                        onOptionSelect={(id: number) => {
+                                                            console.log(
+                                                                "Selected category ID:",
+                                                                id
+                                                            );
+                                                            setCategory(id);
+                                                        }}
+                                                    />
+                                                    {category !== 0 && (
+                                                        <div className="flex items-center space-x-2">
+                                                            {categories.find(
+                                                                cat => cat.id === category
+                                                            )?.title && (
+                                                                <span>
+                                                                    {
+                                                                        categories.find(
+                                                                            cat =>
+                                                                                cat.id === category
+                                                                        )?.title
+                                                                    }
+                                                                </span>
+                                                            )}
+                                                            <button
+                                                                className="bg-transparent border-none cursor-pointer text-2xl text-red-500"
+                                                                onClick={() => setCategory(0)}
+                                                            >
+                                                                X
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="ml-auto mt-4 pr-4 space-x-4">
+                                                    <button
+                                                        className="px-4 py-2 bg-green-gradient rounded font-bold text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
+                                                        type="submit"
+                                                    >
+                                                        Tallenna
+                                                    </button>
+                                                    <button
+                                                        className="px-4 py-2 bg-red-gradient rounded font-bold text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
+                                                        type="button"
+                                                        onClick={() => setModalIsOpen(false)}
+                                                    >
+                                                        Peruuta
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </Modal>
+                                </div>
+                            ))}
                     </div>
                     <hr className="w-full mt-2 mb-3 border-gray-300" />
                     <p className="mb-10">{item.description}</p>
@@ -489,11 +494,11 @@ const Single: React.FC = () => {
                             Muita ilmoituksia samasta kategoriasta:
                         </h1>
                     )}
-                    <div className="flex w-full flex-col space-y-4 hidden sm:block">
+                    <div className="flex w-2/3 flex-col space-y-4 hidden sm:block">
                         {randomListings.map((listing, index) => (
                             <Link to="/single" state={listing} key={index}>
                                 <div
-                                    className={`bg-main-light w-auto rounded mb-2 p-2 flex flex-col lg:flex-row items-center ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                                    className={`bg-main-light w-auto rounded mb-2 p-2 flex flex-col xl:flex-row items-center ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                                 >
                                     <img
                                         src={listing.images[0].url}
@@ -501,11 +506,11 @@ const Single: React.FC = () => {
                                         className="w-full lg:w-36 h-36 object-cover"
                                     />
                                     <div className="ml-4 flex flex-row lg:flex-row w-full">
-                                        <div className="w-full lg:w-1/3">
+                                        <div className="w-full lg:w-1/2">
                                             <h2 className="text-2xl my-2">{listing.title}</h2>
                                             <p className="text-2xl my-2">{+listing.price} €</p>
                                         </div>
-                                        <div className="ml-4 w-full lg:w-1/3">
+                                        <div className="ml-4 w-full lg:w-1/2">
                                             <p className="text-xl my-2">
                                                 {new Date(listing.time).toLocaleDateString("fi-FI")}
                                             </p>

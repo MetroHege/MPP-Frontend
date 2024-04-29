@@ -5,11 +5,11 @@ export default function (quality: Quality) {
         case Quality.New:
             return "Uusi";
         case Quality.LikeNew:
-            return "Uudenveroinen";
+            return "Erinomainen";
         case Quality.Good:
             return "Hyvä";
         case Quality.Fair:
-            return "Käyttökelpoinen";
+            return "Tyydyttävä";
         case Quality.Poor:
             return "Huono";
     }

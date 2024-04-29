@@ -41,8 +41,8 @@ const Home = () => {
 
     // This object maps sort options to their corresponding strings.
     const sortOptionsMapping: { [key: string]: string } = {
-        newest: "Uusimmat",
-        oldest: "Vanhimmat",
+        newest: "Uusin ensin",
+        oldest: "Vanhin ensin",
         "low-high": "Hinta nouseva",
         "high-low": "Hinta laskeva"
     };

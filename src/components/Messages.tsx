@@ -67,12 +67,13 @@ const Messages: React.FC<Props> = ({ listingId, token, userId }) => {
                                     </span>
                                     <span className="ml-2 whitespace-pre-wrap overflow-wrap break-word max-w-full">
                                         {message.content}
-                                        {token &&
+                                        {(token &&
                                             typeof message.user === "object" &&
                                             message.user !== null &&
                                             typeof message.user !== "number" &&
                                             "id" in message.user &&
-                                            String(message.user.id) === userId && (
+                                            String(message.user.id) === userId) ||
+                                            (typeof message.user === "object" && message.user && (
                                                 <button
                                                     className="float-right text-red-500 font-bold"
                                                     onClick={async () => {
@@ -89,7 +90,7 @@ const Messages: React.FC<Props> = ({ listingId, token, userId }) => {
                                                 >
                                                     X
                                                 </button>
-                                            )}
+                                            ))}
                                     </span>
                                 </div>
                             </li>
