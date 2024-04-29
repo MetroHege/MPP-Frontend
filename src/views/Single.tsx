@@ -163,7 +163,7 @@ const Single: React.FC = () => {
                                             <img
                                                 src={image.url}
                                                 alt={`Listing ${item.id}`}
-                                                className="max-w-2xl max-h-2xl object-contain"
+                                                className="max-w-2xl h-dvh object-contain"
                                             />
                                         </div>
                                     ))}
@@ -179,9 +179,9 @@ const Single: React.FC = () => {
                     ) : (
                         <></>
                     )}
-                    <div className="p-3 flex-col xl:flex-row mb-4">
-                        <p className="text-4xl mt-2 w-1/2 font-bold">{item.title}</p>
-                        <p className="text-4xl mt-2 w-1/2 text-left md:text-right font-bold">
+                    <div className="p-3 flex-col mb-4">
+                        <p className="text-4xl mt-2 font-bold">{item.title}</p>
+                        <p className="text-4xl mt-2 text-left md:text-right font-bold">
                             {+item.price} €
                         </p>
                     </div>
@@ -439,7 +439,7 @@ const Single: React.FC = () => {
                 </div>
                 <div className="w-full mr-2 md:mr-0 md:w-1/2 flex flex-col items-start ml-4">
                     <div
-                        className={`rounded-lg shadow-lg mb-4 p-4 bg-main-light flex display-flex w-full ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                        className={`rounded-lg shadow-lg mb-4 p-4 bg-main-light flex display-flex w-auto ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                     >
                         <div className="w-full xl-0 md:ml-4 text-2xl">
                             <p>
@@ -485,7 +485,7 @@ const Single: React.FC = () => {
                         </div>
                     </div>
                     {randomListings.length > 0 && (
-                        <h1 className="text-2xl mb-4 hidden md:block">
+                        <h1 className="text-2xl mb-4 hidden sm:block">
                             Muita ilmoituksia samasta kategoriasta:
                         </h1>
                     )}
@@ -493,7 +493,7 @@ const Single: React.FC = () => {
                         {randomListings.map((listing, index) => (
                             <Link to="/single" state={listing} key={index}>
                                 <div
-                                    className={`bg-main-light w-full rounded p-2 flex flex-col lg:flex-row items-center ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
+                                    className={`bg-main-light w-auto rounded mb-2 p-2 flex flex-col lg:flex-row items-center ${theme === "light" ? "bg-slate-200 text-gray-900" : ""}`}
                                 >
                                     <img
                                         src={listing.images[0].url}
@@ -501,11 +501,11 @@ const Single: React.FC = () => {
                                         className="w-full lg:w-36 h-36 object-cover"
                                     />
                                     <div className="ml-4 flex flex-row lg:flex-row w-full">
-                                        <div className="w-full lg:w-1/2">
-                                            <h2 className="text-xl my-2">{listing.title}</h2>
-                                            <p className="text-xl my-2">{+listing.price} €</p>
+                                        <div className="w-full lg:w-1/3">
+                                            <h2 className="text-2xl my-2">{listing.title}</h2>
+                                            <p className="text-2xl my-2">{+listing.price} €</p>
                                         </div>
-                                        <div className="ml-4 w-full lg:w-1/2">
+                                        <div className="ml-4 w-full lg:w-1/3">
                                             <p className="text-xl my-2">
                                                 {new Date(listing.time).toLocaleDateString("fi-FI")}
                                             </p>

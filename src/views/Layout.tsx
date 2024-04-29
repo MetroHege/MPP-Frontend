@@ -1,4 +1,4 @@
-import { faUser, faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import darkLogo from "../img/divarinet-white.png";
@@ -132,7 +132,7 @@ const Layout = () => {
                                         className={`text-xl ${theme === "light" ? "text-black" : "text-white"} hover:text-gray-300 ${location.pathname === "/login" ? "underline" : ""}`}
                                         to="/login"
                                     >
-                                        <FontAwesomeIcon icon={faUser} />
+                                        Kirjaudu
                                     </Link>
                                 </li>
                             )}
@@ -179,7 +179,7 @@ const Layout = () => {
                                         className="text-xl text-white hover:text-gray-300"
                                         to="/login"
                                     >
-                                        <FontAwesomeIcon icon={faUser} />
+                                        Kirjaudu
                                     </Link>
                                 </li>
                             )}
