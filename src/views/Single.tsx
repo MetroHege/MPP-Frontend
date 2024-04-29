@@ -1,4 +1,4 @@
-import { ListingWithId, PostListingsResponse, User } from "mpp-api-types";
+import { ListingWithId, User } from "mpp-api-types";
 import { Carousel } from "react-responsive-carousel";
 import { Link, NavigateFunction, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../hooks/UserHooks";
