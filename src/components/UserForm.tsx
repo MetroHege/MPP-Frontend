@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Modal from "react-modal";
-import { useMe, useUser } from "../hooks/UserHooks";
+import { useMe } from "../hooks/UserHooks";
 import { useNavigate } from "react-router-dom";
 import { Error, PutMeRequest, PutUserRequest, UserWithId } from "mpp-api-types";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -24,8 +24,6 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
     const [originalUser, setOriginalUser] = useState(user);
     const [showPassword, setShowPassword] = useState(false);
     const { theme } = useTheme();
-    const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
-    const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
     const [_errorMessage, setErrorMessage] = useState("");
 
     const initValues = {
@@ -161,9 +159,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                 (inputs.email !== "" &&
                     (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.email ?? "")
                         ? "Väärä sähköpostimuoto"
-                        : !emailAvailable
-                          ? "Sähköposti on jo käytössä"
-                          : "")) ||
+                        : "")) ||
                 "",
             password:
                 inputs.password !== "" &&
@@ -218,7 +214,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.username}
                             />
                         </div>
-                        {validationErrors.username || !usernameAvailable ? (
+                        {validationErrors.username ? (
                             <div className="flex w-full justify-start lg:justify-center">
                                 <p className="text-red-500 mb-1">
                                     {validationErrors.username || "Käyttäjänimi on jo käytössä"}
@@ -304,7 +300,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, setParentUse
                                 placeholder={user.email}
                             />
                         </div>
-                        {validationErrors.email || !emailAvailable ? (
+                        {validationErrors.email ? (
                             <div className="flex w-full justify-start lg:justify-center">
                                 <p className="text-red-500 mb-1">
                                     {validationErrors.email || "Email not available!"}

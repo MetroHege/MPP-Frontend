@@ -10,8 +10,6 @@ import { useNavigate } from "react-router-dom";
 const RegisterForm = () => {
     const { postUser } = useUser();
     const { postLogin } = useAuthentication();
-    const [usernameAvailable, setUsernameAvailable] = useState<boolean>(true);
-    const [emailAvailable, setEmailAvailable] = useState<boolean>(true);
     const [confirmPassword, setConfirmPassword] = useState("");
     const [_errorMessage, setErrorMessage] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -120,9 +118,7 @@ const RegisterForm = () => {
                       : "",
             email: !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputs.email ?? "")
                 ? "Väärä sähköpostimuoto"
-                : !emailAvailable
-                  ? "Sähköposti on jo käytössä"
-                  : "",
+                : "",
             password: !/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/.test(inputs.password)
                 ? "Vähintään 8 merkkiä, iso ja pieni kirjain sekä numero"
                 : "",
@@ -154,8 +150,7 @@ const RegisterForm = () => {
                                 autoComplete="username"
                             />
                         </div>
-                        {validationErrors.username ||
-                        (!usernameAvailable && "Käyttäjänimi on jo käytössä") ? (
+                        {validationErrors.username ? (
                             <div className="flex w-full justify-start lg:justify-center">
                                 <p className="text-red-500 mb-1">
                                     {validationErrors.username || "Käyttäjänimi on jo käytössä"}
@@ -252,7 +247,7 @@ const RegisterForm = () => {
                                 autoComplete="email"
                             />
                         </div>
-                        {validationErrors.email || (!emailAvailable && "Email not available!") ? (
+                        {validationErrors.email ? (
                             <div className="flex w-full justify-start lg:justify-center">
                                 <p className="text-red-500 mb-1">
                                     {validationErrors.email || "Email not available!"}
@@ -337,11 +332,6 @@ const RegisterForm = () => {
                             </p>
                         </div>
                         <div className="w-full justify-start mt-2">
-                            {!emailAvailable && (
-                                <div className="flex w-3/5 justify-end pr-4">
-                                    <p className="text-rose-500">Email not available!</p>
-                                </div>
-                            )}
                             <button
                                 className="w-2/3 lg:w-1/3 p-2 mb-2 bg-green-gradient font-bold rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                                 type="submit"
