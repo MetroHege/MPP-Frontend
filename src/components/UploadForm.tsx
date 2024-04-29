@@ -89,7 +89,8 @@ const UploadForm = () => {
             description: description === "" ? "Anna ilmoitukselle kuvaus" : "",
             type: type !== "buy" && type !== "sell" ? "Valitse ilmoituksen tyyppi" : "",
             quality: quality === 0 ? "Valitse tuotteen kunto" : "",
-            category: category === 0 ? "Valitse tuotteen kategoria" : ""
+            category: category === 0 ? "Valitse tuotteen kategoria" : "",
+            price: price > 10000000 ? "Hinta liian korkea" : ""
         };
         setValidationErrors(errors);
         return !Object.values(errors).some(error => error !== "");
