@@ -14,7 +14,10 @@ Käytettyjen urheiluvälineide/-vaatteiden vaihtopaikka.
     -   [Frontend](#Frontend)
     -   [Backend](#Backend)
 -   [Toiminnallisuudet](#Toiminallisuudet)
--   [CI/CD](#CI/CD)
+-   [CI](#CI)
+    -   [CI Frontend](#CI Frontend)
+    -   [CI Backend](#CI Backend)
+-   [CD](#CD)
 -   [Testaus](#Testaus)
 
     ## Sovellus
@@ -83,10 +86,14 @@ Käytettyjen urheiluvälineide/-vaatteiden vaihtopaikka.
     -   Yhteydenotto
         -   Yhteydenottolomake
 
-    ## CI/CD
+    ## CI
 
-    [CI/CD Frontend](https://github.com/MetroHege/MPP-Frontend/tree/main/.github/workflows)
-    [CI/CD Backend](https://github.com/MetroHege/MPP-Backend/tree/main/.github/workflows)
+    -   [CI Frontend](https://github.com/MetroHege/MPP-Frontend/tree/main/.github/workflows)
+    -   [CI Backend](https://github.com/MetroHege/MPP-Backend/tree/main/.github/workflows)
+
+    ## CD
+
+    -   [CD](https://github.com/MatteZ02/mpp-ansible/tree/main)
 
     ## Testaus
 
