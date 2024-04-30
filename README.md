@@ -48,7 +48,12 @@ Käytettyjen urheiluvälineide/-vaatteiden vaihtopaikka.
 
     ![Tietokantataulu](/src/img/tietokanta.png)
 
-    Tähän kohtaan tulee kuvaus tietokannasta ja sen rakenteesta.
+    Tietokannan taulut:
+    -   users (käyttäjät)
+    -   listings (listaukset)
+    -   images (listausten kuvat)
+    -   messages (keskustelut listausten alla)
+    -   categories (kategoriat)
 
     ## Teknologiat
 
@@ -61,6 +66,13 @@ Käytettyjen urheiluvälineide/-vaatteiden vaihtopaikka.
 
     -   TypeScript
     -   Express
+    -   MariaDB
+
+    ### CI/CD
+
+    -   GitHub Actions
+    -   Ansible
+    -   Podman
 
     ## Toiminnallisuudet
 
@@ -90,10 +102,12 @@ Käytettyjen urheiluvälineide/-vaatteiden vaihtopaikka.
 
     -   [CI Frontend](https://github.com/MetroHege/MPP-Frontend/tree/main/.github/workflows)
     -   [CI Backend](https://github.com/MetroHege/MPP-Backend/tree/main/.github/workflows)
+    CI on toteutettu GitHub Actionsin avulla. Frontend ja Backend buildataan ja testataan jokaisen pushin yhteydessä.
 
     ## CD
 
     -   [CD](https://github.com/MatteZ02/mpp-ansible/tree/main)
+    CD on toteutettu Ansiblen avulla. Frontend ja Backend deployataan Azureen jokaisen pushin main branchiin jälkeen.
 
     ## Testaus
 
