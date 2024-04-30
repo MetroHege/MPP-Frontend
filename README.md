@@ -46,7 +46,7 @@ Käytettyjen urheiluvälineide/-vaatteiden vaihtopaikka.
 
     ### Tietokanta
 
-    [Tietokanta]()
+    ![Tietokantataulu](/src/img/tietokanta.png)
 
     Tähän kohtaan tulee kuvaus tietokannasta ja sen rakenteesta.
 
