@@ -15,8 +15,8 @@ Käytettyjen urheiluvälineide/-vaatteiden vaihtopaikka.
     -   [Backend](#Backend)
 -   [Toiminnallisuudet](#Toiminallisuudet)
 -   [CI](#CI)
-    -   [CI Frontend](#CI Frontend)
-    -   [CI Backend](#CI Backend)
+    -   [CI-Frontend](#CI-Frontend)
+    -   [CI-Backend](#CI-Backend)
 -   [CD](#CD)
 -   [Testaus](#Testaus)
 
@@ -101,8 +101,8 @@ Käytettyjen urheiluvälineide/-vaatteiden vaihtopaikka.
 
     ## CI
 
-    -   [CI Frontend](https://github.com/MetroHege/MPP-Frontend/tree/main/.github/workflows)
-    -   [CI Backend](https://github.com/MetroHege/MPP-Backend/tree/main/.github/workflows)
+    -   [CI-Frontend](https://github.com/MetroHege/MPP-Frontend/tree/main/.github/workflows)
+    -   [CI-Backend](https://github.com/MetroHege/MPP-Backend/tree/main/.github/workflows)
 
     ### toteutus
     CI on toteutettu GitHub Actionsin avulla. Frontend ja Backend buildataan ja testataan jokaisen pushin yhteydessä.
