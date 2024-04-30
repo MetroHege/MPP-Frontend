@@ -484,7 +484,7 @@ const Single: React.FC = () => {
                             <button className="mt-2">
                                 <a
                                     className="px-4 text-xl mt-2 py-2 bg-green-gradient rounded font-bold text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
-                                    href={`mailto:${userItem.email}`}
+                                    href={`mailto:${userItem.email}?subject=Kysely ilmoituksesta ${item.title}`}
                                 >
                                     Ota yhteyttä
                                 </a>
