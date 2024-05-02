@@ -71,7 +71,7 @@ const Single: React.FC = () => {
         if (token) {
             const listing = {
                 ...formData,
-                category: (category !== -1 && category) || undefined,
+                category: category !== -1 ? category : undefined,
                 images: undefined,
                 thumbnail: undefined,
                 user: undefined,
