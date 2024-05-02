@@ -52,7 +52,9 @@ const AdminListing: React.FC = () => {
                             </p>
                             <p className="mb-2">Laatu: {listing.quality}</p>
                             <p className="mb-2">Hinta: {listing.price}</p>
-                            <p className="mb-2">Aika: {listing.time.toLocaleDateString("fi-FI")}</p>
+                            <p className="mb-2">
+                                Aika: {new Date(listing.time).toLocaleDateString("fi-FI")}
+                            </p>
                             <p className="mb-2">Kuvaus: {listing.description}</p>
                             <p className="mb-2">
                                 Käyttäjä:{" "}
