@@ -14,7 +14,7 @@ import { FiChevronDown } from "react-icons/fi";
 // This component is the home view of the application.
 const Home = () => {
     const { categories, getCategories } = useCategories();
-    const [selectedCategory, setSelectedCategory] = useState<number | "">("");
+    const [selectedCategory, setSelectedCategory] = useState<number>(-1);
     const { listings, searchTerm, setSearchTerm, loadMore, sort, hasMore } = useListing({
         category: selectedCategory ? +selectedCategory : undefined
     });
@@ -74,7 +74,7 @@ const Home = () => {
 
     // This function is used to clear the filters.
     const clearFilters = () => {
-        setSelectedCategory("");
+        setSelectedCategory(-1);
         setSortOrder("newest");
     };
 
@@ -169,11 +169,11 @@ const Home = () => {
                     className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none text-gray-900"
                 />
             </div>
-            {(selectedCategory || sortOrder !== "newest") && (
+            {(selectedCategory !== -1 || sortOrder !== "newest") && (
                 <div className="flex items-center mb-4 space-x-2 ml-4">
                     <span>
                         {selectedCategory &&
-                            `${categories.find(category => category.id === +selectedCategory)?.title}`}
+                            `${categories.find(category => category.id === selectedCategory)?.title}`}
                         {selectedCategory && sortOrder !== "newest" && " | "}
                         {sortOrder !== "newest" && `${sortOptionsMapping[sortOrder]}`}
                     </span>
@@ -192,9 +192,9 @@ const Home = () => {
                             typeof listing.user === "number"
                                 ? listing.user
                                 : listing.user.id !== user?.id &&
-                                  (selectedCategory === "" || typeof listing.category === "number"
+                                  (selectedCategory === -1 || typeof listing.category === "number"
                                       ? listing.category
-                                      : listing.category.id === +selectedCategory)
+                                      : listing.category.id === selectedCategory)
                         )
                         .map((listing: ListingWithId) => (
                             // This component is used to display a single listing.
