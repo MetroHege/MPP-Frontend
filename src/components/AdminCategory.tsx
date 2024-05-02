@@ -24,9 +24,14 @@ const AdminCategory: React.FC = () => {
 
     const handlePostCategory = async (event: React.FormEvent) => {
         event.preventDefault();
-        const newCategory = await postCategory(newCategoryName);
-        setCategories([...categories, newCategory]);
-        setNewCategoryName("");
+        const token = localStorage.getItem("token");
+        if (token) {
+            const newCategory = await postCategory({ title: newCategoryName }, token);
+            if (newCategory) {
+                setCategories(prevCategories => [...prevCategories, newCategory]);
+                setNewCategoryName("");
+            }
+        }
     };
 
     return (
@@ -37,28 +42,30 @@ const AdminCategory: React.FC = () => {
                         <p className="mb-2">{category.title}</p>
                         <button
                             onClick={() => handleDeleteCategory(category.id)}
-                            className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+                            className="px-4 py-2 mt-2 text-white bg-red-500 rounded hover:bg-red-600"
                         >
                             Poista
                         </button>
                     </div>
                 ))}
             </div>
-            <form onSubmit={handlePostCategory}>
-                <input
-                    type="text"
-                    value={newCategoryName}
-                    onChange={e => setNewCategoryName(e.target.value)}
-                    placeholder="New category name"
-                    className="bg-transparent"
-                />
-                <button
-                    type="submit"
-                    className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
-                >
-                    Add Category
-                </button>
-            </form>
+            <div className="mt-4">
+                <form onSubmit={handlePostCategory}>
+                    <input
+                        type="text"
+                        value={newCategoryName}
+                        onChange={e => setNewCategoryName(e.target.value)}
+                        placeholder="Lisää uusi kategoria"
+                        className="bg-transparent mr-4"
+                    />
+                    <button
+                        type="submit"
+                        className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+                    >
+                        Lisää
+                    </button>
+                </form>
+            </div>
         </>
     );
 };

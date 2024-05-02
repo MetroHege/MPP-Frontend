@@ -69,10 +69,13 @@ const useUser = () => {
     };
 
     const putUser = async (user_id: number, user: PutUserRequest, token: string) => {
+        console.log(user);
+
         const options: RequestInit = {
             method: "PUT",
             headers: {
-                Authorization: "Bearer " + token
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(user)
         };

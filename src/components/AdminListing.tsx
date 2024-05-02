@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useListing from "../hooks/ListingHooks";
 import { Carousel } from "react-responsive-carousel";
-import Messages from "./Messages";
+import AdminMessage from "./AdminMessage";
 
 const AdminListing: React.FC = () => {
     const { listings, fetchListings, deleteListing } = useListing();
@@ -32,7 +32,7 @@ const AdminListing: React.FC = () => {
                         key={listing.id}
                         className="grid grid-cols-2 gap-4 p-4 border border-gray-200 rounded shadow-sm"
                     >
-                        <div>
+                        <div className="col-span-1">
                             <Carousel showThumbs={false} selectedItem={0} key={listing.id}>
                                 {listing.images.map((image, index) => (
                                     <div key={index}>
@@ -44,35 +44,37 @@ const AdminListing: React.FC = () => {
                                     </div>
                                 ))}
                             </Carousel>
+                            <div className="mt-4">
+                                <AdminMessage listingId={listing?.id.toString()} token={token} />
+                            </div>
                         </div>
-                        <div>
-                            <p className="mb-2">Title: {listing.title}</p>
-                            <p className="mb-2">Type: {listing.type}</p>
+                        <div className="col-span-1">
+                            <p className="mb-2">Otsikko: {listing.title}</p>
+                            <p className="mb-2">Tyyppi: {listing.type}</p>
                             <p className="mb-2">
-                                Category:{" "}
+                                Kategoria:{" "}
                                 {typeof listing.category === "number"
                                     ? listing.category
                                     : listing.category.title}
                             </p>
-                            <p className="mb-2">Quality: {listing.quality}</p>
-                            <p className="mb-2">Price: {listing.price}</p>
-                            <p className="mb-2">Time: {listing.time}</p>
-                            <p className="mb-2">Description: {listing.description}</p>
+                            <p className="mb-2">Laatu: {listing.quality}</p>
+                            <p className="mb-2">Hinta: {listing.price}</p>
+                            <p className="mb-2">Aika: {listing.time}</p>
+                            <p className="mb-2">Kuvaus: {listing.description}</p>
                             <p className="mb-2">
-                                User:{" "}
+                                Käyttäjä:{" "}
                                 {typeof listing.user === "number"
                                     ? listing.user
                                     : listing.user.username}
                             </p>
-                        </div>
-                        {/* <Messages listingId={listing?.id.toString()} token={token} /> */}
-                        <div className="flex items-center justify-center">
-                            <button
-                                onClick={() => handleDeleteListing(listing.id)}
-                                className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
-                            >
-                                Poista
-                            </button>
+                            <div className="mt-4">
+                                <button
+                                    onClick={() => handleDeleteListing(listing.id)}
+                                    className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+                                >
+                                    Poista
+                                </button>
+                            </div>
                         </div>
                     </div>
                 ))}
