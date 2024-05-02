@@ -99,7 +99,7 @@ Käytettyjen urheiluvälineide/-vaatteiden vaihtopaikka.
     -   Yhteydenotto
         -   Yhteydenottolomake
 
-    ## CI
+    ## Continuous Integration
 
     -   [CI-Frontend](https://github.com/MetroHege/MPP-Frontend/tree/main/.github/workflows)
     -   [CI-Backend](https://github.com/MetroHege/MPP-Backend/tree/main/.github/workflows)
@@ -107,9 +107,9 @@ Käytettyjen urheiluvälineide/-vaatteiden vaihtopaikka.
     ### toteutus
     CI on toteutettu GitHub Actionsin avulla. Frontend ja Backend buildataan ja testataan jokaisen pushin yhteydessä.
 
-    ## CD
+    ## Continuous Deployment
 
-    -   [CD](https://github.com/MatteZ02/mpp-ansible/tree/main)
+    -   [CD](https://github.com/MatteZ02/mpp-infra/tree/main)
     
     ### toteutus
     CD on toteutettu Ansiblen avulla. Frontend ja Backend deployataan Azureen jokaisen pushin main branchiin jälkeen.

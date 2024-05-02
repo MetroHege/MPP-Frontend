@@ -1,13 +1,13 @@
 import {
     GetMeResponse,
     GetUserResponse,
+    GetUsersResponse,
     PostLoginRequest,
     PostLoginResponse,
     PostUsersRequest,
     PostUsersResponse,
     PutMeResponse,
     PutUserRequest,
-    User,
     UserWithId
 } from "mpp-api-types";
 import { fetchData } from "../lib/functions";
@@ -61,7 +61,7 @@ const useUser = () => {
 
     // This function is used to fetch all users.
     const getAllUsers = async () => {
-        return await fetchData<User[]>(import.meta.env.VITE_SERVER + "/users");
+        return await fetchData<GetUsersResponse>(import.meta.env.VITE_SERVER + "/users");
     };
 
     // This function is used to delete a user.
@@ -78,10 +78,13 @@ const useUser = () => {
 
     // This function is used to put a user.
     const putUser = async (user_id: number, user: PutUserRequest, token: string) => {
+        console.log(user);
+
         const options: RequestInit = {
             method: "PUT",
             headers: {
-                Authorization: "Bearer " + token
+                Authorization: "Bearer " + token,
+                "Content-Type": "application/json"
             },
             body: JSON.stringify(user)
         };

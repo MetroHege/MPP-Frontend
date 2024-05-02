@@ -1,4 +1,4 @@
-import { GetCategoriesResponse } from "mpp-api-types";
+import { Category, GetCategoriesResponse } from "mpp-api-types";
 import { useState } from "react";
 
 // This hook is used to fetch and manage categories from the server.
@@ -13,7 +13,7 @@ const useCategories = () => {
     };
 
     // This function is used to post a new category to the server.
-    const postCategory = async (category: string, token: string) => {
+    const postCategory = async (category: Category, token: string) => {
         const options = {
             method: "POST",
             headers: {
@@ -22,7 +22,8 @@ const useCategories = () => {
             },
             body: JSON.stringify(category)
         };
-        return await fetch(import.meta.env.VITE_SERVER + "/categories", options);
+        const response = await fetch(import.meta.env.VITE_SERVER + "/categories", options);
+        return await response.json();
     };
 
     // This function is used to delete a category from the server.

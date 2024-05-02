@@ -7,6 +7,7 @@ import Upload from "./views/Upload";
 import Single from "./views/Single";
 import Login from "./views/Login";
 import Rules from "./views/Rules";
+import Admin from "./views/Admin";
 import { UserProvider } from "./contexts/UserContext";
 import { UpdateProvider } from "./contexts/UpdateContext";
 import { useEffect } from "react";
@@ -55,6 +56,7 @@ const App = () => {
                                 <Route path="/login" element={<Login />} />
                                 <Route path="/rules" element={<Rules />} />
                                 <Route path="/contact" element={<Contact />} />
+                                <Route path="/admin" element={<Admin />} />
                                 <Route
                                     path="*"
                                     element={
