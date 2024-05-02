@@ -18,7 +18,6 @@ type BooleanResponse = MessageResponse & {
     success: boolean;
 };
 
-// for upload server
 type UploadResponse = MessageResponse & {
     data: {
         filename: string;

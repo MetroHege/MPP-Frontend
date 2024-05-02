@@ -2,6 +2,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { useContext } from "react";
 
+// This component is used to render a protected route.
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     const { user } = useContext(UserContext) || {};
 

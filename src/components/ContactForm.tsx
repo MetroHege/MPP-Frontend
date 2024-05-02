@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "react-modal";
 import { useTheme } from "../contexts/ThemeContext";
 
+// This component is used to render a contact form.
 export default function ContactForm() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ export default function ContactForm() {
 
     const [_error, setError] = useState("");
 
+    // This function is used to handle form submission.
     function onSubmit(e: React.FormEvent) {
         e.preventDefault();
         e.stopPropagation();
@@ -43,7 +45,10 @@ export default function ContactForm() {
     }
 
     return (
-        <form className="flex flex-col items-center mb-0 ml-4 mr-4" onSubmit={e => onSubmit(e)}>
+        <form
+            className="flex flex-col lg:items-center mb-0 ml-0 lg:ml-4 mr-4"
+            onSubmit={e => onSubmit(e)}
+        >
             <div className="flex flex-col w-2/3 mb-4">
                 <label className="text-left text-xl font-bold mb-2" htmlFor="name">
                     Koko nimesi
@@ -56,7 +61,6 @@ export default function ContactForm() {
                     id="name"
                 />
             </div>
-
             <div className="flex flex-col w-2/3 mb-4">
                 <label className="text-left text-xl font-bold mb-2" htmlFor="email">
                     Sähköpostisi
@@ -69,7 +73,6 @@ export default function ContactForm() {
                     id="email"
                 />
             </div>
-
             <div className="flex flex-col w-2/3 pb-2">
                 <label className="text-left text-xl font-bold" htmlFor="message">
                     Viestisi
@@ -86,10 +89,9 @@ export default function ContactForm() {
                     placeholder="Viestisi meille..."
                 ></textarea>
             </div>
-
             <div className="flex w-2/3 pb-2">
                 <button
-                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                    className="px-4 py-2 bg-green-500 text-slate-950 font-bold rounded hover:bg-green-600"
                     type="submit"
                 >
                     Lähetä
@@ -125,7 +127,7 @@ export default function ContactForm() {
                         <p className="text-sm">Maltti on valttia! 😊</p>
                         <div className="ml-auto mt-4 space-x-4">
                             <button
-                                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+                                className="px-4 py-2 bg-green-500 text-slate-950 font-bold rounded hover:bg-green-600"
                                 onClick={() => {
                                     window.location.href = "/";
                                     setIsSubmitted(false);

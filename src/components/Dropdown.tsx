@@ -2,6 +2,7 @@ import { CategoryWithId } from "mpp-api-types";
 import { useState, useEffect, useRef } from "react";
 import { useCategories } from "../hooks/CategoryHooks";
 
+// This component is a dropdown menu that displays a list of categories.
 const Dropdown = ({
     buttonText,
     className,
@@ -63,7 +64,7 @@ const Dropdown = ({
             </button>
 
             {isOpen && (
-                <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-auto max-h-50">
+                <div className="origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-auto max-h-50">
                     <div
                         className="py-1"
                         role="menu"
@@ -79,7 +80,7 @@ const Dropdown = ({
                                 onClick={e => {
                                     e.preventDefault();
                                     setIsOpen(false);
-                                    onOptionSelect(option.id); // use the new prop here
+                                    onOptionSelect(option.id);
                                 }}
                             >
                                 {option.title}

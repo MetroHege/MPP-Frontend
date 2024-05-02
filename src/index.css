@@ -47,3 +47,6 @@
   --Green: linear-gradient(to right, #72D572, #4CAF50);
 }
 
+.carousel-slider {
+  z-index: 0;
+}

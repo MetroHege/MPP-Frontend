@@ -1,3 +1,4 @@
+// This component is used to handle the logout process.
 const Logout = () => {
     return (
         <div>

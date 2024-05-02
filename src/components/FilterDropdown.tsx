@@ -7,6 +7,7 @@ interface FilterDropdownProps {
     handleOptionChange: (selectedOption: string) => void;
 }
 
+// This component is used to render a filter dropdown.
 const FilterDropdown: React.FC<FilterDropdownProps> = ({
     options,
     buttonText,
@@ -38,7 +39,7 @@ const FilterDropdown: React.FC<FilterDropdownProps> = ({
             </button>
 
             {isOpen && (
-                <div className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-auto max-h-50">
+                <div className="origin-top-right absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 overflow-auto max-h-50">
                     <div
                         className="py-1"
                         role="menu"

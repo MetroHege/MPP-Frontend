@@ -15,22 +15,29 @@ import Contact from "./views/Contact";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+// This component is the main component of the application.
 const App = () => {
     useEffect(() => {
         Modal.setAppElement("#root");
     }, []);
 
     return (
+        // This component is used to provide the theme to the application.
         <ThemeProvider>
+            {/* This component is used to provide the user context to the application. */}
             <Router basename={import.meta.env.BASE_URL}>
                 <UserProvider>
+                    {/* This component is used to provide the update context to the application. */}
                     <UpdateProvider>
+                        {/* This component is used to define the routes of the application. */}
                         <Routes>
+                            {/* This component is used to define the layout of the application. */}
                             <Route element={<Layout />}>
                                 <Route path="/" element={<Home />} />
                                 <Route
                                     path="/profile"
                                     element={
+                                        // This component is used to protect the route.
                                         <ProtectedRoute>
                                             <Profile />
                                         </ProtectedRoute>
@@ -39,6 +46,7 @@ const App = () => {
                                 <Route
                                     path="/upload"
                                     element={
+                                        // This component is used to protect the route.
                                         <ProtectedRoute>
                                             <Upload />
                                         </ProtectedRoute>

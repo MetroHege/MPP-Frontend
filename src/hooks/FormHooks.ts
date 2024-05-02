@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// This hook is used to manage form inputs and submission.
 const useForm = <T>(callback: () => void, initState: T) => {
     const [inputs, setInputs] = useState<T>(initState);
 
@@ -10,6 +11,7 @@ const useForm = <T>(callback: () => void, initState: T) => {
         callback();
     };
 
+    // This function is used to handle input changes.
     const handleInputChange = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
@@ -20,6 +22,7 @@ const useForm = <T>(callback: () => void, initState: T) => {
         }));
     };
 
+    // This function is used to reset the form.
     const resetForm = () => {
         setInputs(initState);
     };

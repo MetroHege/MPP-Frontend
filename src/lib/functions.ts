@@ -1,5 +1,6 @@
 import { ErrorResponse } from "../types/MessageTypes";
 
+// This function is used to fetch data from the server.
 const fetchData = async <T>(url: string, options: RequestInit = {}): Promise<T> => {
     const response = await fetch(url, options);
     const json = await response.json();
