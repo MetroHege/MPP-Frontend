@@ -16,7 +16,7 @@ const Home = () => {
     const { categories, getCategories } = useCategories();
     const [selectedCategory, setSelectedCategory] = useState<number>(-1);
     const { listings, searchTerm, setSearchTerm, loadMore, sort, hasMore } = useListing({
-        category: selectedCategory ? +selectedCategory : undefined
+        category: selectedCategory !== -1 ? +selectedCategory : undefined
     });
     const { user } = useUser();
     const [sortOrder, setSortOrder] = useState(localStorage.getItem("sortOrder") || "newest");
