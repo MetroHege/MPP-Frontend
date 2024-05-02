@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useCategories } from "../hooks/CategoryHooks";
+import { CategoryWithId } from "mpp-api-types";
 
 const AdminCategory: React.FC = () => {
     const { getCategories, deleteCategory, postCategory } = useCategories();
-    const [categories, setCategories] = useState([]);
+    const [categories, setCategories] = useState<CategoryWithId[]>([]);
     const [newCategoryName, setNewCategoryName] = useState("");
 
     // useEffect hook to fetch categories

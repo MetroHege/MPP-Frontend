@@ -1,21 +1,19 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import Modal from "react-modal";
 import { useUser } from "../hooks/UserHooks";
-import { useNavigate } from "react-router-dom";
-import { PutUserRequest, UserWithId } from "mpp-api-types";
+import { PartialUser, PutUserRequest } from "mpp-api-types";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useTheme } from "../contexts/ThemeContext";
 
 interface UserFormProps {
     showForm: boolean;
     setShowForm: Dispatch<SetStateAction<boolean>>;
-    user: UserWithId;
+    user: PartialUser;
 }
 
 const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, user }) => {
     const [updatedUser, setUser] = useState<PutUserRequest>({});
     const { putUser } = useUser();
-    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const { theme } = useTheme();
 
@@ -61,7 +59,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, user }) => {
                             e.preventDefault();
                             const token = localStorage.getItem("token");
                             if (token) {
-                                const me = await putUser(user.id, updatedUser, token);
+                                await putUser(user.id, updatedUser, token);
                                 setShowForm(false);
                             } else {
                                 console.log("Token not found");
@@ -95,7 +93,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, user }) => {
                                 className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="firstName"
-                                placeholder={user.firstName}
+                                placeholder="Etunimi"
                                 onChange={handleChange}
                             />
                         </div>
@@ -110,7 +108,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, user }) => {
                                 className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="lastName"
-                                placeholder={user.lastName}
+                                placeholder="Sukunimi"
                                 onChange={handleChange}
                             />
                         </div>
@@ -125,7 +123,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, user }) => {
                                 className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="phone"
-                                placeholder={user.phone || ""}
+                                placeholder="Puhelinnumero"
                                 onChange={handleChange}
                             />
                         </div>

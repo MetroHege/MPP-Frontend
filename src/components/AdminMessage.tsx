@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { MessageWithId, PartialUser } from "mpp-api-types";
 import useMessages from "../hooks/MessageHooks";
 
@@ -7,10 +7,8 @@ interface Props {
     token: string;
 }
 
-const AdminMessage: React.FC<Props> = ({ listingId, token }) => {
+const AdminMessage: React.FC<Props> = ({ listingId }) => {
     const { messages, getListingMessages, deleteMessage } = useMessages();
-    const formRef = useRef<HTMLFormElement>(null);
-    const [inputValue, setInputValue] = useState("");
 
     // Function to get messages
     const getMessages = async () => {
@@ -27,7 +25,7 @@ const AdminMessage: React.FC<Props> = ({ listingId, token }) => {
     }, []);
 
     // Function to handle deleting a message
-    const handleDeleteMessage = async messageId => {
+    const handleDeleteMessage = async (messageId: number) => {
         const token = localStorage.getItem("token");
         if (token) {
             await deleteMessage(messageId, token);

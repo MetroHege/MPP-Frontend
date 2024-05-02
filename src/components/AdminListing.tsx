@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useListing from "../hooks/ListingHooks";
 import { Carousel } from "react-responsive-carousel";
 import AdminMessage from "./AdminMessage";
@@ -10,10 +10,7 @@ const AdminListing: React.FC = () => {
     // Function to handle deleting a listing
     const handleDeleteListing = async (listingId: number) => {
         const token = localStorage.getItem("token");
-        if (token) {
-            await deleteListing(listingId, token);
-            setListings(listings.filter(listing => listing.id !== listingId));
-        }
+        if (token) await deleteListing(listingId, token);
     };
     return (
         <>
@@ -38,7 +35,10 @@ const AdminListing: React.FC = () => {
                             </Carousel>
                             <div className="mt-4">
                                 {/* AdminMessage component for sending messages to listing items */}
-                                <AdminMessage listingId={listing?.id.toString()} token={token} />
+                                <AdminMessage
+                                    listingId={listing?.id.toString()}
+                                    token={token as string}
+                                />
                             </div>
                         </div>
                         <div className="col-span-1">
@@ -52,7 +52,7 @@ const AdminListing: React.FC = () => {
                             </p>
                             <p className="mb-2">Laatu: {listing.quality}</p>
                             <p className="mb-2">Hinta: {listing.price}</p>
-                            <p className="mb-2">Aika: {listing.time}</p>
+                            <p className="mb-2">Aika: {listing.time.toLocaleDateString("fi-FI")}</p>
                             <p className="mb-2">Kuvaus: {listing.description}</p>
                             <p className="mb-2">
                                 Käyttäjä:{" "}

@@ -1,13 +1,13 @@
 import {
     GetMeResponse,
     GetUserResponse,
+    GetUsersResponse,
     PostLoginRequest,
     PostLoginResponse,
     PostUsersRequest,
     PostUsersResponse,
     PutMeResponse,
     PutUserRequest,
-    User,
     UserWithId
 } from "mpp-api-types";
 import { fetchData } from "../lib/functions";
@@ -61,7 +61,7 @@ const useUser = () => {
 
     // This function is used to fetch all users.
     const getAllUsers = async () => {
-        return await fetchData<User[]>(import.meta.env.VITE_SERVER + "/users");
+        return await fetchData<GetUsersResponse>(import.meta.env.VITE_SERVER + "/users");
     };
 
     // This function is used to delete a user.

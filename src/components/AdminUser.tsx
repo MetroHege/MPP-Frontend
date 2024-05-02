@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { User } from "mpp-api-types";
+import { PartialUser } from "mpp-api-types";
 import { useUser } from "../hooks/UserHooks";
 import AdminUserForm from "./AdminUserForm";
 
 const AdminUser: React.FC = () => {
-    const { getAllUsers, getUserById, deleteUser, putUser } = useUser();
-    const [users, setUsers] = useState<User[]>([]);
-    const token = localStorage.getItem("token");
+    const { getAllUsers, deleteUser } = useUser();
+    const [users, setUsers] = useState<PartialUser[]>([]);
     const [showForm, setShowForm] = useState(false);
-    const [user, setUser] = useState<UserWithId | null>(null);
 
     // Fetch all users
     useEffect(() => {
