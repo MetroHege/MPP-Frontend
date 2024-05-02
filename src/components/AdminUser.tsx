@@ -10,6 +10,7 @@ const AdminUser: React.FC = () => {
     const [showForm, setShowForm] = useState(false);
     const [user, setUser] = useState<UserWithId | null>(null);
 
+    // Fetch all users
     useEffect(() => {
         const fetchUsers = async () => {
             const fetchedUsers = await getAllUsers();
@@ -18,6 +19,7 @@ const AdminUser: React.FC = () => {
         fetchUsers();
     }, []);
 
+    // Function to handle deleting a user
     const handleDeleteUser = async (userId: number) => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -32,22 +34,21 @@ const AdminUser: React.FC = () => {
                 {users.map(user => (
                     <div key={user.id} className="p-4 border border-gray-200 rounded shadow-sm">
                         <p className="mb-2">Käyttäjä: {user.username}</p>
-                        <p className="mb-2">Etunimi: {user.firstName}</p>
-                        <p className="mb-2">Sukunimi: {user.lastName}</p>
-                        <p className="mb-2">Puhelinnumero: {user.phone}</p>
                         <p className="mb-2">Sähköposti: {user.email}</p>
                         <p className="mb-2">Kaupunki: {user.city}</p>
+                        {/* Editing button */}
                         <button
-                            className="w-1/2 p-2 bg-yellow-gradient font-bold mb-2 rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
+                            className="w-1/4 p-2 bg-yellow-gradient font-bold mb-2 rounded text-slate-950 transition duration-300 ease-in-out hover:brightness-75 hover:shadow-md"
                             type="submit"
                             onClick={() => setShowForm(true)}
                         >
                             Muokkaa tietoja
                         </button>
+                        {/* AdminUserForm component for showing user editing form */}
                         <AdminUserForm showForm={showForm} setShowForm={setShowForm} user={user} />
                         <button
                             onClick={() => handleDeleteUser(user.id)}
-                            className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
+                            className="ml-2 px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
                         >
                             Poista
                         </button>

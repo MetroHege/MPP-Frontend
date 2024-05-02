@@ -1,22 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import useListing from "../hooks/ListingHooks";
 import { Carousel } from "react-responsive-carousel";
 import AdminMessage from "./AdminMessage";
 
 const AdminListing: React.FC = () => {
-    const { listings, fetchListings, deleteListing } = useListing();
-    // const userItem: User = state.user;
-    // const [listings, setListings] = useState([]);
+    const { listings, deleteListing } = useListing();
     const token = localStorage.getItem("token");
 
-    useEffect(() => {
-        // const fetchListings = async () => {
-        //     const fetchedListings = await getListing();
-        //     setListings(fetchedListings);
-        // };
-        // fetchListings();
-    }, []);
-
+    // Function to handle deleting a listing
     const handleDeleteListing = async (listingId: number) => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -33,6 +24,7 @@ const AdminListing: React.FC = () => {
                         className="grid grid-cols-2 gap-4 p-4 border border-gray-200 rounded shadow-sm"
                     >
                         <div className="col-span-1">
+                            {/* Carousel component for displaying listing images */}
                             <Carousel showThumbs={false} selectedItem={0} key={listing.id}>
                                 {listing.images.map((image, index) => (
                                     <div key={index}>
@@ -45,6 +37,7 @@ const AdminListing: React.FC = () => {
                                 ))}
                             </Carousel>
                             <div className="mt-4">
+                                {/* AdminMessage component for sending messages to listing items */}
                                 <AdminMessage listingId={listing?.id.toString()} token={token} />
                             </div>
                         </div>
@@ -68,11 +61,12 @@ const AdminListing: React.FC = () => {
                                     : listing.user.username}
                             </p>
                             <div className="mt-4">
+                                {/* Button to delete a listing */}
                                 <button
                                     onClick={() => handleDeleteListing(listing.id)}
                                     className="px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600"
                                 >
-                                    Poista
+                                    Poista ilmoitus
                                 </button>
                             </div>
                         </div>

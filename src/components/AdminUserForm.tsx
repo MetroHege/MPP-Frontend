@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import Modal from "react-modal";
-import { useMe, useUser } from "../hooks/UserHooks";
+import { useUser } from "../hooks/UserHooks";
 import { useNavigate } from "react-router-dom";
 import { PutUserRequest, UserWithId } from "mpp-api-types";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -15,11 +15,11 @@ interface UserFormProps {
 const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, user }) => {
     const [updatedUser, setUser] = useState<PutUserRequest>({});
     const { putUser } = useUser();
-    const [isDeleted, setIsDeleted] = useState(false);
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState(false);
     const { theme } = useTheme();
 
+    // Function to handle changes in the form
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         if (user && value !== user[name as keyof typeof user]) {
@@ -38,7 +38,7 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, user }) => {
             contentLabel="Modal"
         >
             <div
-                className={`bg-main-medium rounded-lg w-1/3 ${theme === "light" ? "text-slate-950 bg-slate-100" : ""}`}
+                className={`bg-main-medium rounded-lg w-3/4 md:w-2/3 lg:w-1/2 ${theme === "light" ? "text-slate-950 bg-slate-100" : ""}`}
             >
                 <div className="flex flex-col items-start p-4">
                     <div className="flex items-center w-full">
@@ -68,15 +68,15 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, user }) => {
                             }
                         }}
                     >
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold mb-2 md:mb-0"
                                 htmlFor="username"
                             >
                                 Käyttäjänimi:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="username"
                                 autoComplete="username"
@@ -84,76 +84,76 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, user }) => {
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold mb-0 md:mb-2"
                                 htmlFor="firstName"
                             >
                                 Etunimi:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="firstName"
                                 placeholder={user.firstName}
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
                                 htmlFor="lastName"
                             >
                                 Sukunimi:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="lastName"
                                 placeholder={user.lastName}
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
                                 htmlFor="lastName"
                             >
                                 Puhelinnumero:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="phone"
                                 placeholder={user.phone || ""}
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
                                 htmlFor="lastName"
                             >
                                 Sähköposti:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="email"
                                 name="email"
                                 placeholder={user.email}
                                 onChange={handleChange}
                             />
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
                                 htmlFor="lastName"
                             >
                                 Salasana:
                             </label>
-                            <div className="relative w-1/2">
+                            <div className="relative w-2/3 md:w-1/2">
                                 <input
-                                    className="w-full h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                    className="w-full h-10 ml-4 md:ml-0 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
                                     type={showPassword ? "text" : "password"}
                                     name="password"
                                     onChange={handleChange}
@@ -170,15 +170,15 @@ const UserForm: React.FC<UserFormProps> = ({ showForm, setShowForm, user }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex w-full pb-2">
+                        <div className="flex flex-col md:flex-row w-full pb-2">
                             <label
-                                className="w-1/3 pl-4 text-left text-xl font-bold"
+                                className="w-full md:w-1/3 pl-4 text-left text-xl font-bold md:mb-0"
                                 htmlFor="lastName"
                             >
                                 Kaupunki:
                             </label>
                             <input
-                                className="w-1/2 h-10 rounded border border-gray-300 p-2 text-slate-950 bg-slate-50 dark:text-slate-950 dark:bg-slate-50"
+                                className="w-2/3 ml-4 md:ml-0 md:w-1/2 h-10 rounded border border-gray-300 p-2 bg-slate-50 text-slate-950 dark:text-slate-950 dark:bg-slate-50"
                                 type="text"
                                 name="city"
                                 placeholder={user.city}
