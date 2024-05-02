@@ -32,7 +32,7 @@ const Single: React.FC = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [isCarouselModalOpen, setIsCarouselModalOpen] = useState(false);
     const { categories } = useCategories();
-    const [category, setCategory] = useState(0);
+    const [category, setCategory] = useState(-1);
     const [formData, setFormData] = useState(item);
     const { putListing, deleteListing } = useListing();
 
@@ -71,7 +71,7 @@ const Single: React.FC = () => {
         if (token) {
             const listing = {
                 ...formData,
-                category: (category !== 0 && category) || undefined,
+                category: (category !== -1 && category) || undefined,
                 images: undefined,
                 thumbnail: undefined,
                 user: undefined,
@@ -388,7 +388,7 @@ const Single: React.FC = () => {
                                                             setCategory(id);
                                                         }}
                                                     />
-                                                    {category !== 0 && (
+                                                    {category !== -1 && (
                                                         <div className="flex items-center space-x-2">
                                                             {categories.find(
                                                                 cat => cat.id === category
@@ -404,7 +404,7 @@ const Single: React.FC = () => {
                                                             )}
                                                             <button
                                                                 className="bg-transparent border-none cursor-pointer text-2xl text-red-500"
-                                                                onClick={() => setCategory(0)}
+                                                                onClick={() => setCategory(-1)}
                                                             >
                                                                 X
                                                             </button>
