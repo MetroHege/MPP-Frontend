@@ -114,6 +114,11 @@ const Single: React.FC = () => {
         fetchAndSetRandomListings();
     }, [typeof item.category === "number" ? item.category : item.category.id, item.id, user?.id]);
 
+    useEffect(() => {
+        setItem(state);
+        setFormData(state);
+    });
+
     return (
         <>
             <button
