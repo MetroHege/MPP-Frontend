@@ -172,9 +172,9 @@ const Home = () => {
             {(selectedCategory !== -1 || sortOrder !== "newest") && (
                 <div className="flex items-center mb-4 space-x-2 ml-4">
                     <span>
-                        {selectedCategory &&
+                        {selectedCategory !== -1 &&
                             `${categories.find(category => category.id === selectedCategory)?.title}`}
-                        {selectedCategory && sortOrder !== "newest" && " | "}
+                        {selectedCategory !== -1 && sortOrder !== "newest" && " | "}
                         {sortOrder !== "newest" && `${sortOptionsMapping[sortOrder]}`}
                     </span>
                     <button
