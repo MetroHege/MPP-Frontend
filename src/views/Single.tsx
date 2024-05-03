@@ -433,7 +433,11 @@ const Single: React.FC = () => {
                         )}
                     </div>
                     <hr className="w-full mt-2 mb-3 border-gray-300" />
-                    <p className="mb-10">{item.description}</p>
+                    {item.description.split("\n").map((line, index) => (
+                        <p key={index} className="mb-10">
+                            {line}
+                        </p>
+                    ))}{" "}
                     <div>
                         <h1 className="text-4xl mb-4">Keskustelu:</h1>
                         {/* This component is used to display messages. */}

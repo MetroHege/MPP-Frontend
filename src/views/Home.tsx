@@ -217,8 +217,8 @@ const Home = () => {
                     <div>
                         <p className="my-8 text-4xl">Hmm...🤔</p>
                         <p className="my-8 text-4xl">
-                            Valitettavasti haullasi ei näyttänyt löytynyt yhtään ilmoitusta, kokeile
-                            jotain muuta...
+                            Valitettavasti haullasi ei näyttänyt löytyneen yhtään ilmoitusta,
+                            kokeile jotain muuta...
                         </p>
                     </div>
                 )}
