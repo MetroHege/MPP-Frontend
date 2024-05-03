@@ -14,12 +14,20 @@ import { FiChevronDown } from "react-icons/fi";
 // This component is the home view of the application.
 const Home = () => {
     const { categories, getCategories } = useCategories();
-    const [selectedCategory, setSelectedCategory] = useState<number>(-1);
+    const [selectedCategory, setSelectedCategory] = useState(() => {
+        const savedCategory = localStorage.getItem("selectedCategory");
+        return savedCategory ? +savedCategory : -1;
+    });
     const { listings, searchTerm, setSearchTerm, loadMore, sort, hasMore } = useListing({
         category: selectedCategory !== -1 ? +selectedCategory : undefined
     });
     const { user } = useUser();
-    const [sortOrder, setSortOrder] = useState(localStorage.getItem("sortOrder") || "newest");
+    const [sortOrder, setSortOrder] = useState(() => {
+        const savedSortOrder = localStorage.getItem("sortOrder");
+        return savedSortOrder ? savedSortOrder : "newest";
+    });
+
+    useEffect(() => {}, [sortOrder]);
 
     useEffect(() => {
         const savedCategory = localStorage.getItem("selectedCategory");
@@ -61,6 +69,7 @@ const Home = () => {
         );
         sort((selectedSortOrder as "newest" | "oldest" | "low-high" | "high-low") || "newest");
         localStorage.setItem("sortOrder", selectedSortOrder || "newest");
+        setSortOrder(selectedSortOrder || "newest");
     };
 
     useEffect(() => {
