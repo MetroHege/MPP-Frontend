@@ -117,7 +117,7 @@ const Single: React.FC = () => {
     useEffect(() => {
         setItem(state);
         setFormData(state);
-    });
+    }, [state]);
 
     return (
         <>
